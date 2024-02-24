@@ -23,7 +23,10 @@ export const headerLinks = [
         href: "/",
         text: "Rekisteröidy",
     },
-
+    {
+        href: '/yhteystiedot',
+        text: "Yhteystiedot"
+    }
 ];
 
 export const footerLinks = [
