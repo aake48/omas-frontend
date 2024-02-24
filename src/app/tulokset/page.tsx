@@ -6,8 +6,8 @@ import { scores } from './scores';
 export default function page() {
   return (
     <main className="p-2 h-screen">
-      {scores.sort((a, b) => b.year - a.year).map(score => (
-        <Score year={score.year} divisions={score.divisions}/>
+      {scores.sort((a, b,) => b.year - a.year).map((score, index) => (
+        <Score key={index} year={score.year} divisions={score.divisions}/>
       ))}
     </main>
   )

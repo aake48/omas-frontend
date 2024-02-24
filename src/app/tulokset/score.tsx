@@ -48,8 +48,8 @@ const Score = ({ year, divisions }: ScoreProps) => {
         <h1 className='ml-2'>{`Tulokset ${year}`}</h1>
       </div>
       <div className={hidden}>
-        {divisions.map(division => (
-          <Division name={division.name} clubs={division.clubs} />
+        {divisions.map((division, index) => (
+          <Division key={index} name={division.name} clubs={division.clubs} />
         ))}
       </div>
     </div>
