@@ -49,7 +49,7 @@ const Division = ({ name, clubs }: DivisionProps) => {
         </div>
         <div className={hidden}>
             {clubs.sort((a, b) => a.position - b.position).map((club, index) => (
-                <Club name={club.name} shortName={club.shortName} position={club.position} members={club.members}/>
+                <Club key={index} name={club.name} shortName={club.shortName} position={club.position} members={club.members}/>
             ))}
         </div>
     </div>
