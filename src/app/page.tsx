@@ -1,49 +1,29 @@
 import React from 'react';
-import { upcoming } from './lib/constants';
 import Link from 'next/link';
+import HomePageCommonContainer from './HomePageCommonContainer';
+import { Button } from '@/components/ui/Button';
+import { upcoming } from './lib/constants';
 
 export default function Home() {
   return (
     <main className="min-h-screen p-8">
       <div className='w-full rounded-md shadow-md border mb-8'>
-        <div className='flex items-baseline p-4 mx-4'>
+        <div className='lg:flex items-baseline p-4'>
           <h1 className='text-2xl'>Sarjakilpailukausi</h1>
-          <p className='ml-8 text-slate-700 text-sm'>6.11.2023-5.3.2024</p>
+          <p className='lg:ml-8 text-slate-700 text-sm'>6.11.2023-5.3.2024</p>
         </div>
-        <div className='flex items-center'>
-          <Link href="#" className='mx-4 p-4 cursor-pointer'>Sarjakilpailun säännöt</Link>
-          <Link href="#" className='mx-4 p-4 cursor-pointer'>Ilmoita joukkue</Link>
+        <div className='md:flex items-center p-4 gap-4'>
+          <Button variant="outline" className='hover:bg-slate-100 mb-4 sm:mb-0'>
+            <Link href="#">Sarjakilpailun säännöt</Link>
+          </Button>
+          <Button variant="outline" className='hover:bg-slate-100'>
+            <Link href="#">Ilmoita joukkue</Link>
+          </Button>
         </div>
       </div>
       <div className='xl:flex xl:justify-between xl:items-center gap-8'>
-      <div className='w-full rounded-md shadow-md border mb-8 xl:mb-0'>
-          <div className='flex items-baseline p-4 mx-4'>
-            <h1 className='text-2xl'>Tulevat kilpailut</h1>
-            <Link href="#" className='ml-8 text-slate-700 text-sm underline cursor-pointer'>Näytä kaikki</Link>
-          </div>
-          <div>
-            {upcoming.map(comp => (
-              <div className='flex items-baseline mx-4 border-b-2 last:border-b-0 cursor-pointer'>
-                <p className='p-4'>{comp.name}</p>
-                <p className='p-4 text-sm text-slate-700'>{comp.date}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className='w-full rounded-md shadow-md border'>
-          <div className='flex items-baseline p-4 mx-4'>
-            <h1 className='text-2xl'>Menneet kilpailut</h1>
-            <Link href="#" className='ml-8 text-slate-700 text-sm underline cursor-pointer'>Näytä kaikki</Link>
-          </div>
-          <div>
-            {upcoming.map(comp => (
-              <div className='flex items-baseline mx-4 border-b-2 last:border-b-0 cursor-pointer'>
-                <p className='p-4'>{comp.name}</p>
-                <p className='p-4 text-sm text-slate-700'>{comp.date}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+        <HomePageCommonContainer title="Tulevat kilpailut" data={upcoming}/>
+        <HomePageCommonContainer title="Menneet kilpailut" data={upcoming}/>
       </div>
     </main>
   );
