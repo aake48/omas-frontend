@@ -13,7 +13,6 @@ export default function Home() {
         <div className='flex items-center'>
           <Link href="#" className='mx-4 p-4 cursor-pointer'>Sarjakilpailun säännöt</Link>
           <Link href="#" className='mx-4 p-4 cursor-pointer'>Ilmoita joukkue</Link>
-          <Link href="#" className='mx-4 p-4 cursor-pointer'>Kolmas linkki</Link>
         </div>
       </div>
       <div className='xl:flex xl:justify-between xl:items-center gap-8'>
