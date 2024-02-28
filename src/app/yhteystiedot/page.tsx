@@ -1,5 +1,5 @@
 import React from "react";
-import { contacts } from "../lib/constants";
+import { contacts } from "../../../lib/constants";
 
 export default function page() {
     return (
