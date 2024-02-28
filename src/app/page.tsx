@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import HomePageCommonContainer from './HomePageCommonContainer';
 import { Button } from '@/components/ui/Button';
-import { upcoming } from './lib/constants';
+import { upcoming } from '@/../lib/constants';
 
 export default function Home() {
   return (

@@ -1,5 +1,5 @@
 import React from 'react'
-import { upcoming } from './lib/constants';
+import { upcoming } from '@/../lib/constants';
 import Link from 'next/link';
 
 interface Upcoming {
