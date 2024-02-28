@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { footerLinks } from "../../../lib/links";
+import { footerLinks } from "@/../lib/links";
 
 const Footer: React.FC = () => {
     return (
