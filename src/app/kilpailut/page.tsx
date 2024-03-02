@@ -19,7 +19,7 @@ export default function page() {
   }, []);
 
   return (
-    <main className="h-screen p-4">
+    <main className="min-h-screen p-4">
       <h1 className='text-4xl mb-4'>Kilpailut</h1>
       <div className='w-full rounded-md shadow-md border p-4'>
         {competitions.map(competition => (
