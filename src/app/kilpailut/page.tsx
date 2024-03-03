@@ -1,11 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react'
 import Competition from './Competition';
-
-interface CompetitionType {
-  name: string,
-  creationDate: string
-}
+import { Competition as CompetitionType } from './types';
 
 export default function page() {
   const [competitions, setCompetitions] = useState<CompetitionType[]>([]);

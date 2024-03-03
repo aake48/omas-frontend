@@ -1,17 +1,17 @@
 import React from 'react'
 
 interface CompetitionProps {
-    name: string,
-    creationDate: string
+  name: string,
+  creationDate: string
 }
 
-const Club = ({ name, creationDate }: CompetitionProps) => {
+const Competition = ({ name, creationDate }: CompetitionProps) => {
   return (
-    <div>
-        <h1 className='text-2xl'>{name}</h1>
-        <p className='text-sm'>{creationDate}</p>
+    <div className='p-2'>
+      <h1 className='text-2xl'>{name}</h1>
+      <p className='text-sm'>{creationDate}</p>
     </div>
   )
 }
 
-export default Club;
+export default Competition;
