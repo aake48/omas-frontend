@@ -23,7 +23,7 @@ export default function Home() {
       </div>
       <div className='xl:flex xl:justify-between xl:items-center gap-8'>
         <HomePageCommonContainer title="Tulevat kilpailut" data={upcoming}/>
-        <HomePageCommonContainer title="Viimeisimmät tulokset" data={upcoming}/>
+        <HomePageCommonContainer title="Menneet kilpailut" data={upcoming}/>
       </div>
     </main>
   );
