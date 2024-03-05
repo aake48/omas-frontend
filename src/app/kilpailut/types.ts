@@ -3,13 +3,13 @@ export interface Competition {
     name: string,
     nameNonId: string,
     creationDate: string
-    teams?: Team[]
+    teams: Team[]
 }
 
 export interface Team {
     club: string,
     totalScore: number,
-    scores?: TeamScore[]
+    scores: TeamScore[]
 }
 
 export interface TeamScore {

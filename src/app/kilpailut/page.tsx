@@ -1,26 +1,27 @@
 'use client';
 import React, { useState, useEffect } from 'react'
-import Competition from './Competition';
 import { Competition as CompetitionType } from './types';
+import Score from './score';
 
 export default function page() {
   const [competitions, setCompetitions] = useState<CompetitionType[]>([]);
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/competition/all", {cache: 'default'})
+    fetch("http://localhost:8080/api/competition/result/kesan_ampujaiset", { cache: 'default' })
       .then((res) => res.json())
       .then((json) => {
-        setCompetitions(json);
+        setCompetitions([...competitions, json])
       })
   }, []);
 
   return (
     <main className="min-h-screen p-4">
       <h1 className='text-4xl mb-4'>Kilpailut</h1>
-      <div className='w-full rounded-md shadow-md border p-4'>
-        {competitions.map(competition => (
-          <Competition name={competition.name} creationDate={competition.creationDate}/>
-        ))}
+      <div>
+        <Score
+          year={parseInt(competitions[0]?.creationDate.split("-")[0])}
+          competitions={competitions}
+        />
       </div>
     </main>
   )
