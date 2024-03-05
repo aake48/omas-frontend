@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react'
 import { Competition as CompetitionType } from './types';
-import Score from './score';
+import Score from './Score';
 
 export default function page() {
   const [competitions, setCompetitions] = useState<CompetitionType[]>([]);
