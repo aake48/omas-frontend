@@ -1,14 +1,14 @@
 'use client';
 import React, { useState } from 'react'
-import { Division as DivisionType } from './types';
-import Division from './division';
+import Competition from './Competition';
+import { Competition as CompetitionType } from './types';
 
 interface ScoreProps {
   year: number,
-  divisions: DivisionType[]
+  competitions: CompetitionType[]
 }
 
-const Score = ({ year, divisions }: ScoreProps) => {
+const Score = ({ year, competitions }: ScoreProps) => {
   const [isHidden, setIsHidden] = useState(true);
   
   const arrowUp = 
@@ -48,8 +48,12 @@ const Score = ({ year, divisions }: ScoreProps) => {
         <h1 className='ml-2'>{`Tulokset ${year}`}</h1>
       </div>
       <div className={hidden}>
-        {divisions.map((division, index) => (
-          <Division key={index} name={division.name} clubs={division.clubs} />
+        {competitions?.map(competition => (
+          <Competition
+            name={competition.name}
+            creationDate={competition.creationDate}
+            teams={competition.teams}
+          />
         ))}
       </div>
     </div>
