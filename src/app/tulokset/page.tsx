@@ -16,7 +16,7 @@ export default function page() {
 
   return (
     <main className="min-h-screen p-4">
-      <h1 className='text-4xl mb-4'>Kilpailut</h1>
+      <h1 className='text-4xl mb-4'>Tulokset</h1>
       <div>
         <Score
           year={parseInt(competitions[0]?.creationDate.split("-")[0])}
