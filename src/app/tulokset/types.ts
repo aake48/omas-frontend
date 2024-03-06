@@ -1,4 +1,10 @@
 
+export interface CompetitionNoDetails {
+    name: string,
+    nameNonId: string,
+    creationDate: string
+}
+
 export interface Competition {
     name: string,
     nameNonId: string,
@@ -17,4 +23,13 @@ export interface TeamScore {
     sum: number,
     userId: number,
     scorePerShot: string
+}
+
+export interface Years {
+    years: Year[]
+}
+
+export interface Year {
+    year: string,
+    competitions: Competition[]
 }

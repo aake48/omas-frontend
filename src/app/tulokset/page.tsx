@@ -1,28 +1,41 @@
 'use client';
 import React, { useState, useEffect } from 'react'
-import { Competition as CompetitionType } from './types';
-import Score from './score';
+import { Competition, CompetitionNoDetails, Years } from './types';
+import Score from './Score';
 
 export default function page() {
-  const [competitions, setCompetitions] = useState<CompetitionType[]>([]);
+  const [competitionsNoDetails, setCompetitionsNoDetails] = useState<CompetitionNoDetails[]>([]);
 
   useEffect(() => {
-    fetch("https://localhost:8080/api/competition/result/kesan_ampujaiset", { cache: 'default' })
-      .then((res) => res.json())
-      .then((json) => {
-        setCompetitions([...competitions, json])
+    fetch("https://localhost:8080/api/competition/all", { cache: 'default' })
+      .then(res => res.json())
+      .then(json => {
+        setCompetitionsNoDetails(json)
       })
-  }, []);
+  }, [])
 
-  return (
-    <main className="min-h-screen p-4">
-      <h1 className='text-4xl mb-4'>Tulokset</h1>
-      <div>
-        <Score
-          year={parseInt(competitions[0]?.creationDate.split("-")[0])}
-          competitions={competitions}
-        />
-      </div>
-    </main>
-  )
+  const groupCompetitionsByYear = Map.groupBy(competitionsNoDetails, (comp: Competition) => {
+    const date = comp.creationDate.split("-")[0];
+    return date;
+  })
+
+  if (competitionsNoDetails.length !== 0) {
+    return (
+      <main className="min-h-screen p-4">
+        <h1 className='text-4xl mb-4'>Tulokset</h1>
+        <div>
+          {Array.from(groupCompetitionsByYear).map((year: any) => (
+            <Score
+              year={parseInt(year[0])}
+              competitionsNoDetails={competitionsNoDetails}
+            />
+          ))}
+        </div>
+      </main>
+    )
+  } else {
+    return (
+      <h1 className='text-xl m-12'>Ei näytettäviä tuloksia</h1>
+    )
+  }
 }

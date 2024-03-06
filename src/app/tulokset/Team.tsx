@@ -8,8 +8,8 @@ interface TeamProps {
 const Team = ({ clubName, position }: TeamProps) => {
   return (
     <div>
-        <h1>{`${position + 1}. ${clubName}`}</h1>
-        <div></div>
+      <h1>{`${position + 1}. ${clubName}`}</h1>
+      <div></div>
     </div>
   )
 }
