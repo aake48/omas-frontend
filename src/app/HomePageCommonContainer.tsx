@@ -16,7 +16,7 @@ const HomePageCommonContainer = ({ title }: HomePageCommonContainerProps) => {
   return (
     <div className='w-full rounded-md shadow-md border mb-8 xl:mb-0'>
         <div className='flex items-baseline p-4 mx-4'>
-            <h1 className='text-2xl'>{title}</h1>
+            <h1 className='text-xl'>{title}</h1>
             <Link href="#" className='ml-8 text-slate-700 text-sm underline cursor-pointer'>Näytä kaikki</Link>
         </div>
         <div>
