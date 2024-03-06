@@ -7,7 +7,7 @@ export default function page() {
   const [competitions, setCompetitions] = useState<CompetitionType[]>([]);
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/competition/result/kesan_ampujaiset", { cache: 'default' })
+    fetch("https://localhost:8080/api/competition/result/kesan_ampujaiset", { cache: 'default' })
       .then((res) => res.json())
       .then((json) => {
         setCompetitions([...competitions, json])
