@@ -17,7 +17,7 @@ export default function Home() {
             <Link href="#">Sarjakilpailun säännöt</Link>
           </Button>
           <Button variant="outline" className='hover:bg-slate-100'>
-            <Link href="#">Ilmoita joukkue</Link>
+            <Link href="/joukkueet">Ilmoita joukkue</Link>
           </Button>
         </div>
       </div>
