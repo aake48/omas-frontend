@@ -1,4 +1,12 @@
 
+export interface Content {
+    content: CompetitionNoDetails[],
+    last: boolean,
+    totalPages: number,
+    totalElements: 4,
+    first: boolean
+}
+
 export interface CompetitionNoDetails {
     name: string,
     nameNonId: string,
