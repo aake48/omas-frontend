@@ -32,12 +32,3 @@ export interface TeamScore {
     userId: number,
     scorePerShot: string
 }
-
-export interface Years {
-    years: Year[]
-}
-
-export interface Year {
-    year: string,
-    competitions: Competition[]
-}
