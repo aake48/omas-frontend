@@ -12,7 +12,7 @@ const Competition = ({ name, creationDate }: CompetitionProps) => {
   const [competition, setCompetition] = useState<Competition>();
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/competition/result/${name}`, { cache: 'default' })
+    fetch(`https://localhost:8080/api/competition/result/${name}`, { cache: 'default' })
       .then(res => res.json())
       .then(json => {
         setCompetition(json)

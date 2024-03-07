@@ -7,7 +7,7 @@ export default function page() {
   const [content, setContent] = useState<Content>();
   const [pageNumber, setPageNumber] = useState(0);
 
-  let apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/competition/query?search=&page=${pageNumber}&size=10`;
+  let apiUrl = `https://localhost:8080/api/competition/query?search=&page=${pageNumber}&size=10`;
   
   useEffect(() => {
     fetch(apiUrl, { cache: 'default' })
