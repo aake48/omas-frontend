@@ -54,8 +54,10 @@ const Competition = ({ name, creationDate }: CompetitionProps) => {
           <div className='ml-2'>
             {isHidden ? arrowDown : arrowUp}
           </div>
-          <h1 className='ml-2'>{name}</h1>
-          <p className='ml-2 text-slate-700 text-sm'>{creationDate}</p>
+          <div className='block'>
+            <h1 className='ml-2'>{name}</h1>
+            <p className='ml-2 text-slate-700 text-sm'>{creationDate}</p>
+          </div>
         </div>
         <div className={`${hidden} h-full p-4 bg-slate-50 rounded-md mb-2 shadow-md ml-16`}>
           {competition.teams.map((team, index) => (
