@@ -1,18 +1,26 @@
-export const contacts = [
-    { phone: '123-456-7890', email: 'toimisto@omas.fi', address: 'Osoite 123' },
-]
+import { CompetitionResponse } from "@/types/commonTypes";
 
-export const upcoming = [
-    {
-        "name": "Tuleva kilpailu 1",
-        "date": "01.06.2024"
-    },
-    {
-        "name": "Tuleva kilpailu 2",
-        "date": "01.06.2024"
-    },
-    {
-        "name": "Tuleva kilpailu 3",
-        "date": "01.06.2024"
-    }
-]
+export const contacts = [
+  { phone: "123-456-7890", email: "toimisto@omas.fi", address: "Osoite 123" },
+];
+
+export const upcoming: CompetitionResponse[] = [
+  {
+    name: "Tuleva_kilpailu_1",
+    nameNonId: "Tuleva kilpailu 1",
+    type:"rifle",
+    creationDate: ("01.06.2024"),
+  },
+  {
+    name: "Tuleva_kilpailu_2",
+    nameNonId: "Tuleva kilpailu 2",
+    type:"rifle",
+    creationDate: ("01.06.2024"),
+  },
+  {
+    name: "kesan_yo_-kilpailu",
+    nameNonId: "kesän yö -kilpailu",
+    type:"pistol",
+    creationDate: ("01.06.2024"),
+  },
+];
