@@ -1,4 +1,4 @@
-export const baseURL: string = "https://localhost:8080"
+export const baseURL: string = "https://localhost:8080";
 
 export const loginURL: string = baseURL + "/api/login";
 
@@ -26,13 +26,21 @@ export const getClubQueryUrl = (search: string = "", page: number, size: number 
 /**
  * älä käytä tälläistä, käytä getClubQueryUrl()
  */
-export const getAllClubsURL: string = baseURL + "/club/all";
+export const getAllClubsURL: string = baseURL + "/api/club/all";
 
 /**
  * älä käytä tälläistä, käytä getCompetitionsQueryUrl()
  */
-export const getAllCompetitionsURl: string = baseURL + "/competition/all";
+export const getAllCompetitionsURl: string = baseURL + "/api/competition/all";
 
+export const addCompetitionURL: string = baseURL + "/api/auth/competition/new";
 
+export const addClubURL: string = baseURL + "/api/auth/club/new";
 
+export const joinClubURL: string = baseURL + "/api/auth/club/join";
 
+export const addTeamToCompetitionURL: string =
+  baseURL + "/api/competition/team/new";
+
+export const addTeamMemberURL: string =
+  baseURL + "/api/competition/team/member/add";
