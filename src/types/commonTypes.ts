@@ -101,6 +101,7 @@ export type competitionResultsUser = {
   bullsEyeCount: number;
   sum: number;
   userId: number;
+  name: string; // name associated with the userId
   scorePerShot: string; // ScoreList.toString()
 };
 
