@@ -1,5 +1,7 @@
 "use client";
 
+import React from "react";
+
 interface InputProps {
   id: string;
   placeholder: string;
@@ -7,6 +9,7 @@ interface InputProps {
   type: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
+  value?: string;
 }
 
 export default function Input({
@@ -16,6 +19,7 @@ export default function Input({
   type,
   onChange,
   disabled = false,
+  value,
 }: InputProps) {
   return (
     <input
@@ -26,6 +30,7 @@ export default function Input({
       required={required}
       onChange={onChange}
       disabled={disabled}
+      value={value}
     />
   );
 }
