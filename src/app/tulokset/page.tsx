@@ -1,22 +1,23 @@
 'use client';
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import Score from './Score';
-import axios from 'axios';
 import { competitionResults, queryResult } from '@/types/commonTypes';
 import { getCompetitionsQueryUrl } from '@/types/APIConstants';
+import fetchData from './get';
 
 export default function page() {
   const [content, setContent] = useState<queryResult>();
   const [pageNumber, setPageNumber] = useState(0);
 
   let apiUrl = getCompetitionsQueryUrl("", pageNumber, 10);
-  
+
+  const fetchContent = useCallback(async () => {
+    const data: queryResult = await fetchData(apiUrl);
+    setContent(data);
+  }, []);
+
   useEffect(() => {
-    axios.get(apiUrl)
-      .then(res => {
-        const data: queryResult = res.data;
-        setContent(data);
-      })
+    fetchContent();
   }, [pageNumber])
 
   if (

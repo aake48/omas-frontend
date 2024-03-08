@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { competitionResults } from "@/types/commonTypes";
 import Team from './Team';
-import axios from 'axios';
 import { getCompetitionByNameUrl } from '@/types/APIConstants';
+import fetchData from './get';
 
 interface CompetitionProps {
   name: string,
@@ -16,12 +16,13 @@ const Competition = ({ name, displayName, creationDate }: CompetitionProps) => {
 
   let apiUrl = getCompetitionByNameUrl(name);
 
+  const fetchContent = useCallback(async () => {
+    const data: competitionResults = await fetchData(apiUrl);
+    setCompetition(data);
+  }, []);
+
   useEffect(() => {
-    axios.get(apiUrl)
-    .then(res => {
-      const data: competitionResults = res.data;
-      setCompetition(data);
-    })
+    fetchContent();
   }, [])
   
   const arrowUp = 
