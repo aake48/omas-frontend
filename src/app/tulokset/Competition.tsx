@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { competitionResults } from "@/types/commonTypes";
 import Team from './Team';
 import { getCompetitionByNameUrl } from '@/types/APIConstants';

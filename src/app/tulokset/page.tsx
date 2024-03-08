@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect } from 'react'
 import Score from './Score';
 import { competitionResults, queryResult } from '@/types/commonTypes';
 import { getCompetitionsQueryUrl } from '@/types/APIConstants';
