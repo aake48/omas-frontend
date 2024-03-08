@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { Competition, Team as TeamType } from './types';
+import { competitionResults } from "@/types/commonTypes";
 import Team from './Team';
+import axios from 'axios';
 
 interface CompetitionProps {
   name: string,
@@ -9,14 +10,16 @@ interface CompetitionProps {
 
 const Competition = ({ name, creationDate }: CompetitionProps) => {
   const [isHidden, setIsHidden] = useState(true);
-  const [competition, setCompetition] = useState<Competition>();
+  const [competition, setCompetition] = useState<competitionResults>();
+
+  let apiUrl = `https://localhost:8080/api/competition/result/${name}`;
 
   useEffect(() => {
-    fetch(`https://localhost:8080/api/competition/result/${name}`, { cache: 'default' })
-      .then(res => res.json())
-      .then(json => {
-        setCompetition(json)
-      })
+    axios.get(apiUrl)
+    .then(res => {
+      const data: competitionResults = res.data;
+      setCompetition(data);
+    })
   }, [])
   
   const arrowUp = 
@@ -39,12 +42,12 @@ const Competition = ({ name, creationDate }: CompetitionProps) => {
   }
 
   if (isHidden) {
-      hidden = "hidden";
+    hidden = "hidden";
   } else {
-      hidden = "";
+    hidden = "";
   }
 
-  if (competition !== undefined) {
+  if (competition !== undefined && competition.teams !== null) {
     return (
       <div>
         <div
@@ -60,7 +63,7 @@ const Competition = ({ name, creationDate }: CompetitionProps) => {
           </div>
         </div>
         <div className={`${hidden} h-full p-4 bg-slate-50 rounded-md mb-2 shadow-md ml-16`}>
-          {competition.teams.map((team, index) => (
+          {competition.teams.slice(0, 8).map((team, index) => (
             <Team clubName={team.club} position={index} key={index}/>
             ))}
         </div>

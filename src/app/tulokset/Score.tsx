@@ -1,14 +1,14 @@
 'use client';
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Competition from './Competition';
-import { CompetitionNoDetails, Competition as CompetitionType } from './types';
+import { ClubResponse, CompetitionResponse } from '@/types/commonTypes';
 
 interface ScoreProps {
   year: number,
-  competitionsNoDetails: CompetitionNoDetails[]
+  competitionResults: ClubResponse[] | CompetitionResponse[] | null
 }
 
-const Score = ({ year, competitionsNoDetails }: ScoreProps) => {
+const Score = ({ year, competitionResults }: ScoreProps) => {
   const [isHidden, setIsHidden] = useState(true);
   
   const arrowUp = 
@@ -31,32 +31,51 @@ const Score = ({ year, competitionsNoDetails }: ScoreProps) => {
   }
 
   if (isHidden) {
-      hidden = "hidden";
+    hidden = "hidden";
   } else {
-      hidden = "";
+    hidden = "";
   }
 
-  return (
-    <div>
-      <div
-        className={`flex items-center h-16 w-full bg-slate-200 rounded-lg shadow-md mb-2 cursor-pointer`}
-        onClick={handleShowDivisions}
-      >
-        <div className='ml-2'>
-          {isHidden ? arrowDown : arrowUp}
+  if (competitionResults !== null) {
+    return (
+      <div>
+        <div
+          className={`flex items-center h-16 w-full bg-slate-200 rounded-lg shadow-md mb-2 cursor-pointer`}
+          onClick={handleShowDivisions}
+        >
+          <div className='ml-2'>
+            {isHidden ? arrowDown : arrowUp}
+          </div>
+          <h1 className='ml-2'>{`Tulokset ${year}`}</h1>
         </div>
-        <h1 className='ml-2'>{`Tulokset ${year}`}</h1>
+        <div className={hidden}>
+          {competitionResults.map(competition => (
+            <Competition
+              name={competition.name}
+              creationDate={competition.creationDate}
+            />
+          ))}
+        </div>
       </div>
-      <div className={hidden}>
-        {competitionsNoDetails.map(competition => (
-          <Competition
-            name={competition.name}
-            creationDate={competition.creationDate}
-          />
-        ))}
+    )
+  } else {
+    return (
+      <div>
+        <div
+          className={`flex items-center h-16 w-full bg-slate-200 rounded-lg shadow-md mb-2 cursor-pointer`}
+          onClick={handleShowDivisions}
+        >
+          <div className='ml-2'>
+            {isHidden ? arrowDown : arrowUp}
+          </div>
+          <h1 className='ml-2'>{`Tulokset ${year}`}</h1>
+        </div>
+        <div className={hidden}>
+          <h1>{`Tuloksia ei löytynyt vuodelle ${2024}`}</h1>
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
 }
 
 export default Score;

@@ -1,24 +1,29 @@
 'use client';
 import React, { useState, useEffect } from 'react'
-import { Competition, Content } from './types';
 import Score from './Score';
+import axios from 'axios';
+import { competitionResults, queryResult } from '@/types/commonTypes';
 
 export default function page() {
-  const [content, setContent] = useState<Content>();
+  const [content, setContent] = useState<queryResult>();
   const [pageNumber, setPageNumber] = useState(0);
 
   let apiUrl = `https://localhost:8080/api/competition/query?search=&page=${pageNumber}&size=10`;
   
   useEffect(() => {
-    fetch(apiUrl, { cache: 'default' })
-      .then(res => res.json())
-      .then(json => {
-        setContent(json)
+    axios.get(apiUrl)
+      .then(res => {
+        const data: queryResult = res.data;
+        setContent(data);
       })
   }, [pageNumber])
 
-  if (content?.content !== undefined && content.content.length !== 0) {
-    let groupCompetitionsByYear = Map.groupBy(content.content, (comp: Competition) => {
+  if (
+      content?.content !== undefined &&
+      content.content !== null &&
+      content.content.length !== 0
+  ) {
+    let groupCompetitionsByYear = Map.groupBy(content.content, (comp: competitionResults) => {
       const date = comp.creationDate.split("-")[0];
       return date;
     })
@@ -64,7 +69,7 @@ export default function page() {
           {Array.from(groupCompetitionsByYear).map((year: any) => (
             <Score
               year={parseInt(year[0])}
-              competitionsNoDetails={content.content}
+              competitionResults={content.content}
             />
           ))}
         </div>
@@ -110,6 +115,6 @@ export default function page() {
       </main>
     )
   } else {
-    <h1 className='text-xl'>Ei löytynyt tuloksia</h1>
+    <h1 className='text-xl'>Tuloksia ei löytynyt</h1>
   }
 }
