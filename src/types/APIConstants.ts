@@ -4,28 +4,28 @@ export const loginURL: string = baseURL + "/api/login";
 
 export const registrationURL: string = baseURL + "/api/reg";
 
-const compQuery: string = "/competition/query";
+const compQuery: string = "/api/competition/query";
 
-const clubQuery: string = "/club/query";
+const clubQuery: string = "/api/club/query";
 
-export const getCompetitionsQueryUrl = (search: string = "", page: number, size: number = 10): string => {
+export const getCompetitionsQueryUrl = (page: number, search: string = "", size: number = 10): string => {
 
-    return `${baseURL}${compQuery}?search=${search}&page=${page}&size=${size}.`
+    return `${baseURL}${compQuery}?search=${search}&page=${page}&size=${size}`
 }
 
-export const getClubQueryUrl = (search: string = "", page: number, size: number = 10): string => {
+export const getClubQueryUrl = ( page: number = 0, search: string = "", size: number = 10): string => {
 
-    return `${baseURL}${clubQuery}?search=${search}&page=${page}&size=${size}.`
+    return `${baseURL}${clubQuery}?search=${search}&page=${page}&size=${size}`
 }
 /**
  * älä käytä tälläistä, käytä getClubQueryUrl()
  */
-export const getAllClubsURL: string = baseURL + "/club/all";
+export const getAllClubsURL: string = baseURL + "/api/club/all";
 
 /**
  * älä käytä tälläistä, käytä getCompetitionsQueryUrl()
  */
-export const getAllCompetitionsURl: string = baseURL + "/competition/all";
+export const getAllCompetitionsURl: string = baseURL + "/api/competition/all";
 
 
 

@@ -109,13 +109,6 @@ export type competitionResultsUser = {
   scorePerShot: string // ScoreList.toString()
 }
 
-export type PostQuery = {
-  bullsEyeCount: number,
-  sum: number,
-  userId: number,
-  scorePerShot: string // ScoreList.toString()
-}
-
 /**
  * get club and competition data with this ./club|competition/query?search=&page=0&size=5
  */
