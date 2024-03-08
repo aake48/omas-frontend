@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { competitionResults } from "@/types/commonTypes";
 import Team from './Team';
 import axios from 'axios';
+import { getCompetitionByNameUrl } from '@/types/APIConstants';
 
 interface CompetitionProps {
   name: string,
@@ -12,7 +13,7 @@ const Competition = ({ name, creationDate }: CompetitionProps) => {
   const [isHidden, setIsHidden] = useState(true);
   const [competition, setCompetition] = useState<competitionResults>();
 
-  let apiUrl = `https://localhost:8080/api/competition/result/${name}`;
+  let apiUrl = getCompetitionByNameUrl(name);
 
   useEffect(() => {
     axios.get(apiUrl)
@@ -65,7 +66,7 @@ const Competition = ({ name, creationDate }: CompetitionProps) => {
         <div className={`${hidden} h-full p-4 bg-slate-50 rounded-md mb-2 shadow-md ml-16`}>
           {competition.teams.slice(0, 8).map((team, index) => (
             <Team clubName={team.club} position={index} key={index}/>
-            ))}
+          ))}
         </div>
       </div>
     )
