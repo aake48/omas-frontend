@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Formik, Form } from "formik";
-import { validationSchema } from "./validation";
+import { roundValidationSchema } from "../validation";
 import Custominput from "@/components/ui/CustomInput";
 
 export default function ScoreCard() {
@@ -17,7 +17,7 @@ export default function ScoreCard() {
                     roundScore: "",
                     bullseyes: "",
                 }}
-                validationSchema={validationSchema}
+                validationSchema={roundValidationSchema}
                 onSubmit={(values, { setSubmitting, resetForm }) => {
                     fetch("/api/send", {
                         method: "POST",
