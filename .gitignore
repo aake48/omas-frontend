@@ -9,6 +9,9 @@
 # testing
 /coverage
 
+# certs
+/certificates
+
 # next.js
 /.next/
 /out/
