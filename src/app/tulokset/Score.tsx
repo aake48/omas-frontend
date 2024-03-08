@@ -51,7 +51,8 @@ const Score = ({ year, competitionResults }: ScoreProps) => {
         <div className={hidden}>
           {competitionResults.map(competition => (
             <Competition
-              name={competition.nameNonId}
+              name={competition.name}
+              displayName={competition.nameNonId}
               creationDate={competition.creationDate}
             />
           ))}

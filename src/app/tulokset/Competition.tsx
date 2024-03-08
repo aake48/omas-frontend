@@ -6,10 +6,11 @@ import { getCompetitionByNameUrl } from '@/types/APIConstants';
 
 interface CompetitionProps {
   name: string,
-  creationDate: string,
+  displayName: string,
+  creationDate: string
 }
 
-const Competition = ({ name, creationDate }: CompetitionProps) => {
+const Competition = ({ name, displayName, creationDate }: CompetitionProps) => {
   const [isHidden, setIsHidden] = useState(true);
   const [competition, setCompetition] = useState<competitionResults>();
 
@@ -48,7 +49,11 @@ const Competition = ({ name, creationDate }: CompetitionProps) => {
     hidden = "";
   }
 
-  if (competition !== undefined && competition.teams !== null) {
+  if (
+    competition !== undefined &&
+    competition !== null &&
+    competition.teams !== null
+  ) {
     return (
       <div>
         <div
@@ -59,7 +64,7 @@ const Competition = ({ name, creationDate }: CompetitionProps) => {
             {isHidden ? arrowDown : arrowUp}
           </div>
           <div className='block'>
-            <h1 className='ml-2'>{name}</h1>
+            <h1 className='ml-2'>{displayName}</h1>
             <p className='ml-2 text-slate-700 text-sm'>{creationDate}</p>
           </div>
         </div>
