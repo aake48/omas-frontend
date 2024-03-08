@@ -16,7 +16,7 @@ export const getCompetitionsQueryUrl = (search: string = "", page: number, size:
 }
 
 export const getCompetitionByNameUrl = (name: string) => {
-    return `${baseURL}${compQuery}${compResultQuery}${name}`;
+    return `${baseURL}${compResultQuery}/${name}`;
 }
 
 export const getClubQueryUrl = (search: string = "", page: number, size: number = 10): string => {
