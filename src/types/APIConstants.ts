@@ -6,23 +6,23 @@ export const registrationURL: string = baseURL + "/api/reg";
 
 const compQuery: string = "/api/competition/query";
 
+const compResultQuery = "/api/competition/result"
+
 const clubQuery: string = "/api/club/query";
 
-export const getCompetitionsQueryUrl = (
-  page: number,
-  search: string = "",
-  size: number = 10
-): string => {
-  return `${baseURL}${compQuery}?search=${search}&page=${page}&size=${size}`;
-};
+export const getCompetitionsQueryUrl = (search: string = "", page: number, size: number = 10): string => {
 
-export const getClubQueryUrl = (
-  page: number = 0,
-  search: string = "",
-  size: number = 10
-): string => {
-  return `${baseURL}${clubQuery}?search=${search}&page=${page}&size=${size}`;
-};
+    return `${baseURL}${compQuery}?search=${search}&page=${page}&size=${size}`
+}
+
+export const getCompetitionByNameUrl = (name: string) => {
+    return `${baseURL}${compResultQuery}/${name}`;
+}
+
+export const getClubQueryUrl = (search: string = "", page: number, size: number = 10): string => {
+
+    return `${baseURL}${clubQuery}?search=${search}&page=${page}&size=${size}`
+}
 /**
  * älä käytä tälläistä, käytä getClubQueryUrl()
  */
