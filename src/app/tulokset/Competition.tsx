@@ -16,10 +16,10 @@ const Competition = ({ name, displayName, creationDate }: CompetitionProps) => {
 
   let apiUrl = getCompetitionByNameUrl(name);
 
-  const fetchContent = useCallback(async () => {
+  const fetchContent = async () => {
     const data: competitionResults = await fetchData(apiUrl);
-    setCompetition(data);
-  }, []);
+    setCompetition(data)
+  };
 
   useEffect(() => {
     fetchContent();

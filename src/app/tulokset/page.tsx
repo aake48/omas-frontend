@@ -11,10 +11,10 @@ export default function page() {
 
   let apiUrl = getCompetitionsQueryUrl("", pageNumber, 10);
 
-  const fetchContent = useCallback(async () => {
+  const fetchContent = async () => {
     const data: queryResult = await fetchData(apiUrl);
-    setContent(data);
-  }, []);
+    setContent(data)
+  };
 
   useEffect(() => {
     fetchContent();
