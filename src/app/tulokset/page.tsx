@@ -3,12 +3,13 @@ import React, { useState, useEffect } from 'react'
 import Score from './Score';
 import axios from 'axios';
 import { competitionResults, queryResult } from '@/types/commonTypes';
+import { getCompetitionsQueryUrl } from '@/types/APIConstants';
 
 export default function page() {
   const [content, setContent] = useState<queryResult>();
   const [pageNumber, setPageNumber] = useState(0);
 
-  let apiUrl = `https://localhost:8080/api/competition/query?search=&page=${pageNumber}&size=10`;
+  let apiUrl = getCompetitionsQueryUrl("", pageNumber, 10);
   
   useEffect(() => {
     axios.get(apiUrl)
@@ -19,9 +20,9 @@ export default function page() {
   }, [pageNumber])
 
   if (
-      content?.content !== undefined &&
-      content.content !== null &&
-      content.content.length !== 0
+    content?.content !== undefined &&
+    content.content !== null &&
+    content.content.length !== 0
   ) {
     let groupCompetitionsByYear = Map.groupBy(content.content, (comp: competitionResults) => {
       const date = comp.creationDate.split("-")[0];
