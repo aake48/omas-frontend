@@ -5,7 +5,7 @@ import axios from 'axios';
 import { competitionResults, queryResult } from '@/types/commonTypes';
 import { getCompetitionsQueryUrl } from '@/types/APIConstants';
 
-export default function page() {
+export default function Tulokset() {
   const [content, setContent] = useState<queryResult>();
   const [pageNumber, setPageNumber] = useState(0);
 

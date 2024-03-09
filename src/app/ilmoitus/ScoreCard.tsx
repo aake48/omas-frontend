@@ -2,11 +2,14 @@
 
 import React from "react";
 import { Formik, Form } from "formik";
-import { roundValidationSchema } from "../validation";
+import { roundValidationSchema } from "./validation";
 import Custominput from "@/components/ui/CustomInput";
+import { usePathname } from 'next/navigation'
 
 export default function ScoreCard() {
     const [success, setSuccess] = React.useState(false);
+    const path = usePathname()
+    console.log(path)
     return (
         <div className="flex flex-col  items-center justify-center p-5 rounded-lg shadow-lg container mx-auto">
             <h1>Tuloksen ilmoittaminen</h1>
@@ -19,25 +22,26 @@ export default function ScoreCard() {
                 }}
                 validationSchema={roundValidationSchema}
                 onSubmit={(values, { setSubmitting, resetForm }) => {
-                    fetch("/api/send", {
-                        method: "POST",
+                    console.log("Submitting")
+                    fetch('ilmoitus/api', {
+                        method: 'POST',
                         headers: {
-                            "Content-Type": "application/json",
+                            'Content-Type': 'application/json',
                         },
                         body: JSON.stringify(values),
                     })
-                        .then((response) => response.json())
-                        .then((data) => {
-                            setSubmitting(false);
-                            resetForm();
-                            setSuccess(true);
-                            setTimeout(() => {
-                                setSuccess(false);
-                            }, 3000);
-                        })
-                        .catch((error) => {
-                            console.error("Error:", error);
-                        });
+                    .then(response => response.json())
+                    .then(data => {
+                        setSubmitting(false);
+                        resetForm();
+                        setSuccess(true);
+                        setTimeout(() => {
+                            setSuccess(false);
+                        }, 3000);
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
                 }}
             >
                 <Form className=" w-full justify-around gap-4 grid p-5">
