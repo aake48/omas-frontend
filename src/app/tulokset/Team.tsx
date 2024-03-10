@@ -1,17 +1,35 @@
 import React from 'react'
+import Member from './Member'
+import { competitionResultsUser } from '@/types/commonTypes'
 
 interface TeamProps {
   clubName: string,
-  position: number
+  position: number,
+  scores: competitionResultsUser[] | null
 }
 
-const Team = ({ clubName, position }: TeamProps) => {
-  return (
-    <div>
-      <h1>{`${position + 1}. ${clubName}`}</h1>
-      <div></div>
-    </div>
-  )
+const Team = ({ clubName, position, scores }: TeamProps) => {
+  if (scores !== null) {
+    return (
+      <div>
+        <h1 className='font-medium'>{`${position + 1}. ${clubName}`}</h1>
+        <div>
+          {scores?.map(member => (
+            <Member name={member.name} score={member.sum}/>
+          ))}
+        </div>
+      </div>
+    )
+  } else {
+    return (
+      <div>
+        <h1 className='font-medium'>{`${position + 1}. ${clubName}`}</h1>
+        <div>
+          <p>Virhe joukkueen jäsenten haussa</p>
+        </div>
+      </div>
+    )
+  }
 }
 
 export default Team;
