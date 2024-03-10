@@ -35,7 +35,7 @@ export default function page() {
       return formattedDate > competition.endDate;
     })
     
-    let groupPastCompetitionsByYear = Map.groupBy(competitions, (comp: competitionResults) => {
+    let groupPastCompetitionsByYear = Map.groupBy(pastCompetitions, (comp: competitionResults) => {
       const date = comp.creationDate.split("-")[0];
       return date;
     })
