@@ -25,7 +25,13 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+### Creating a certificate for HTTPS
+
+In the root folder of the project, create a "certificates" folder and generate a self-signed certificate of name: localhost.pem and localhost-key.pem
+
+recommended tool for generating a certificate: [mkcert](https://github.com/FiloSottile/mkcert)
+
+run the development server:
 
 ```bash
 npm run dev
