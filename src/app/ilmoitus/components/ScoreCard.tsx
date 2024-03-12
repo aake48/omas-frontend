@@ -3,7 +3,7 @@
 import React from "react";
 import { Formik, Form } from "formik";
 import { fullCompValidationSchema, roundValidationSchema } from "../validation";
-import Custominput from "@/components/ui/CustomInput";
+import CustomInput from "@/components/ui/CustomInput";
 import { usePathname } from 'next/navigation'
 
 type ScoreType = "round" | "total"
@@ -48,19 +48,19 @@ export default function ScoreCard({scoreType} : {scoreType: ScoreType}) {
                 }}
             >
                 <Form className=" my-5 w-full justify-around gap-5 grid p-5">
-                    <Custominput
+                    <CustomInput
                         label="Nimi"
                         name="name"
                         type="text"
                         placeholder="Nimi"
                     />
-                    <Custominput
+                    <CustomInput
                         label="Kierrostulos"
                         name="roundScore"
                         type="number"
                         placeholder={`0-${scoreValue.roundScore}`}
                     />
-                    <Custominput
+                    <CustomInput
                         label="Napakympit"
                         name="bullseyes"
                         type="number"
