@@ -4,7 +4,7 @@
 
 2. Create .env or .env.local file in the project root with the following content:
 ```
-NEXT_PUBLIC_API_URL=https://localhost:8080
+NEXT_PUBLIC_API_URL=https://localhost:8080/
 ```
 
 3. Using a NodeJS package manager (e.g., npm) , install dependencies with the command:
