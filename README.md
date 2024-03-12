@@ -1,3 +1,26 @@
+## How to run the application
+
+1. Install [NodeJS](https://nodejs.org)
+
+2. Create .env or .env.local file in the project root with the following content:
+```
+NEXT_PUBLIC_API_URL=https://localhost:8080/
+```
+
+3. Using a NodeJS package manager (e.g., npm) , install dependencies with the command:
+```bash
+npm install
+```
+
+4. Start the application
+```bash
+npm run dev
+```
+
+
+
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started

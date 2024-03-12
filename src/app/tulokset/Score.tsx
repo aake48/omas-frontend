@@ -1,11 +1,11 @@
 'use client';
 import React, { useState } from 'react'
 import Competition from './Competition';
-import { ClubResponse, CompetitionResponse } from '@/types/commonTypes';
+import { CompetitionResponse } from '@/types/commonTypes';
 
 interface ScoreProps {
   year: number,
-  competitionResults: ClubResponse[] | CompetitionResponse[] | null
+  competitionResults: CompetitionResponse[] | null
 }
 
 const Score = ({ year, competitionResults }: ScoreProps) => {
@@ -46,14 +46,16 @@ const Score = ({ year, competitionResults }: ScoreProps) => {
           <div className='ml-2'>
             {isHidden ? arrowDown : arrowUp}
           </div>
-          <h1 className='ml-2'>{`Tulokset ${year}`}</h1>
+          <h1 className='ml-2'>{year}</h1>
         </div>
         <div className={hidden}>
           {competitionResults.map(competition => (
             <Competition
-              name={competition.name}
-              displayName={competition.nameNonId}
-              creationDate={competition.creationDate}
+              name={competition.competitionId}
+              displayName={competition.displayName}
+              endDate={competition.endDate}
+              startDate={competition.startDate}
+              type={competition.type}
             />
           ))}
         </div>
