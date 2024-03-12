@@ -91,6 +91,7 @@ export type competitionResults = {
   name: string;
   NameNonId: string;
   creationDate: string;
+  type: 'rifle' | 'pistol';
   startDate: string;
   endDate: string;
   teams: competitionResultsTeam[] | null;
