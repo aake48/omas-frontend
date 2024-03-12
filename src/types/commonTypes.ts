@@ -25,8 +25,8 @@ export type PostCompetition = {
  * received from backend in competition/new ./query ./all
  */
 export type CompetitionResponse = {
-  name: string; // name is the id - url frienldy
-  nameNonId: string; //name but with öäå which were removed from name @id
+  competitionId: string; // name is the id - url frienldy
+  displayName: string; //name but with öäå which were removed from name @id
   type: "rifle" | "pistol";
   startDate: string;
   endDate: string;
@@ -89,14 +89,14 @@ type User = {
  */
 export type competitionResults = {
   name: string;
-  nameNonId: string;
+  NameNonId: string;
   creationDate: string;
   startDate: string;
   endDate: string;
   teams: competitionResultsTeam[] | null;
 };
 export type competitionResultsTeam = {
-  club: "String";
+  teamName: string;
   totalScore: number;
   scores: competitionResultsUser[] | null;
 };

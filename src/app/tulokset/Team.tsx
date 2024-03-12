@@ -3,18 +3,18 @@ import Member from './Member'
 import { competitionResultsUser } from '@/types/commonTypes'
 
 interface TeamProps {
-  clubName: string,
+  teamName: string,
   position: number,
   scores: competitionResultsUser[] | null
 }
 
-const Team = ({ clubName, position, scores }: TeamProps) => {
+const Team = ({ teamName, position, scores }: TeamProps) => {
   if (scores !== null) {
     return (
       <div>
-        <h1 className='font-medium'>{`${position + 1}. ${clubName}`}</h1>
+        <h1 className='font-medium'>{`${position + 1}. ${teamName}`}</h1>
         <div>
-          {scores?.map(member => (
+          {scores.map(member => (
             <Member name={member.name} score={member.sum}/>
           ))}
         </div>
@@ -23,7 +23,7 @@ const Team = ({ clubName, position, scores }: TeamProps) => {
   } else {
     return (
       <div>
-        <h1 className='font-medium'>{`${position + 1}. ${clubName}`}</h1>
+        <h1 className='font-medium'>{`${position + 1}. ${teamName}`}</h1>
         <div>
           <p>Virhe joukkueen jäsenten haussa</p>
         </div>

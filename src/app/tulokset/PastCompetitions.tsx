@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react'
 import { CompetitionResponse, QueryCompetition, competitionResults } from '@/types/commonTypes';
 import { getCompetitionsQueryUrl } from '@/types/APIConstants';
-import fetchData from './get';
+import fetchData from '../../../lib/get';
 import Score from './Score';
 import Paginator from './Paginator';
 
@@ -30,13 +30,14 @@ const PastCompetitions = () => {
     content.content.length !== 0
   ) {
     let competitions = content.content;
+    console.log(formattedDate);
 
     let pastCompetitions: CompetitionResponse[] = competitions.filter(competition => {
       return formattedDate > competition.endDate;
     })
     
     let groupPastCompetitionsByYear = Map.groupBy(pastCompetitions, (comp: competitionResults) => {
-      const date = comp.creationDate.split("-")[0];
+      const date = comp.endDate.split("-")[0];
       return date;
     })
 
