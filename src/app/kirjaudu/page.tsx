@@ -33,6 +33,7 @@ export default function Login() {
 
       localStorage.setItem("token", token);
       localStorage.setItem("userInfo", JSON.stringify(userInfo));
+      window.dispatchEvent(new Event("localStorageChange"));
       router.push("/kilpailut");
     } catch (error: any) {
       if (error.response.data) {
@@ -40,6 +41,7 @@ export default function Login() {
       }
     }
   };
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between my-10 p-5">
       <div className="container shadow-lg p-5 mx-auto max-w-lg">
