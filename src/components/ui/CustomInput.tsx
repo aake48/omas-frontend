@@ -13,7 +13,7 @@ export default function Custominput({ label, ...props }: CustomInputProps) {
     return (
         <div className="relative">
             {meta.touched && meta.error && (
-                <span className=" absolute right-0 bg-slate-100 rounded-md p-1 text-gray-700">
+                <span className=" absolute -bottom-5 left-1 text-sm bg-red-100 rounded-b-md p-1 text-red-700">
                     {meta.error}
                 </span>
             )}

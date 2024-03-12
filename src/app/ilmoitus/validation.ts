@@ -10,9 +10,9 @@ export const roundValidationSchema = Yup.object().shape({
         .max(10.9, 'Tulos ei voi olla yli 10.9')
         .required('Tulos on pakollinen'),
     bullseyes: Yup.number()
-        .min(0, 'Bullseye ei voi olla negatiivinen')
-        .max(10, 'Bullseye ei voi olla yli 10')
-        .required('Bullseye on pakollinen'),
+        .min(0, 'Napakymppi ei voi olla negatiivinen')
+        .max(10, 'Napakymppi ei voi olla yli 10')
+        .required('Napakymppi on pakollinen'),
     });
 
 export const fullCompValidationSchema = Yup.object().shape({
@@ -25,7 +25,7 @@ export const fullCompValidationSchema = Yup.object().shape({
         .max(520, 'Tulos ei voi olla yli 520')
         .required('Tulos on pakollinen'),
     bullseyes: Yup.number()
-        .min(0, 'Bullseye ei voi olla negatiivinen')
-        .max(60, 'Bullseye ei voi olla yli 60')
-        .required('Bullseye on pakollinen'),
+        .min(0, 'Napakymppi ei voi olla negatiivinen')
+        .max(60, 'Napakymppi ei voi olla yli 60')
+        .required('Napakymppi on pakollinen'),
     });

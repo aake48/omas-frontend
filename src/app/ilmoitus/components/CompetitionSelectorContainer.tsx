@@ -23,7 +23,7 @@ export default function CompetitionSelectorContainer({
         onCompetitionChange(e.target.value);
     };
     return (
-        <div className="flex flex-col  items-center justify-center p-5 rounded-lg shadow-lg container mx-auto">
+        <div >
             <Dropdown
                 id="competitionlist"
                 options={competitions}

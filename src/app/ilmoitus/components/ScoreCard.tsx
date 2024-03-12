@@ -15,8 +15,7 @@ export default function ScoreCard({scoreType} : {scoreType: ScoreType}) {
     const scoreValue = scoreType === "round" ? round : total
     const [success, setSuccess] = React.useState(false);
     return (
-        <div className="flex flex-col  items-center justify-center p-5 rounded-lg shadow-lg container mx-auto">
-            <h1>Tuloksen ilmoittaminen</h1>
+        <div>
             <Formik
                 id="scoreCardForm"
                 initialValues={{
@@ -48,7 +47,7 @@ export default function ScoreCard({scoreType} : {scoreType: ScoreType}) {
                     });
                 }}
             >
-                <Form className=" w-full justify-around gap-4 grid p-5">
+                <Form className=" my-5 w-full justify-around gap-5 grid p-5">
                     <Custominput
                         label="Nimi"
                         name="name"
