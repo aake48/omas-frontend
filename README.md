@@ -1,3 +1,23 @@
+## How to run the application
+
+1. Install [NodeJS](https://nodejs.org)
+
+2. .env and .env.local files
+
+3. Using a NodeJS package manager (e.g., npm) , install dependencies with the command:
+```bash
+npm install
+```
+
+4. Start the application
+```bash
+npm run dev
+```
+
+
+
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
