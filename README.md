@@ -1,34 +1,32 @@
-## How to run the application
+# How to run the application
 
-1. Install [NodeJS](https://nodejs.org)
+### 1. Install [NodeJS](https://nodejs.org)
 
-
-
-2. Creating a certificate for HTTPS
+### 2. Create a certificate for HTTPS
 
 In the root folder of the project, create a "certificates" folder and generate a self-signed certificate of name: localhost.pem and localhost-key.pem
 
 recommended tool for generating a certificate: [mkcert](https://github.com/FiloSottile/mkcert)
 
-3. Create .env or .env.local file in the project root with the following content:
+### 3. Create .env or .env.local file in the project root with the following content:
 ```
 NEXT_PUBLIC_API_URL=https://localhost:8080/
 ```
 
-4. Using a NodeJS package manager (e.g., npm) , install dependencies with the command:
+### 4. Using a NodeJS package manager (e.g., npm) , install dependencies with the command:
 ```bash
 npm install
 ```
 
-5. Start the application
+### 5. Start the application
 ```bash
 npm run dev
 ```
 
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
 ## Getting Started
+
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 run the development server:
 
