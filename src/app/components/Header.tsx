@@ -6,7 +6,7 @@ import { headerLinks } from "@/../lib/links";
 const Header: React.FC = () => {
     return (
         <header className="w-full flex items-center border-b-2 border-slate-400 h-24">
-            <div className="mx-20 flex justify-between w-full">
+            <div className="mx-5 md:mx-20 flex justify-between w-full">
                 <Link className=" text-3xl" href="/">
                     OMAS
                 </Link>
