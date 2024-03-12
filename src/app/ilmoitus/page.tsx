@@ -1,12 +1,12 @@
 "use client"
 
 import React, {useState} from 'react'
-import ScoreTypeSelectorContainer from './ScoreTypeSelectorContainer'
+import ScoreTypeSelectorContainer from './components/ScoreTypeSelectorContainer'
 import { upcoming } from '@/../lib/constants'
-import CompetitionSelectorContainer from './CompetitionSelectorContainer'
-import ScoreCard from './ScoreCard'
+import CompetitionSelectorContainer from './components/CompetitionSelectorContainer'
+import ScoreCard from './components/ScoreCard'
 
-type ScoreType = "round" | "total"
+export type ScoreType = "round" | "total"
 
 export default function Ilmoitus() {
   const competitions = upcoming

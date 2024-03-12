@@ -11,7 +11,7 @@ export async function POST() {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${("token")}`,
             "Content-Type": "application/json",
           },
         }

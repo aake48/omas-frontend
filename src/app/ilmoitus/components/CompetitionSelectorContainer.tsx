@@ -3,7 +3,7 @@
 import Dropdown from "@/components/ui/Dropdown";
 import { CompetitionResponse } from "@/types/commonTypes";
 import React from "react";
-import Competition from "../tulokset/Competition";
+import Competition from "../../tulokset/Competition";
 
 interface CompetitionSelectorContainerProps {
     competitions: Object[];

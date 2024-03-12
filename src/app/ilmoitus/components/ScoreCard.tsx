@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Formik, Form } from "formik";
-import { roundValidationSchema } from "./validation";
+import { fullCompValidationSchema, roundValidationSchema } from "../validation";
 import Custominput from "@/components/ui/CustomInput";
 import { usePathname } from 'next/navigation'
 
@@ -24,7 +24,7 @@ export default function ScoreCard({scoreType} : {scoreType: ScoreType}) {
                     roundScore: "",
                     bullseyes: "",
                 }}
-                validationSchema={roundValidationSchema}
+                validationSchema={scoreType === "round" ? roundValidationSchema : fullCompValidationSchema}
                 onSubmit={(values, { setSubmitting, resetForm }) => {
                     console.log("Submitting")
                     fetch('ilmoitus/api', {
