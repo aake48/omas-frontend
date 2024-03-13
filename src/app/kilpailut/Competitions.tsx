@@ -9,7 +9,7 @@ import {
 } from "@/types/APIConstants";
 import { CompetitionResponse } from "@/types/commonTypes";
 import axios from "axios";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Competitions() {
   const [competitions, setCompetitions] = useState<CompetitionResponse[]>([]);
@@ -18,7 +18,7 @@ export default function Competitions() {
 
   useEffect(() => {
     async function fetchData() {
-      const competitions = await axios.get(getCompetitionsQueryUrl( search, 0), {
+      const competitions = await axios.get(getCompetitionsQueryUrl(search, 0), {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
           "Content-Type": "application/json",
