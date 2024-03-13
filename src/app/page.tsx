@@ -36,7 +36,7 @@ export default function Home() {
     })
 
     let futureCompetitions: CompetitionResponse[] = competitions.filter(competition => {
-      return formattedDate <= competition.startDate;
+      return formattedDate < competition.startDate;
     })
 
     return (
