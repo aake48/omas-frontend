@@ -30,7 +30,6 @@ const PastCompetitions = () => {
     content.content.length !== 0
   ) {
     let competitions = content.content;
-    console.log(formattedDate);
 
     let pastCompetitions: CompetitionResponse[] = competitions.filter(competition => {
       let date1 = new Date(competition.startDate);
