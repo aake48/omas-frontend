@@ -88,7 +88,7 @@ const Competition = ({ name, displayName, startDate, endDate, type }: Competitio
           {competition.teams.slice(0, 8).map((team, index) => (
             <div className='odd:bg-slate-200 even:bg-slate-100 p-2'>
               <Team
-                teamName={team.teamName}
+                teamDisplayName={team.teamDisplayName}
                 position={index}
                 key={index}
                 scores={team.scores}

@@ -97,6 +97,7 @@ export type competitionResults = {
 };
 export type competitionResultsTeam = {
   teamName: string;
+  teamDisplayName: string;
   totalScore: number;
   scores: competitionResultsUser[] | null;
 };
