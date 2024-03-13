@@ -33,13 +33,26 @@ const PastCompetitions = () => {
     console.log(formattedDate);
 
     let pastCompetitions: CompetitionResponse[] = competitions.filter(competition => {
-      return formattedDate > competition.endDate;
+      let date1 = new Date(competition.startDate);
+      let date2 = new Date(formattedDate);
+      return date2 > date1;
     })
     
     let groupPastCompetitionsByYear = Map.groupBy(pastCompetitions, (comp: competitionResults) => {
       const date = comp.endDate.split("-")[0];
       return date;
     })
+
+    if (pastCompetitions.length === 0) {
+      return (
+        <div className="p-4">
+        <h1 className='text-3xl mb-4'>Menneiden kilpailuiden tulokset</h1>
+        <div>
+          <h1 className='text-xl'>Tuloksia ei löytynyt</h1>
+        </div>
+      </div>
+      )
+    }
 
     const handlePageNumberChange = (page: number) => {
       if (page < 0 || page > content.totalPages - 1) return;
@@ -64,11 +77,11 @@ const PastCompetitions = () => {
         />
       </div>
     )
-  }/* else {
+  } else {
     return (
       <h1 className='text-xl'>Tuloksia ei löytynyt</h1>
     )
-  } */
+  }
 }
 
 export default PastCompetitions;
