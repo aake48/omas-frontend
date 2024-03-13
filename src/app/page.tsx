@@ -29,14 +29,18 @@ export default function Home() {
     content.content.length !== 0
   ) {
     let competitions = content.content;
-    console.log(formattedDate);
 
     let pastCompetitions: CompetitionResponse[] = competitions.filter(competition => {
-      return formattedDate > competition.endDate;
+      let date1 = new Date(competition.startDate);
+      let date2 = new Date(formattedDate);
+      return date2 > date1;
     })
 
     let futureCompetitions: CompetitionResponse[] = competitions.filter(competition => {
-      return formattedDate < competition.startDate;
+      let date1 = new Date(competition.startDate);
+      let date2 = new Date(formattedDate);
+      console.log(date1, date2);
+      return date2 < date1;
     })
 
     return (
