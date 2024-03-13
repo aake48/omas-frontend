@@ -1,27 +1,42 @@
 import React, { useEffect, useState } from 'react'
 import { competitionResults } from "@/types/commonTypes";
 import Team from './Team';
-import axios from 'axios';
 import { getCompetitionByNameUrl } from '@/types/APIConstants';
+import fetchData from '../../../lib/get';
 
 interface CompetitionProps {
   name: string,
   displayName: string,
-  creationDate: string
+  startDate: string,
+  endDate: string,
+  type: string
 }
 
-const Competition = ({ name, displayName, creationDate }: CompetitionProps) => {
+const Competition = ({ name, displayName, startDate, endDate, type }: CompetitionProps) => {
   const [isHidden, setIsHidden] = useState(true);
   const [competition, setCompetition] = useState<competitionResults>();
 
   let apiUrl = getCompetitionByNameUrl(name);
+  let typeFinnish = "";
+  
+  switch (type) {
+    case "rifle":
+      typeFinnish = "ilmakivääri";
+      break;
+    case "pistol":
+      typeFinnish = "ilmapistooli";
+      break;
+    default:
+      typeFinnish = "";
+  }
+
+  const fetchContent = async () => {
+    const data: competitionResults = await fetchData(apiUrl);
+    setCompetition(data)
+  };
 
   useEffect(() => {
-    axios.get(apiUrl)
-    .then(res => {
-      const data: competitionResults = res.data;
-      setCompetition(data);
-    })
+    fetchContent();
   }, [])
   
   const arrowUp = 
@@ -65,12 +80,20 @@ const Competition = ({ name, displayName, creationDate }: CompetitionProps) => {
           </div>
           <div className='block'>
             <h1 className='ml-2'>{displayName}</h1>
-            <p className='ml-2 text-slate-700 text-sm'>{creationDate}</p>
+            <p className='ml-2 text-slate-700 text-sm'>{`${startDate} - ${endDate}`}</p>
+            <p className='ml-2 text-sm text-slate-500'>{typeFinnish}</p>
           </div>
         </div>
         <div className={`${hidden} h-full p-4 bg-slate-50 rounded-md mb-2 shadow-md ml-16`}>
           {competition.teams.slice(0, 8).map((team, index) => (
-            <Team clubName={team.club} position={index} key={index}/>
+            <div className='odd:bg-slate-200 even:bg-slate-100 p-2'>
+              <Team
+                teamName={team.teamName}
+                position={index}
+                key={index}
+                scores={team.scores}
+              />
+            </div>
           ))}
         </div>
       </div>
@@ -85,11 +108,11 @@ const Competition = ({ name, displayName, creationDate }: CompetitionProps) => {
           <div className='ml-2'>
             {isHidden ? arrowDown : arrowUp}
           </div>
-          <h1 className='ml-2'>{name}</h1>
-          <p className='ml-2 text-slate-700 text-sm'>{creationDate}</p>
+          <h1 className='ml-2'>{displayName}</h1>
+            <p className='ml-2 text-slate-700 text-sm'>{`${startDate} - ${endDate}`}</p>
         </div>
         <div className={`${hidden} h-full p-4 bg-slate-50 rounded-md mb-2 shadow-md ml-16`}>
-          <h1>{`Tuloksia ei löytynyt kilpailulle ${name}`}</h1>
+          <h1>Virhe kilpailun tulosten haussa</h1>
         </div>
       </div>
     )

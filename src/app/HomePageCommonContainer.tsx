@@ -27,7 +27,7 @@ const HomePageCommonContainer = ({ title, href }: HomePageCommonContainerProps) 
             key={index}
             className="flex items-baseline mx-4 border-b-2 last:border-b-0 cursor-pointer"
           >
-            <p className="p-4">{comp.name}</p>
+            <p className="p-4">{comp.displayName}</p>
             <p className="p-4 text-sm text-slate-700">{comp.creationDate}</p>
           </div>
         ))}

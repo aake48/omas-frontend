@@ -25,9 +25,11 @@ export type PostCompetition = {
  * received from backend in competition/new ./query ./all
  */
 export type CompetitionResponse = {
-  name: string; // name is the id - url frienldy
-  nameNonId: string; //name but with öäå which were removed from name @id
+  competitionId: string; // name is the id - url frienldy
+  displayName: string; //name but with öäå which were removed from name @id
   type: "rifle" | "pistol";
+  startDate: string;
+  endDate: string;
   creationDate: string;
 };
 
@@ -87,12 +89,15 @@ type User = {
  */
 export type competitionResults = {
   name: string;
-  nameNonId: string;
+  NameNonId: string;
   creationDate: string;
+  type: 'rifle' | 'pistol';
+  startDate: string;
+  endDate: string;
   teams: competitionResultsTeam[] | null;
 };
 export type competitionResultsTeam = {
-  club: "String";
+  teamName: string;
   totalScore: number;
   scores: competitionResultsUser[] | null;
 };
@@ -110,6 +115,22 @@ export type competitionResultsUser = {
  */
 export type queryResult = {
   content: ClubResponse[] | CompetitionResponse[] | null;
+  pageable: Pageable;
+  last: boolean; // isLastPage
+  totalElements: number; // how many element are there in the DB
+  totalPages: number; // how many pages are there wi
+  size: number;
+  first: true;
+  number: number;
+  numberOfElements: number; //in this page
+  empty: boolean;
+};
+
+/**
+ * get competition data /api/competition/query?...
+ */
+export type QueryCompetition = {
+  content: CompetitionResponse[] | null;
   pageable: Pageable;
   last: boolean; // isLastPage
   totalElements: number; // how many element are there in the DB

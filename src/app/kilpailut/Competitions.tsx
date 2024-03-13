@@ -18,7 +18,7 @@ export default function Competitions() {
 
   useEffect(() => {
     async function fetchData() {
-      const competitions = await axios.get(getCompetitionsQueryUrl(0, search), {
+      const competitions = await axios.get(getCompetitionsQueryUrl( search, 0), {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
           "Content-Type": "application/json",
@@ -77,18 +77,18 @@ export default function Competitions() {
       {competitions &&
         competitions.map((competition, index) => (
           <div key={index} className="flex flex-row items-baseline border my-1">
-            <p>{competition.name}</p>
+            <p>{competition.displayName}</p>
             <Button
               variant="outline"
               className="hover:bg-slate-100 mx-2"
-              onClick={() => createTeam(competition.name)}
+              onClick={() => createTeam(competition.displayName)}
             >
               Luo tiimi
             </Button>
             <Button
               variant="outline"
               className="hover:bg-slate-100 mx-2"
-              onClick={() => joinTeam(competition.name)}
+              onClick={() => joinTeam(competition.displayName)}
             >
               Liity tiimiin
             </Button>
