@@ -28,21 +28,25 @@ const PastCompetitions = () => {
     content?.content !== undefined &&
     content.content !== null &&
     content.content.length !== 0
-  ) {
+    ) {
     let competitions = content.content;
 
     let pastCompetitions: CompetitionResponse[] = competitions.filter(competition => {
       let date1 = new Date(competition.startDate);
       let date2 = new Date(formattedDate);
-      return date2 > date1;
-    })
-    
-    let groupPastCompetitionsByYear = Map.groupBy(pastCompetitions, (comp: competitionResults) => {
-      const date = comp.endDate.split("-")[0];
-      return date;
+      return date2 < date1;
     })
 
-    if (pastCompetitions.length === 0) {
+    console.log(pastCompetitions);
+    
+    let groupPastCompetitionsByYear = Map.groupBy(pastCompetitions, (comp: CompetitionResponse) => {
+      const date = new Date(comp.endDate);
+      return date.getFullYear();
+    })
+
+    console.log(groupPastCompetitionsByYear);
+
+    if (pastCompetitions.length === 0 || groupPastCompetitionsByYear === undefined) {
       return (
         <div className="p-4">
         <h1 className='text-3xl mb-4'>Menneiden kilpailuiden tulokset</h1>
@@ -77,10 +81,31 @@ const PastCompetitions = () => {
       </div>
     )
   } else {
-    return (
-      <h1 className='text-xl'>Tuloksia ei löytynyt</h1>
-    )
+    scoresNotFound();
   }
+
+}
+
+const getCompetitionsPerYear = () => {
+  
+}
+
+const groupBy = <T, K extends keyof any>(arr: T[], key: (i: T) => K) => {
+  arr.reduce((groups, item) => {
+    (groups[key(item)] ||= []).push(item);
+    return groups;
+  }, {} as Record<K, T[]>);
+}
+
+const scoresNotFound = () => {
+  return (
+      <div className="p-4">
+      <h1 className='text-3xl mb-4'>Menneiden kilpailuiden tulokset</h1>
+      <div>
+        <h1 className='text-xl'>Tuloksia ei löytynyt</h1>
+      </div>
+    </div>
+    )
 }
 
 export default PastCompetitions;

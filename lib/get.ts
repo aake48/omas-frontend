@@ -23,7 +23,7 @@ export default async function fetchData(url: string, data?: Object): Promise<any
             httpsAgent,
             data: jsonData,
         });
-        return  response.data;
+        return response.data;
     } catch (error) {
         console.error('Error:', error);
         throw error;
