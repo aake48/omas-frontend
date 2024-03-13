@@ -34,14 +34,9 @@ export default function Home() {
     let pastCompetitions: CompetitionResponse[] = competitions.filter(competition => {
       return formattedDate > competition.endDate;
     })
-    
-    let groupPastCompetitionsByYear = Map.groupBy(pastCompetitions, (comp: competitionResults) => {
-      const date = comp.endDate.split("-")[0];
-      return date;
-    })
 
     let futureCompetitions: CompetitionResponse[] = competitions.filter(competition => {
-      return formattedDate < competition.startDate;
+      return formattedDate <= competition.startDate;
     })
 
     return (
