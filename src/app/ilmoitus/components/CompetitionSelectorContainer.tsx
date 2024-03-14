@@ -7,6 +7,7 @@ import React from "react";
 interface CompetitionSelectorContainerProps {
     competitions: CompetitionResponse[];
     onCompetitionChange: (competition: CompetitionResponse | null) => void;
+
 }
 
 export default function CompetitionSelectorContainer({

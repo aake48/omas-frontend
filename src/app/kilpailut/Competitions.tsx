@@ -18,7 +18,9 @@ export default function Competitions() {
 
   useEffect(() => {
     async function fetchData() {
+
       const competitions = await axios.get(getCompetitionsQueryUrl(search, 0), {
+
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
           "Content-Type": "application/json",
