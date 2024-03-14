@@ -49,8 +49,9 @@ const Score = ({ year, competitionResults }: ScoreProps) => {
           <h1 className='ml-2'>{year}</h1>
         </div>
         <div className={hidden}>
-          {competitionResults.map(competition => (
+          {competitionResults.map((competition, index) => (
             <Competition
+              key={index}
               name={competition.competitionId}
               displayName={competition.displayName}
               endDate={competition.endDate}

@@ -5,6 +5,7 @@ import { getCompetitionsQueryUrl } from '@/types/APIConstants';
 import fetchData from '../../../lib/get';
 import Score from './Score';
 import Paginator from './Paginator';
+import { groupBy } from 'lodash';
 
 const PastCompetitions = () => {
   const [content, setContent] = useState<QueryCompetition>();
@@ -34,19 +35,17 @@ const PastCompetitions = () => {
     let pastCompetitions: CompetitionResponse[] = competitions.filter(competition => {
       let date1 = new Date(competition.startDate);
       let date2 = new Date(formattedDate);
-      return date2 < date1;
+      return date2 > date1;
     })
 
-    console.log(pastCompetitions);
-    
-    let groupPastCompetitionsByYear = Map.groupBy(pastCompetitions, (comp: CompetitionResponse) => {
+    let groupPastCompetitionsByYear = groupBy(pastCompetitions, (comp: competitionResults) => {
       const date = new Date(comp.endDate);
       return date.getFullYear();
     })
 
-    console.log(groupPastCompetitionsByYear);
+    let groups = Object.entries(groupPastCompetitionsByYear);
 
-    if (pastCompetitions.length === 0 || groupPastCompetitionsByYear === undefined) {
+    if (groups.length === 0) {
       return (
         <div className="p-4">
         <h1 className='text-3xl mb-4'>Menneiden kilpailuiden tulokset</h1>
@@ -66,10 +65,11 @@ const PastCompetitions = () => {
       <div className="p-4">
         <h1 className='text-3xl mb-4'>Menneiden kilpailuiden tulokset</h1>
         <div>
-          {Array.from(groupPastCompetitionsByYear).map((year: any) => (
+          {groups.map((group: any, index) => (
             <Score
-              year={parseInt(year[0])}
-              competitionResults={competitions}
+              key={index}
+              year={parseInt(group[0])}
+              competitionResults={group[1]}
             />
           ))}
         </div>
@@ -88,13 +88,6 @@ const PastCompetitions = () => {
 
 const getCompetitionsPerYear = () => {
   
-}
-
-const groupBy = <T, K extends keyof any>(arr: T[], key: (i: T) => K) => {
-  arr.reduce((groups, item) => {
-    (groups[key(item)] ||= []).push(item);
-    return groups;
-  }, {} as Record<K, T[]>);
 }
 
 const scoresNotFound = () => {
