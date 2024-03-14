@@ -33,7 +33,7 @@ const PastCompetitions = () => {
     let competitions = content.content;
 
     let pastCompetitions: CompetitionResponse[] = competitions.filter(competition => {
-      let date1 = new Date(competition.startDate);
+      let date1 = new Date(competition.endDate);
       let date2 = new Date(formattedDate);
       return date2 > date1;
     })
