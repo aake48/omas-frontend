@@ -14,8 +14,8 @@ const Team = ({ teamName, position, scores }: TeamProps) => {
       <div>
         <h1 className='font-medium'>{`${position + 1}. ${teamName}`}</h1>
         <div>
-          {scores.map(member => (
-            <Member name={member.name} score={member.sum}/>
+          {scores.map((member, index) => (
+            <Member key={index} name={member.name} score={member.sum}/>
           ))}
         </div>
       </div>
