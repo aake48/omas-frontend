@@ -4,14 +4,13 @@ import React from "react";
 import { Formik, Form } from "formik";
 import { fullCompValidationSchema, roundValidationSchema } from "../validation";
 import Custominput from "@/components/ui/CustomInput";
-import { usePathname } from 'next/navigation'
 
 type ScoreType = "round" | "total"
 
 export default function ScoreCard({scoreType} : {scoreType: ScoreType}) {
 
     const round = {bullseyes: 10, roundScore: 10.9,}
-    const total = {bullseyes: 100, roundScore: 520,}
+    const total = {bullseyes: 60, roundScore: 520,}
     const scoreValue = scoreType === "round" ? round : total
     const [success, setSuccess] = React.useState(false);
     return (

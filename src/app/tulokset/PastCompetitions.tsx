@@ -52,6 +52,7 @@ const PastCompetitions = () => {
         <div>
           {Array.from(groupPastCompetitionsByYear).map((year: any) => (
             <Score
+            key={year}
               year={parseInt(year[0])}
               competitionResults={competitions}
             />

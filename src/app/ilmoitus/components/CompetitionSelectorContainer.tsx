@@ -3,11 +3,11 @@
 import Dropdown from "@/components/ui/Dropdown";
 import { CompetitionResponse } from "@/types/commonTypes";
 import React from "react";
-import Competition from "../../tulokset/Competition";
 
 interface CompetitionSelectorContainerProps {
-    competitions: Object[];
-    onCompetitionChange: (competition: string | null) => void;
+    competitions: CompetitionResponse[];
+    onCompetitionChange: (competition: CompetitionResponse | null) => void;
+
 }
 
 export default function CompetitionSelectorContainer({
@@ -15,18 +15,21 @@ export default function CompetitionSelectorContainer({
     onCompetitionChange,
 }: CompetitionSelectorContainerProps) {
     const [selectedCompetition, setSelectedCompetition] = React.useState<
-        string | null
+        CompetitionResponse | null
     >(null);
 
+    const competitionNames = competitions.map((competition) => competition.displayName);
+
     const handleDropdownChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedCompetition(e.target.value);
-        onCompetitionChange(e.target.value);
+        const displayName = competitions.find((c) => c.displayName === e.target.value) || null;
+        setSelectedCompetition(displayName);
+        onCompetitionChange(displayName);
     };
     return (
-        <div >
+        <div>
             <Dropdown
                 id="competitionlist"
-                options={competitions}
+                options={competitionNames}
                 required
                 onChange={handleDropdownChange}
             />

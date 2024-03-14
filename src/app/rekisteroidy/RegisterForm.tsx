@@ -2,6 +2,8 @@
 
 import { Button } from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
+import { loginURL } from "@/types/APIConstants";
+import axios from "axios";
 import { useFormik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -42,8 +44,28 @@ export default function RegisterForm() {
       const data = await response.json();
       console.log(data);
       if (response.ok) {
+        try {
+          const response = await axios.post(loginURL, {
+            username: formik.values.username,
+            password: formik.values.password,
+          });
+
+          console.log("login success");
+          console.log(response.data.user);
+
+          let token = response.data.token;
+          let userInfo = response.data.user;
+
+          localStorage.setItem("token", token);
+          localStorage.setItem("userInfo", JSON.stringify(userInfo));
+          window.dispatchEvent(new Event("localStorageChange"));
+          router.push("/kilpailut");
+        } catch (error: any) {
+          if (error.response.data) {
+            console.log(error.response.data);
+          }
+        }
         router.push("/kirjaudu");
-        return;
       } else {
         setErrorMessage(data.message);
       }

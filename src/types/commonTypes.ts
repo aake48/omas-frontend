@@ -56,6 +56,7 @@ export type PostScore = {
   ScoreList: number[]; // values may range from 0 - 10.9, otherwise they are not accepted
 };
 
+export type ScoreType = "round" | "total";
 /**
  * received after posting a score to backend
  */
