@@ -1,10 +1,20 @@
 import { test, expect } from '@playwright/test';
 
-test('has title', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
+/**
+ * test if home page loads future and past competition containers
+ */
+test('has containers for future and past competitions', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.getByRole('heading', { name: 'Tulevat kilpailut' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Viimeisimmät tulokset' })).toBeVisible();
+});
 
-  // Expect a title "to contain" a substring.
-  await expect(page).toHaveTitle(/Playwright/);
+/**
+ * test if home page loads future and past competition containers
+ */
+test('containers have children = data', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.getByRole('heading', { name: 'Tulevat kilpailut' })).toBeVisible();
 });
 
 test('get started link', async ({ page }) => {
