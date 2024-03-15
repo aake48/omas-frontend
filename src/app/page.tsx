@@ -47,7 +47,7 @@ export default function Home() {
         <div className='w-full rounded-md shadow-md border mb-8'>
           <div className='items-baseline p-4'>
             <h1 className='text-2xl'>Sarjakilpailukausi</h1>
-            <p className='lg:ml-8 text-slate-700 text-sm'>6.11.2023-3.3.2024</p>
+            <p className='lg:ml-8 text-slate-700 text-sm'>6.11.2023 - 3.3.2024</p>
           </div>
           <div className='sm:flex items-center p-4'>
             <Button variant="outline" className='hover:bg-slate-100 mb-2 sm:mb-0 mr-4'>
@@ -73,15 +73,15 @@ export default function Home() {
               {futureCompetitions !== undefined && futureCompetitions.slice(0, 3).map((comp, index) => (
                 <div
                   key={index}
-                  className="flex items-baseline mx-4 border-b-2 last:border-b-0"
+                  className="mx-4 border-b-2 last:border-b-0"
                 >
-                  <p className="p-4">{comp.displayName}</p>
-                  <p className="p-4 text-sm text-slate-700">{comp.startDate}</p>
+                  <p className="p-2">{comp.displayName}</p>
+                  <p className="pb-2 px-2 text-sm text-slate-700">{comp.startDate}</p>
                 </div>
               ))}
             </div>
           </div>
-          <div className="w-full rounded-md shadow-md border mb-8 xl:mb-0">
+          <div className="w-full rounded-md shadow-md border mb-8">
             <div className="flex items-baseline p-4 mx-4">
               <h1 className="text-2xl">Viimeisimmät tulokset</h1>
               <Link
@@ -95,10 +95,10 @@ export default function Home() {
               {pastCompetitions !== undefined && pastCompetitions.slice(0, 3).map((comp, index) => (
                 <div
                   key={index}
-                  className="flex items-baseline mx-4 border-b-2 last:border-b-0"
+                  className="mx-4 border-b-2 last:border-b-0"
                 >
-                  <p className="p-4">{comp.displayName}</p>
-                  <p className="p-4 text-sm text-slate-700">{comp.startDate}</p>
+                  <p className="p-2">{comp.displayName}</p>
+                  <p className="pb-2 px-2 text-sm text-slate-700">{comp.startDate}</p>
                 </div>
               ))}
             </div>
