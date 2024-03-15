@@ -39,7 +39,6 @@ export default function Home() {
     let futureCompetitions: CompetitionResponse[] = competitions.filter(competition => {
       let date1 = new Date(competition.startDate);
       let date2 = new Date(formattedDate);
-      console.log(date1, date2);
       return date2 < date1;
     })
 
@@ -59,8 +58,8 @@ export default function Home() {
             </Button>
           </div>
         </div>
-        <div className='xl:flex xl:justify-between xl:items-center gap-8'>
-          <div className="w-full rounded-md shadow-md border mb-8 xl:mb-0">
+        <div className='block'>
+          <div className="w-full rounded-md shadow-md border mb-8">
             <div className="flex items-baseline p-4 mx-4">
               <h1 className="text-2xl">Tulevat kilpailut</h1>
               <Link
