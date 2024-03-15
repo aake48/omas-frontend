@@ -5,6 +5,7 @@ import { getCompetitionsQueryUrl } from '@/types/APIConstants';
 import fetchData from '../../../lib/get';
 import Score from './Score';
 import Paginator from './Paginator';
+import { groupBy } from 'lodash';
 
 const PastCompetitions = () => {
   const [content, setContent] = useState<QueryCompetition>();
@@ -28,18 +29,32 @@ const PastCompetitions = () => {
     content?.content !== undefined &&
     content.content !== null &&
     content.content.length !== 0
-  ) {
+    ) {
     let competitions = content.content;
-    console.log(formattedDate);
 
     let pastCompetitions: CompetitionResponse[] = competitions.filter(competition => {
-      return formattedDate > competition.endDate;
+      let date1 = new Date(competition.endDate);
+      let date2 = new Date(formattedDate);
+      return date2 > date1;
     })
-    
-    let groupPastCompetitionsByYear = Map.groupBy(pastCompetitions, (comp: competitionResults) => {
-      const date = comp.endDate.split("-")[0];
-      return date;
+
+    let groupPastCompetitionsByYear = groupBy(pastCompetitions, (comp: competitionResults) => {
+      const date = new Date(comp.endDate);
+      return date.getFullYear();
     })
+
+    let groups = Object.entries(groupPastCompetitionsByYear);
+
+    if (groups.length === 0) {
+      return (
+        <div className="p-4">
+        <h1 className='text-3xl mb-4'>Menneiden kilpailuiden tulokset</h1>
+        <div>
+          <h1 className='text-xl'>Tuloksia ei löytynyt</h1>
+        </div>
+      </div>
+      )
+    }
 
     const handlePageNumberChange = (page: number) => {
       if (page < 0 || page > content.totalPages - 1) return;
@@ -50,10 +65,11 @@ const PastCompetitions = () => {
       <div className="p-4">
         <h1 className='text-3xl mb-4'>Menneiden kilpailuiden tulokset</h1>
         <div>
-          {Array.from(groupPastCompetitionsByYear).map((year: any) => (
+          {groups.map((group: any, index) => (
             <Score
-              year={parseInt(year[0])}
-              competitionResults={competitions}
+              key={index}
+              year={parseInt(group[0])}
+              competitionResults={group[1]}
             />
           ))}
         </div>
@@ -64,11 +80,25 @@ const PastCompetitions = () => {
         />
       </div>
     )
-  }/* else {
-    return (
-      <h1 className='text-xl'>Tuloksia ei löytynyt</h1>
+  } else {
+    scoresNotFound();
+  }
+
+}
+
+const getCompetitionsPerYear = () => {
+  
+}
+
+const scoresNotFound = () => {
+  return (
+      <div className="p-4">
+      <h1 className='text-3xl mb-4'>Menneiden kilpailuiden tulokset</h1>
+      <div>
+        <h1 className='text-xl'>Tuloksia ei löytynyt</h1>
+      </div>
+    </div>
     )
-  } */
 }
 
 export default PastCompetitions;

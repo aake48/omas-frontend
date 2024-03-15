@@ -1,15 +1,13 @@
 "use client"
 
-
 import { Button } from "@/components/ui/Button";
 import React from "react";
 
 interface ScoreTypeSelectorContainerProps {
-    selectedCompetition: string | null;
     onScoreTypeChange: (scoreType: "round" | "total") => void;
 }
 
-export default function ScoreTypeSelectorContainer({selectedCompetition, onScoreTypeChange }: ScoreTypeSelectorContainerProps) {
+export default function ScoreTypeSelectorContainer({ onScoreTypeChange }: ScoreTypeSelectorContainerProps) {
 
     const [scoreType, setScoreType] = React.useState<ScoreType>("round");
 

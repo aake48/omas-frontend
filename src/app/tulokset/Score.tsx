@@ -36,7 +36,7 @@ const Score = ({ year, competitionResults }: ScoreProps) => {
     hidden = "";
   }
 
-  if (competitionResults !== null) {
+  if (competitionResults !== null && competitionResults !== undefined) {
     return (
       <div>
         <div
@@ -49,8 +49,9 @@ const Score = ({ year, competitionResults }: ScoreProps) => {
           <h1 className='ml-2'>{year}</h1>
         </div>
         <div className={hidden}>
-          {competitionResults.map(competition => (
+          {competitionResults.map((competition, index) => (
             <Competition
+              key={index}
               name={competition.competitionId}
               displayName={competition.displayName}
               endDate={competition.endDate}
@@ -71,7 +72,7 @@ const Score = ({ year, competitionResults }: ScoreProps) => {
           <div className='ml-2'>
             {isHidden ? arrowDown : arrowUp}
           </div>
-          <h1 className='ml-2'>{`Tulokset ${year}`}</h1>
+          <h1 className='ml-2'>{year}</h1>
         </div>
         <div className={hidden}>
           <h1>{`Tuloksia ei löytynyt vuodelle ${2024}`}</h1>
