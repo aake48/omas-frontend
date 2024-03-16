@@ -93,7 +93,7 @@ export default function RegisterForm() {
           >
             <p>{errorMessage}</p>
           </div>
-          <div className="grid space-y-2 p-6">
+          <div className="grid space-y-4 p-6">
             <div className="grid space-y-2">
               <label htmlFor="email">Sähköposti</label>
               <Input

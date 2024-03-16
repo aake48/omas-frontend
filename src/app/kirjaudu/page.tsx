@@ -49,7 +49,7 @@ export default function Login() {
           <h1 className="text-3xl my-2 font-bold">Kirjaudu</h1>
           <p>Syötä käyttänimesi ja salasanasi</p>
         </div>
-        <div className="grid space-y-2 p-6">
+        <div className="grid space-y-4 p-6">
             <label htmlFor="password">Käyttäjänimi</label>
           <Input
             id="username"
