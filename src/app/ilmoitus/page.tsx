@@ -25,10 +25,22 @@ export default function Ilmoitus() {
         setScoreType(scoreType as ScoreType);
     };
 
+    let scoreTypeNotif = (scoreType: ScoreType | null) => {
+        if (scoreType === null) return "";
+        switch (scoreType) {
+            case "round":
+                return "Olet ilmoittamassa yhden kierroksen";
+            case "total":
+                return "Olet ilmoittamassa kokonaistuloksen";
+            default:
+                return "";
+        }
+    }
+
     return (
         <main className="flex min-h-screen flex-col p-5 items-center md:p-24">
 
-            <div className="flex flex-col  items-center gap-5 md:gap-10  justify-center p-10 rounded-lg shadow-lg container mx-auto">
+            <div className="flex flex-col items-center gap-5 md:gap-10 justify-center p-10 rounded-lg shadow-lg container mx-auto">
 
                 <h1 className="text-center text-3xl">Tuloksen ilmoittaminen</h1>
 
@@ -39,6 +51,7 @@ export default function Ilmoitus() {
                 <ScoreTypeSelectorContainer
                     onScoreTypeChange={handleScoreTypeChange}
                 />
+                <p className="text-sm">{scoreTypeNotif(scoreType)}</p>
                 {scoreType && <ScoreCard scoreType={scoreType} />}
             </div>
         </main>

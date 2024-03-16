@@ -80,12 +80,12 @@ export default function RegisterForm() {
   });
 
   return (
-    <main className="flex min-h-screen flex-col justify-between my-10 px-10">
+    <main className="flex min-h-screen flex-col justify-between">
       <form onSubmit={formik.handleSubmit}>
         <div className="container shadow-lg p-5 mx-auto max-w-lg">
           <div className="text-center pb-0">
             <h1 className="text-3xl my-2 font-bold">Rekisteröidy</h1>
-            <p>Syötä sähköpostiosoitteesi ja salasanasi</p>
+            <p>Syötä vaadittavat tiedot rekisteröityäksesi</p>
           </div>
           <div
             hidden={!errorMessage}
@@ -93,7 +93,7 @@ export default function RegisterForm() {
           >
             <p>{errorMessage}</p>
           </div>
-          <div className="grid space-y-4 p-6">
+          <div className="grid space-y-2 p-6">
             <div className="grid space-y-2">
               <label htmlFor="email">Sähköposti</label>
               <Input
@@ -151,7 +151,7 @@ export default function RegisterForm() {
                 }}
               />
             </div>
-            <Button variant={"outline"} className=" mx-auto" type="submit">
+            <Button variant={"outline"} className="mx-10" type="submit">
               Rekisteröidy
             </Button>
           </div>

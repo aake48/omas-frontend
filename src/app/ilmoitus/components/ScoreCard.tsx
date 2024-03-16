@@ -46,7 +46,7 @@ export default function ScoreCard({scoreType} : {scoreType: ScoreType}) {
                     });
                 }}
             >
-                <Form className=" my-5 w-full justify-around gap-5 grid p-5">
+                <Form className="w-full justify-around gap-5 grid p-5">
                     <Custominput
                         label="Nimi"
                         name="name"
@@ -66,7 +66,7 @@ export default function ScoreCard({scoreType} : {scoreType: ScoreType}) {
                         placeholder={`0-${scoreValue.bullseyes}`}
                     />
                     <button
-                        className={`my-2 h-14 hover:bg-opacity-10 md:h-20 w-40 border rounded-lg mx-auto disabled:brightness-75  p-2 text-xl text-light transition duration-300 hover:font-medium hover:text-secondary active:scale-95`}
+                        className={`my-2 hover:bg-slate-100 mx-10 border rounded-lg disabled:brightness-75 p-2 text-xl text-light transition duration-300 hover:text-secondary active:scale-95`}
                         type="submit"
                     >
                         Lähetä

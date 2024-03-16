@@ -43,16 +43,17 @@ export default function Login() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between my-10 p-5">
+    <main className="flex min-h-screen flex-col items-center justify-between my-2 p-5">
       <div className="container shadow-lg p-5 mx-auto max-w-lg">
         <div className="text-center pb-0">
           <h1 className="text-3xl my-2 font-bold">Kirjaudu</h1>
-          <p>Syötä sähköpostiosoitteesi ja salasanasi</p>
+          <p>Syötä käyttänimesi ja salasanasi</p>
         </div>
-        <div className="grid space-y-4 p-6">
+        <div className="grid space-y-2 p-6">
+            <label htmlFor="password">Käyttäjänimi</label>
           <Input
             id="username"
-            placeholder="Käyttäjätili"
+            placeholder="Käyttäjänimi"
             required
             type="username"
             onChange={(e) => setUsername(e.target.value)}
@@ -69,7 +70,7 @@ export default function Login() {
           </div>
           <Button
             variant={"outline"}
-            className=" mx-auto"
+            className="mx-10"
             type="submit"
             onClick={(e) => handleSubmit(e)}
           >
