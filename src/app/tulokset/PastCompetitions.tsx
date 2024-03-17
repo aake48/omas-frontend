@@ -1,8 +1,8 @@
 'use client';
 import React, { useState, useEffect } from 'react'
 import { CompetitionResponse, QueryCompetition, competitionResults } from '@/types/commonTypes';
-import { getCompetitionsQueryUrl } from '@/types/APIConstants';
-import fetchData from '../../../lib/get';
+import { getCompetitionsQueryUrl } from '../../lib/APIConstants';
+import fetchData from '../../lib/get';
 import Score from './Score';
 import Paginator from './Paginator';
 import { groupBy } from 'lodash';

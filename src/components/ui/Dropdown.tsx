@@ -1,7 +1,7 @@
 import React from "react";
 
 interface DropdownProps {
-  id: string;
+  id?: string;
   disabled?: boolean;
   options: string[];
   required?: boolean;
@@ -20,7 +20,7 @@ export default function Dropdown({
 }: DropdownProps) {
   return (
     <select
-      id={id}
+      id={id ? id : "dropdown"}
       disabled={disabled}
       required={required}
       className="py-2 px-1 min-w-0 border rounded-lg"

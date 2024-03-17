@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
 import { CompetitionResponse, QueryCompetition, competitionResults } from '@/types/commonTypes';
-import { getCompetitionsQueryUrl } from '@/types/APIConstants';
-import fetchData from '../../lib/get';
+import { getCompetitionsQueryUrl } from '../lib/APIConstants';
+import fetchData from '../lib/get';
 
 export default function Home() {
   const [content, setContent] = useState<QueryCompetition>();
