@@ -7,20 +7,20 @@ import {
   addTeamToCompetitionURL,
   getCompetitionsQueryUrl,
 } from "@/types/APIConstants";
-import { CompetitionResponse } from "@/types/commonTypes";
+import { CompetitionResponse, competitionResults } from "@/types/commonTypes";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { MouseEvent, useEffect, useState } from "react";
 
 export default function Competitions() {
   const [competitions, setCompetitions] = useState<CompetitionResponse[]>([]);
-  const [info, setInfo] = useState("");
   const [search, setSearch] = useState("");
+
+  const router = useRouter();
 
   useEffect(() => {
     async function fetchData() {
-
       const competitions = await axios.get(getCompetitionsQueryUrl(search, 0), {
-
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
           "Content-Type": "application/json",
@@ -31,44 +31,49 @@ export default function Competitions() {
     fetchData();
   }, [search]);
 
-  const createTeam = async (competitionName: string) => {
-    const response = await axios.post(
-      addTeamToCompetitionURL,
-      { competitionName },
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    if (response.status === 200) {
-      setInfo("Loit tiimin kilpailuun " + competitionName);
-    } else {
-      console.log(response);
-    }
-  };
+  // const createTeam = async (competitionName: string) => {
+  //   const response = await axios.post(
+  //     addTeamToCompetitionURL,
+  //     { competitionName },
+  //     {
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //     }
+  //   );
+  //   if (response.status === 200) {
+  //     setInfo("Loit tiimin kilpailuun " + competitionName);
+  //   } else {
+  //     console.log(response);
+  //   }
+  // };
 
-  const joinTeam = async (competitionName: string) => {
-    const response = await axios.post(
-      addTeamMemberURL,
-      { competitionName },
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    if (response.status === 200) {
-      setInfo("Liityit tiimiin kilpailussa " + competitionName);
-    } else {
-      console.log(response);
-    }
+  // const joinTeam = async (competitionName: string) => {
+  //   const response = await axios.post(
+  //     addTeamMemberURL,
+  //     { competitionName },
+  //     {
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //     }
+  //   );
+  //   if (response.status === 200) {
+  //     setInfo("Liityit tiimiin kilpailussa " + competitionName);
+  //   } else {
+  //     console.log(response);
+  //   }
+  // };
+
+  const openTeam = (competition: CompetitionResponse) => {
+    const competitionId = competition.competitionId;
+    router.push("/kilpailut/" + competitionId);
   };
 
   return (
-    <div>
+    <div className="flex flex-col py-5">
       <Input
         id={"search"}
         placeholder={"Hae"}
@@ -78,25 +83,31 @@ export default function Competitions() {
       />
       {competitions &&
         competitions.map((competition, index) => (
-          <div key={index} className="flex flex-row items-baseline border my-1">
+          <div
+            key={index}
+            className="flex flex-row items-baseline border my-1 p-2 pl-10"
+            onClick={() => openTeam(competition)}
+          >
             <p>{competition.displayName}</p>
-            <Button
+            <p className="ml-auto mr-5">
+              {competition.startDate + " - " + competition.endDate}
+            </p>
+            {/* <Button
               variant="outline"
               className="hover:bg-slate-100 mx-2"
               onClick={() => createTeam(competition.displayName)}
             >
               Luo tiimi
-            </Button>
-            <Button
+            </Button> */}
+            {/* <Button
               variant="outline"
               className="hover:bg-slate-100 mx-2"
               onClick={() => joinTeam(competition.displayName)}
             >
               Liity tiimiin
-            </Button>
+            </Button> */}
           </div>
         ))}
-      <p hidden={!info}>{info}</p>
     </div>
   );
 }

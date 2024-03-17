@@ -1,22 +1,16 @@
-import { Button } from "@/components/ui/Button";
-import Link from "next/link";
 import React from "react";
 import Competitions from "./Competitions";
-import JoinClub from "./liitySeuraan/JoinClub";
+import { Button } from "@/components/ui/Button";
+import Link from "next/link";
 
 export default function page() {
   return (
-    <main className="flex flex-col items-center justify-between p-24">
-      <div className="flex flex-row ">
-        <Button variant={"outline"} className="mr-10">
-          <Link href="/kilpailut/liitySeuraan">Liity seuraan</Link>
-        </Button>
-        <h1 className="text-2xl">Tulevat kilpailut</h1>
+    <main className="flex flex-col min-h-screen items-center justify-between p-24">
+      <div className="container shadow-lg p-10 mx-auto">
         <Button variant={"outline"} className="ml-10">
           <Link href="/kilpailut/lisaaKilpailu">Lisää kilpailu</Link>
-        </Button>
-      </div>
-      <div className="my-2">
+        </Button>{" "}
+        <h1 className="text-3xl text-center">Tulevat kilpailut</h1>
         <Competitions />
       </div>
     </main>
