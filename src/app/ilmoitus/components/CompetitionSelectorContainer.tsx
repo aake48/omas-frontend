@@ -21,7 +21,7 @@ export default function CompetitionSelectorContainer({
     const competitionNames = competitions.map((competition) => competition.displayName);
 
     const handleDropdownChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const displayName = competitions.find((c) => c.displayName === e.target.value) || null;
+        const displayName = competitions.find((c) => c.displayName === e.target.value) ?? null;
         setSelectedCompetition(displayName);
         onCompetitionChange(displayName);
     };
@@ -30,6 +30,7 @@ export default function CompetitionSelectorContainer({
             <Dropdown
                 id="competitionlist"
                 options={competitionNames}
+                selected={selectedCompetition?.displayName}
                 required
                 onChange={handleDropdownChange}
             />
