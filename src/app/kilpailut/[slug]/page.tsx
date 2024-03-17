@@ -1,15 +1,8 @@
-"use client";
 
-import { getCompetitionByNameUrl } from "@/types/APIConstants";
-import axios from "axios";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
 
-export default function CompetitionPage() {
-  const router = useRouter();
+export default function CompetitionPage(params: any) {
 
-  const competitionId = router.query.competitionId;
-  console.log(competitionId);
+const slug = params.params.slug
 
   // useEffect(() => {
   //   async function fetchData() {
@@ -28,6 +21,8 @@ export default function CompetitionPage() {
   // }, []);
 
   return (
-    <div className="flex flex-col min-h-screen items-center justify-between p-24"></div>
+    <div className="flex flex-col text-7xl min-h-screen items-center justify-between p-24">
+      {slug}
+    </div>
   );
 }

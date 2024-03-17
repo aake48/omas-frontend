@@ -10,7 +10,7 @@ import {
 import { CompetitionResponse, competitionResults } from "@/types/commonTypes";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { MouseEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Competitions() {
   const [competitions, setCompetitions] = useState<CompetitionResponse[]>([]);
@@ -85,10 +85,11 @@ export default function Competitions() {
         competitions.map((competition, index) => (
           <div
             key={index}
-            className="flex flex-row items-baseline border my-1 p-2 pl-10"
+            className="flex cursor-pointer flex-row items-baseline border my-1 p-2 pl-10"
             onClick={() => openTeam(competition)}
           >
-            <p>{competition.displayName}</p>
+            {/* <p>{competition.displayName}</p> */}
+            <p>{competition.competitionId}</p>
             <p className="ml-auto mr-5">
               {competition.startDate + " - " + competition.endDate}
             </p>
