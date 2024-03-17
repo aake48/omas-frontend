@@ -10,7 +10,7 @@
 /coverage
 
 # certs
-/certificates
+#/certificates
 
 # next.js
 /.next/
