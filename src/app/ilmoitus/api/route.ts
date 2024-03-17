@@ -5,6 +5,7 @@ import * as Q from '../../../lib/APIConstants'
 import * as https from 'https';
 import * as fs from 'fs';
 import { NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 
 
 const cert = fs.readFileSync('certificates/localhost.pem');
@@ -14,26 +15,25 @@ const httpsAgent = new https.Agent({
   ca: cert,
 });
 
-interface ScorePostRequest {
-  body: {
-    competitionlist: string;
-    teamName: string;
-    score: number;
-    bullseyes: number;
-  }
+
+interface ScorePostRequestBody {
+  competitionlist: string;
+  teamName: string;
+  score: number;
+  bullseyes: number;
 }
 
-export async function POST(request: ScorePostRequest) {
-
+export async function POST(request: NextRequest) {
+  const requestBody: ScorePostRequestBody = await request.json();
   // TODO: Add token
 
   try {
     const response = await axios.post(
       Q.addScore,
       {
-        competitionName: request.body.competitionlist,
-        teamName: request.body.teamName,
-        scoreList: [request.body.score, request.body.bullseyes]
+        competitionName: requestBody.competitionlist,
+        teamName: requestBody.teamName,
+        scoreList: [requestBody.score, requestBody.bullseyes]
       },
       {
         headers: {
