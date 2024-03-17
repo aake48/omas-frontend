@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
-import { loginURL } from "@/types/APIConstants";
+import { loginURL } from "../../lib/APIConstants";
 import axios from "axios";
 import { useFormik } from "formik";
 import Link from "next/link";

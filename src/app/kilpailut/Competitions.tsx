@@ -6,8 +6,8 @@ import {
   addTeamMemberURL,
   addTeamToCompetitionURL,
   getCompetitionsQueryUrl,
-} from "@/types/APIConstants";
-import { CompetitionResponse, competitionResults } from "@/types/commonTypes";
+} from "../../lib/APIConstants";
+import { CompetitionResponse } from "@/types/commonTypes";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";

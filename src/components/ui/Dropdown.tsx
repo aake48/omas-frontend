@@ -1,9 +1,9 @@
 import React from "react";
 
 interface DropdownProps {
-  id: string;
+  id?: string;
   disabled?: boolean;
-  options: any[];
+  options: string[];
   required?: boolean;
   selected?: any;
   onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
@@ -20,16 +20,19 @@ export default function Dropdown({
 }: DropdownProps) {
   return (
     <select
-      id={id}
+      id={id ? id : "dropdown"}
       disabled={disabled}
-      className="py-2 px-1 min-w-0 border rounded-lg"
-      value={selected?.id}
       required={required}
+      className="py-2 px-1 min-w-0 border rounded-lg"
+      value={selected ?? "none"}
       onChange={onChange}
     >
+      <option value="none" hidden disabled>
+        Valitse
+      </option>
       {options.map((option) => (
-        <option key={option.name ?? option} value={option.name ?? option}>
-          {option.name ?? option}
+        <option key={option} value={ option}>
+          {option}
         </option>
       ))}
     </select>

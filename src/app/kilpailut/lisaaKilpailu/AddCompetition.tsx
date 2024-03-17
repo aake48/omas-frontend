@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/Button";
 import Dropdown from "@/components/ui/Dropdown";
 import Input from "@/components/ui/Input";
-import { addCompetitionURL } from "@/types/APIConstants";
+import { addCompetitionURL } from "../../../lib/APIConstants";
 import { PostCompetition } from "@/types/commonTypes";
 import axios from "axios";
 import { useState } from "react";
