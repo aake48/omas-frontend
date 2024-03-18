@@ -10,10 +10,8 @@ import { groupBy } from 'lodash';
 const PastCompetitions = () => {
   const [content, setContent] = useState<QueryCompetition>();
   const [pageNumber, setPageNumber] = useState(0);
-  const [currentDate, setCurrentDate] = useState(new Date());
-
-  let formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}`;
   
+  let currentDate = new Date();
   let apiUrl = getCompetitionsQueryUrl("", pageNumber, 5);
   
   const fetchContent = async () => {
@@ -33,9 +31,8 @@ const PastCompetitions = () => {
     let competitions = content.content;
 
     let pastCompetitions: CompetitionResponse[] = competitions.filter(competition => {
-      let date1 = new Date(competition.endDate);
-      let date2 = new Date(formattedDate);
-      return date2 > date1;
+      let compDate = new Date(competition.endDate);
+      return compDate < currentDate;
     })
 
     let groupPastCompetitionsByYear = groupBy(pastCompetitions, (comp: competitionResults) => {
@@ -84,10 +81,6 @@ const PastCompetitions = () => {
     scoresNotFound();
   }
 
-}
-
-const getCompetitionsPerYear = () => {
-  
 }
 
 const scoresNotFound = () => {
