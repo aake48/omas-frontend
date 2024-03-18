@@ -1,18 +1,15 @@
 "use client";
 
 import { Button } from "@/components/ui/Button";
-import Input from "@/components/ui/Input";
 import { loginURL } from "../../lib/APIConstants";
 import axios from "axios";
-import { useFormik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Form, Formik } from "formik";
 import validationSchema from "./validation";
 
-
-import { postRegister } from "./api/post-register";
+import CustomInput from "@/components/ui/CustomInput";
 
 export default function RegisterForm() {
   const initialValues = {
@@ -26,18 +23,12 @@ export default function RegisterForm() {
   const url = process.env.NEXT_PUBLIC_API_URL;
   const endpoint = "api/reg";
 
-  // TODO Add translations for error messages. Now they are in English.
-
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const [passwordCheck, setPasswordCheck] = useState<string>("");
 
-  const postRegister = async () => {
+  const postRegister = async (values : any) => {
+    console.log(values)
     setErrorMessage("");
-    if (formik.values.password !== passwordCheck) {
-      setErrorMessage("Salasanat eivät ole samat.");
-      return;
-    }
-    const payload = formik.values;
+    const payload = values;
     try {
       const response = await fetch(`${url + endpoint}`, {
         method: "POST",
@@ -51,8 +42,8 @@ export default function RegisterForm() {
       if (response.ok) {
         try {
           const response = await axios.post(loginURL, {
-            username: formik.values.username,
-            password: formik.values.password,
+            username: values.username,
+            password: values.password,
           });
 
           console.log("login success");
@@ -78,11 +69,6 @@ export default function RegisterForm() {
       console.log(error);
     }
   };
-
-  const formik = useFormik({
-    initialValues: initialValues,
-    onSubmit: postRegister,
-  });
 
     return (
         <Formik
