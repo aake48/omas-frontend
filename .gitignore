@@ -10,7 +10,8 @@
 /coverage
 
 # certs
-/certificates
+#/certificates
+#*.pem
 
 # next.js
 /.next/
@@ -21,7 +22,8 @@
 
 # misc
 .DS_Store
-*.pem
+
+
 
 # debug
 npm-debug.log*
