@@ -35,7 +35,7 @@ const Header: React.FC = () => {
             </div>
             <div
                 onClick={() => handleMenuOnClick(true)}
-                className={`${menuHidden} sm:hidden absolute top-0 left-0 w-full min-h-screen p-3 pt-6 bg-white overflow-hidden`}
+                className={`${menuHidden} sm:hidden fixed top-0 left-0 w-full min-h-screen p-3 pt-6 bg-white overflow-hidden`}
             >
                 <div className="flex gap-5 cursor-pointer h-24 w-full">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-12 h-12">
