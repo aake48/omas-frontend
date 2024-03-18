@@ -47,14 +47,7 @@ const PastCompetitions = () => {
     let groups = Object.entries(groupPastCompetitionsByYear);
 
     if (groups.length === 0) {
-      return (
-        <div className="p-4">
-        <h1 className='text-3xl mb-4'>Viimeisimmät tulokset</h1>
-        <div>
-          <h1 className='text-xl'>Tuloksia ei löytynyt</h1>
-        </div>
-      </div>
-      )
+      scoresNotFound();
     }
 
     const handlePageNumberChange = (page: number) => {
@@ -90,7 +83,7 @@ const PastCompetitions = () => {
 const scoresNotFound = () => {
   return (
       <div className="p-4">
-      <h1 className='text-3xl mb-4'>Menneiden kilpailuiden tulokset</h1>
+      <h1 className='text-3xl mb-4'>Vimmeisimmät tulokset</h1>
       <div>
         <h1 className='text-xl'>Tuloksia ei löytynyt</h1>
       </div>
