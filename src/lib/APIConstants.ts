@@ -46,4 +46,4 @@ export const addTeamMemberURL: string =
   baseURL + "/api/competition/team/member/add";
 
 export const addScore: string =
-  baseURL + "/api/competition/team/member/add";
+  baseURL + "/api/competition/team/member/score/add";

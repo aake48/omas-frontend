@@ -1,7 +1,7 @@
 import { LoginButton } from "./ui/LoginButton";
 import React from "react";
 import Link from "next/link";
-import { headerLinks } from "@/../lib/links";
+import { headerLinks } from "@/lib/links";
 
 const Header: React.FC = () => {
     return (
