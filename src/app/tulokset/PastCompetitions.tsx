@@ -30,13 +30,17 @@ const PastCompetitions = () => {
     ) {
     let competitions = content.content;
 
-    let pastCompetitions: CompetitionResponse[] = competitions.filter(competition => {
-      let compDate = new Date(competition.endDate);
+    let pastCompetitions: CompetitionResponse[] = competitions
+      .sort((a, b) => {
+        return a.startDate.localeCompare(b.startDate);
+      })
+      .filter(competition => {
+      let compDate = new Date(competition.startDate);
       return compDate < currentDate;
     })
 
     let groupPastCompetitionsByYear = groupBy(pastCompetitions, (comp: competitionResults) => {
-      const date = new Date(comp.endDate);
+      const date = new Date(comp.startDate);
       return date.getFullYear();
     })
 
@@ -45,7 +49,7 @@ const PastCompetitions = () => {
     if (groups.length === 0) {
       return (
         <div className="p-4">
-        <h1 className='text-3xl mb-4'>Menneiden kilpailuiden tulokset</h1>
+        <h1 className='text-3xl mb-4'>Viimeisimmät tulokset</h1>
         <div>
           <h1 className='text-xl'>Tuloksia ei löytynyt</h1>
         </div>
@@ -60,7 +64,7 @@ const PastCompetitions = () => {
 
     return (
       <div className="p-4">
-        <h1 className='text-3xl mb-4'>Menneiden kilpailuiden tulokset</h1>
+        <h1 className='text-3xl mb-4'>Viimeisimmät tulokset</h1>
         <div>
           {groups.map((group: any, index) => (
             <Score
