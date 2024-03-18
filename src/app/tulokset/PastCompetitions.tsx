@@ -10,10 +10,8 @@ import { groupBy } from 'lodash';
 const PastCompetitions = () => {
   const [content, setContent] = useState<QueryCompetition>();
   const [pageNumber, setPageNumber] = useState(0);
-  const [currentDate, setCurrentDate] = useState(new Date());
-
-  let formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}`;
   
+  let currentDate = new Date();
   let apiUrl = getCompetitionsQueryUrl("", pageNumber, 5);
   
   const fetchContent = async () => {
@@ -32,28 +30,24 @@ const PastCompetitions = () => {
     ) {
     let competitions = content.content;
 
-    let pastCompetitions: CompetitionResponse[] = competitions.filter(competition => {
-      let date1 = new Date(competition.endDate);
-      let date2 = new Date(formattedDate);
-      return date2 > date1;
+    let pastCompetitions: CompetitionResponse[] = competitions
+      .sort((a, b) => {
+        return a.startDate.localeCompare(b.startDate);
+      })
+      .filter(competition => {
+      let compDate = new Date(competition.startDate);
+      return compDate < currentDate;
     })
 
     let groupPastCompetitionsByYear = groupBy(pastCompetitions, (comp: competitionResults) => {
-      const date = new Date(comp.endDate);
+      const date = new Date(comp.startDate);
       return date.getFullYear();
     })
 
     let groups = Object.entries(groupPastCompetitionsByYear);
 
     if (groups.length === 0) {
-      return (
-        <div className="p-4">
-        <h1 className='text-3xl mb-4'>Menneiden kilpailuiden tulokset</h1>
-        <div>
-          <h1 className='text-xl'>Tuloksia ei löytynyt</h1>
-        </div>
-      </div>
-      )
+      scoresNotFound();
     }
 
     const handlePageNumberChange = (page: number) => {
@@ -63,7 +57,7 @@ const PastCompetitions = () => {
 
     return (
       <div className="p-4">
-        <h1 className='text-3xl mb-4'>Menneiden kilpailuiden tulokset</h1>
+        <h1 className='text-3xl mb-4'>Viimeisimmät tulokset</h1>
         <div>
           {groups.map((group: any, index) => (
             <Score
@@ -86,14 +80,10 @@ const PastCompetitions = () => {
 
 }
 
-const getCompetitionsPerYear = () => {
-  
-}
-
 const scoresNotFound = () => {
   return (
       <div className="p-4">
-      <h1 className='text-3xl mb-4'>Menneiden kilpailuiden tulokset</h1>
+      <h1 className='text-3xl mb-4'>Vimmeisimmät tulokset</h1>
       <div>
         <h1 className='text-xl'>Tuloksia ei löytynyt</h1>
       </div>
