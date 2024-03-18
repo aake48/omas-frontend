@@ -1,7 +1,10 @@
 "use client";
 
 import { Button } from "@/components/ui/Button";
-import CustomInput from "@/components/ui/CustomInput";
+import Input from "@/components/ui/Input";
+import { loginURL } from "../../lib/APIConstants";
+import axios from "axios";
+import { useFormik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -12,17 +15,74 @@ import validationSchema from "./validation";
 import { postRegister } from "./api/post-register";
 
 export default function RegisterForm() {
-    const initialValues = {
-        username: "",
-        name: "",
-        password: "",
-        email: "",
-    };
-    const router = useRouter();
+  const initialValues = {
+    username: "",
+    name: "",
+    password: "",
+    email: "",
+  };
+  const router = useRouter();
 
-    const [errorMessage, setErrorMessage] = useState<string>("");
+  const url = process.env.NEXT_PUBLIC_API_URL;
+  const endpoint = "api/reg";
 
+  // TODO Add translations for error messages. Now they are in English.
 
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [passwordCheck, setPasswordCheck] = useState<string>("");
+
+  const postRegister = async () => {
+    setErrorMessage("");
+    if (formik.values.password !== passwordCheck) {
+      setErrorMessage("Salasanat eivät ole samat.");
+      return;
+    }
+    const payload = formik.values;
+    try {
+      const response = await fetch(`${url + endpoint}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+      const data = await response.json();
+      console.log(data);
+      if (response.ok) {
+        try {
+          const response = await axios.post(loginURL, {
+            username: formik.values.username,
+            password: formik.values.password,
+          });
+
+          console.log("login success");
+          console.log(response.data.user);
+
+          let token = response.data.token;
+          let userInfo = response.data.user;
+
+          localStorage.setItem("token", token);
+          localStorage.setItem("userInfo", JSON.stringify(userInfo));
+          window.dispatchEvent(new Event("localStorageChange"));
+          router.push("/kilpailut");
+        } catch (error: any) {
+          if (error.response.data) {
+            console.log(error.response.data);
+          }
+        }
+        router.push("/kirjaudu");
+      } else {
+        setErrorMessage(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const formik = useFormik({
+    initialValues: initialValues,
+    onSubmit: postRegister,
+  });
 
     return (
         <Formik

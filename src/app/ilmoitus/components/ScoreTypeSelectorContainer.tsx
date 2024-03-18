@@ -1,23 +1,19 @@
-"use client"
-
-
 import { Button } from "@/components/ui/Button";
+import { ScoreType } from "@/types/commonTypes";
 import React from "react";
 
 interface ScoreTypeSelectorContainerProps {
-    selectedCompetition: string | null;
-    onScoreTypeChange: (scoreType: "round" | "total") => void;
+    onScoreTypeChange: (scoreType: ScoreType) => void;
 }
 
-export default function ScoreTypeSelectorContainer({selectedCompetition, onScoreTypeChange }: ScoreTypeSelectorContainerProps) {
-
+export default function ScoreTypeSelectorContainer({
+    onScoreTypeChange,
+}: ScoreTypeSelectorContainerProps) {
     const [scoreType, setScoreType] = React.useState<ScoreType>("round");
 
-    type ScoreType = "round" | "total"
-
-    function handleClick(scoreType:ScoreType) {
-        setScoreType(scoreType)
-        onScoreTypeChange(scoreType)
+    function handleClick(scoreType: ScoreType) {
+        setScoreType(scoreType);
+        onScoreTypeChange(scoreType);
     }
     return (
         <div className=" grid mx-auto text-center container justify-center">
@@ -28,7 +24,12 @@ export default function ScoreTypeSelectorContainer({selectedCompetition, onScore
                 >
                     Kierros
                 </Button>
-                <Button className="border px-4 py-2 rounded-lg" onClick={() => handleClick('total')} >Kokonaistulos</Button>
+                <Button
+                    className="border px-4 py-2 rounded-lg"
+                    onClick={() => handleClick("total")}
+                >
+                    Kokonaistulos
+                </Button>
             </div>
         </div>
     );

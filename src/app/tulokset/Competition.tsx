@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { competitionResults } from "@/types/commonTypes";
 import Team from './Team';
-import { getCompetitionByNameUrl } from '@/types/APIConstants';
-import fetchData from '../../../lib/get';
+import { getCompetitionByNameUrl } from '../../lib/APIConstants';
+import fetchData from '../../lib/get';
 
 interface CompetitionProps {
   name: string,
@@ -86,11 +86,12 @@ const Competition = ({ name, displayName, startDate, endDate, type }: Competitio
         </div>
         <div className={`${hidden} h-full p-4 bg-slate-50 rounded-md mb-2 shadow-md ml-16`}>
           {competition.teams.slice(0, 8).map((team, index) => (
-            <div className='odd:bg-slate-200 even:bg-slate-100 p-2'>
+            <div key={index} className='odd:bg-slate-200 even:bg-slate-100 p-2'>
               <Team
-                teamName={team.teamName}
-                position={index}
                 key={index}
+                teamDisplayName={team.teamDisplayName}
+
+                position={index}
                 scores={team.scores}
               />
             </div>

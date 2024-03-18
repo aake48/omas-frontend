@@ -1,7 +1,8 @@
+"use server"
+
 import * as https from 'https';
-import * as fs from 'fs';
 import axios from 'axios';
-import * as QUERY from '@/types/APIConstants';
+import * as fs from 'fs';
 
 const cert = fs.readFileSync('certificates/localhost.pem');
 
