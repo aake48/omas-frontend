@@ -5,7 +5,7 @@ import Input from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { useState } from "react";
 import axios from "axios";
-import { loginURL } from "@/types/APIConstants";
+import { loginURL } from "../../lib/APIConstants";
 import { useRouter } from "next/navigation";
 
 export default function Login() {

@@ -5,7 +5,7 @@ export const roundValidationSchema = Yup.object().shape({
         .min(2, 'Nimi on liian lyhyt')
         .max(50, 'Nimi on liian pitkä')
         .required('Nimi on pakollinen'),
-    roundScore: Yup.number()
+    score: Yup.number()
         .min(0, 'Tulos ei voi olla negatiivinen')
         .max(10.9, 'Tulos ei voi olla yli 10.9')
         .required('Tulos on pakollinen'),
@@ -20,7 +20,7 @@ export const fullCompValidationSchema = Yup.object().shape({
         .min(2, 'Nimi on liian lyhyt')
         .max(50, 'Nimi on liian pitkä')
         .required('Nimi on pakollinen'),
-    roundScore: Yup.number()
+    score: Yup.number()
         .min(0, 'Tulos ei voi olla negatiivinen')
         .max(520, 'Tulos ei voi olla yli 520')
         .required('Tulos on pakollinen'),
