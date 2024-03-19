@@ -30,19 +30,25 @@ test('has competitions in dropdown', async ({ page }) => {
 /**
  * test if page loads scores when clicking competition
  */
-test('has scores in dropdown', async ({ page }) => {
-    await page.goto('/tulokset');
+test.describe('has scores in dropdown', () => {
+    test.beforeEach(async ({ page }) => {
+        await page.goto('/tulokset');
 
-    const year = page.getByTestId('score-2024');
-    const competition = page.getByTestId('competition-kesan_ampujaiset');
-
-    await year.click();
-    await expect(competition).toBeVisible();
-
-    await competition.click();
-
-    await expect(page.getByTestId('team-1').nth(0)).toBeVisible();
-
+        const year = page.getByTestId('score-2024');
+        const competition = page.getByTestId('competition-kesan_ampujaiset');
+    
+        await year.click();
+        await expect(competition).toBeVisible();
+    
+        await competition.click();
+    
+    })
+    
+    for (let i = 0; i < 8; i++) {
+        test(`team ${i} exists`, async ({ page }) => {
+            await expect(page.getByTestId(`team-${i}`).nth(0)).toBeVisible();
+        })
+    }
 })
 
 /**
