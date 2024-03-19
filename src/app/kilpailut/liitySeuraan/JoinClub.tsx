@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/Button";
-import { addClubURL, joinClubURL } from "@/types/APIConstants";
+import { addClubURL, joinClubURL } from "../../../lib/APIConstants";
 import axios from "axios";
 
 export default function JoinClub() {

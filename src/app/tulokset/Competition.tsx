@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { competitionResults } from "@/types/commonTypes";
 import Team from './Team';
-import { getCompetitionByNameUrl } from '@/types/APIConstants';
-import fetchData from '../../../lib/get';
+import { getCompetitionByNameUrl } from '../../lib/APIConstants';
+import fetchData from '../../lib/get';
 
 interface CompetitionProps {
   name: string,
