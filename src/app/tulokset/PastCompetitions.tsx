@@ -58,7 +58,6 @@ const PastCompetitions = () => {
     return (
       <div className="p-4">
         <h1 className='text-3xl mb-4'>Viimeisimmät tulokset</h1>
-        <div>
           {groups.map((group: any, index) => (
             <Score
               key={index}
@@ -66,7 +65,6 @@ const PastCompetitions = () => {
               competitionResults={group[1]}
             />
           ))}
-        </div>
         <Paginator
           pageNumber={pageNumber}
           totalPages={content.totalPages}
