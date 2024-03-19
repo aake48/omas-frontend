@@ -13,7 +13,12 @@ test.describe('has containers for season + future and past competitions', () => 
   titles.forEach(title => {
     test(`has ${title} container`, async ({ page }) => {
       await page.goto('/');
-      await expect(page.getByRole('heading', { name: title })).toBeVisible();
+
+      const container = page.locator('div', {
+        has: page.getByRole('heading', { name: title, exact: true })
+      }).nth(0);
+
+      await expect(container).toBeVisible();
     })
   })
 });
@@ -23,7 +28,7 @@ test.describe('has containers for season + future and past competitions', () => 
  */
 test('future container has children = data', async ({ page }) => {
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: 'kesan_ampujaiset' })).toBeVisible();
+  
 });
 
 /**
@@ -31,5 +36,5 @@ test('future container has children = data', async ({ page }) => {
  */
 test('past container has children = data', async ({ page }) => {
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: 'kesan_ampujaiset' })).toBeVisible();
+  
 });

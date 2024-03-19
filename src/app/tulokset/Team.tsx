@@ -11,7 +11,7 @@ interface TeamProps {
 const Team = ({ teamDisplayName, position, scores }: TeamProps) => {
   if (scores !== null) {
     return (
-      <div>
+      <div data-testid={`team-${position}`}>
         <h1 className='font-medium'>{`${position + 1}. ${teamDisplayName}`}</h1>
         <div>
           {scores.map((member, index) => (

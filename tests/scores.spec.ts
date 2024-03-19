@@ -1,16 +1,11 @@
 import { test, expect } from '@playwright/test';
 
 /**
- * test if page loads dropdowns
+ * test if page loads dropdown
  */
-test('has dropdowns with year title', async ({ page }) => {
+test('has dropdown with year title (2024)', async ({ page }) => {
     await page.goto('/tulokset');
-
-    const dropdown = page.locator('div', {
-        has: page.getByText("2024", { exact: true })
-    }).nth(0);
-
-    await expect(dropdown).toBeVisible();
+    await expect(page.getByTestId('score-2024')).toBeVisible();
 })
 
 /**
@@ -19,6 +14,17 @@ test('has dropdowns with year title', async ({ page }) => {
 test('has competitions in dropdown', async ({ page }) => {
     await page.goto('/tulokset');
 
+    const year = page.getByTestId('score-2024');
+    const competition = page.getByTestId('competition-kesan_ampujaiset');
+
+    await year.click();
+    await expect(competition).toBeVisible();
+
+    // const competitions = await child.evaluate(child =>
+    //     child.querySelector('div')
+    // );
+
+    // expect(competitions.length).toBe(4);
 })
 
 /**
@@ -26,6 +32,16 @@ test('has competitions in dropdown', async ({ page }) => {
  */
 test('has scores in dropdown', async ({ page }) => {
     await page.goto('/tulokset');
+
+    const year = page.getByTestId('score-2024');
+    const competition = page.getByTestId('competition-kesan_ampujaiset');
+
+    await year.click();
+    await expect(competition).toBeVisible();
+
+    await competition.click();
+
+    await expect(page.getByTestId('team-1').nth(0)).toBeVisible();
 
 })
 
