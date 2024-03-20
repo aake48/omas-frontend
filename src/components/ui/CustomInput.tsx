@@ -8,7 +8,7 @@ interface CustomInputProps {
     placeholder: string;
 }
 
-export default function Custominput({ label, ...props }: CustomInputProps) {
+export default function CustomInput({ label, ...props }: CustomInputProps) {
     const [field, meta] = useField(props);
     return (
         <div className="relative">
