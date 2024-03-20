@@ -1,6 +1,6 @@
 
 import React from "react";
-import fetchData from "@/api/get";
+import { fetchData } from "@/api/get";
 import * as Q from "@/lib/APIConstants"
 import ClientWrapper from "./components/ClientWrapper";
 

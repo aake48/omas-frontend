@@ -93,7 +93,6 @@ export default function RegisterForm() {
                         <h1 className="text-3xl my-2 font-bold">
                             Rekisteröidy
                         </h1>
-                        <p>Syötä vaadittavat tiedot</p>
                     </div>
                     <div className="grid gap-6 p-6">
                         <CustomInput
@@ -128,8 +127,7 @@ export default function RegisterForm() {
                         />
                         <Button
                             variant={"outline"}
-                            size={"lg"}
-                            className="mx-auto text-xl hover:bg-slate-100"
+                            className=" mx-auto"
                             type="submit"
                         >
                             Rekisteröidy
