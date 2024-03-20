@@ -40,54 +40,54 @@ export default function Login() {
         }
     };
 
-    return (
-        <main className="flex min-h-screen flex-col items-center justify-between my-10 p-5">
-            <div className="container shadow-lg p-10 grid gap-5 justify-center max-w-lg rounded-lg">
-                <h1 className="text-3xl my-2 text-center font-bold">
-                    Kirjaudu
-                </h1>
-                <Formik
-                    initialValues={{ username: "", password: "" }}
-                    onSubmit={(values) => {
-                        handleSubmit(values);
-                    }}
-                    validationSchema={validation}
-                >
-                    <Form className="grid gap-5">
-                        <Custominput
-                            label="Käyttäjätunnus"
-                            name="username"
-                            type="text"
-                            placeholder="Käyttäjätunnus"
-                        />
-                        <Custominput
-                            label="Salasana"
-                            name="password"
-                            type="password"
-                            placeholder="Salasana"
-                        />
-                        <Button
-                            variant={"outline"}
-                            size={"lg"}
-                            className=" mx-auto text-xl"
-                            type="submit"
-                        >
-                            Kirjaudu
-                        </Button>
-                    </Form>
-                </Formik>
-                <div className="text-center pb-0">
-                    <p>Syötä sähköpostiosoitteesi ja salasanasi</p>
-                </div>
-                <div className="text-center grid gap-5 pt-0">
-                    <Link className="text-sm underline" href="#">
-                        Unohditko salasanasi?
-                    </Link>
-                    <Link className="text-sm underline" href="/rekisteroidy">
-                        Eikö sinulla ole tiliä? Rekisteröidy
-                    </Link>
-                </div>
-            </div>
-        </main>
-    );
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-between my-2 p-5">
+      <div className="container shadow-lg p-5 mx-auto max-w-lg">
+        <div className="text-center pb-0">
+          <h1 className="text-3xl my-2 font-bold">Kirjaudu</h1>
+          <p>Syötä käyttäjänimesi ja salasanasi</p>
+        </div>
+        <div className="my-5">
+          <Formik
+                initialValues={{ username: "", password: "" }}
+                onSubmit={(values) => {
+                    handleSubmit(values);
+                }}
+                validationSchema={validation}
+            >
+                <Form className="grid gap-5">
+                    <Custominput
+                        label="Käyttäjätunnus"
+                        name="username"
+                        type="text"
+                        placeholder="Käyttäjätunnus"
+                    />
+                    <Custominput
+                        label="Salasana"
+                        name="password"
+                        type="password"
+                        placeholder="Salasana"
+                    />
+                    <Button
+                        variant={"outline"}
+                        size={"lg"}
+                        className="mx-auto text-xl hover:bg-slate-100 my-2"
+                        type="submit"
+                    >
+                        Kirjaudu
+                    </Button>
+                </Form>
+          </Formik>
+        </div>
+        <div className="text-center grid gap-5 my-6">
+          <Link className="text-sm underline" href="#">
+            Unohditko salasanasi?
+          </Link>
+          <Link className="text-sm underline" href="/rekisteroidy">
+            Eikö sinulla ole tiliä? Rekisteröidy
+          </Link>
+        </div>
+      </div>
+    </main>
+  );
 }

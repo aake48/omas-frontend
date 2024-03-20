@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function page() {
   return (
-    <main className="flex flex-col min-h-screen items-center justify-between p-24">
+    <main className="flex flex-col min-h-screen items-center justify-between p-8">
       <div className="container shadow-lg p-10 mx-auto">
         <Button variant={"outline"} className="ml-10">
           <Link href="/kilpailut/lisaaKilpailu">Lisää kilpailu</Link>
