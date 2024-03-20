@@ -71,7 +71,7 @@ export default function Login() {
                     <Button
                         variant={"outline"}
                         size={"lg"}
-                        className="mx-auto text-xl hover:bg-slate-100"
+                        className="mx-auto text-xl hover:bg-slate-100 my-2"
                         type="submit"
                     >
                         Kirjaudu
