@@ -90,7 +90,6 @@ const Competition = ({ name, displayName, startDate, endDate, type }: Competitio
               <Team
                 key={index}
                 teamDisplayName={team.teamDisplayName}
-
                 position={index}
                 scores={team.scores}
               />
