@@ -1,7 +1,7 @@
 import React from "react";
 import { CompetitionResponse, QueryCompetition } from "@/types/commonTypes";
-import { getCompetitionsQueryUrl } from "@/types/APIConstants";
-import fetchData from "../../lib/get";
+import { getCompetitionsQueryUrl } from "@/lib/APIConstants";
+import fetchData from "@/lib/get";
 import SeasonComponent from "./components/SeasonComponent";
 import LatestResults from "./components/LatestResults";
 import UpcomingCompetitions from "./components/UpcomingCompetitions";
