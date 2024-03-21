@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
       },
       {
         headers: {
-          Authorization: `Bearer ${("token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
           "Content-Type": "application/json",
         },
         httpsAgent,

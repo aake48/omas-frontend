@@ -41,7 +41,7 @@ export default function ScoreCard({
                         : fullCompValidationSchema
                 }
                 onSubmit={(values, { setSubmitting, resetForm }) => {
-                    console.log("submitting");
+                    console.log("submitting: " + values);
                     fetch("ilmoitus/api", {
                         method: "POST",
                         headers: {
@@ -59,27 +59,30 @@ export default function ScoreCard({
                             }, 3000);
                         })
                         .catch((error) => {
-                            setError('Virhe lähetyksessä, yritä uudelleen.');
+                            setError("Virhe lähetyksessä, yritä uudelleen.");
                         });
                 }}
             >
                 <Form className=" my-5 w-full justify-around gap-5 grid p-5">
-                    <Field name="competitionlist">
-                        {({ field, form }: any) => (
-                            <Dropdown
-                                id="competitionDropdown"
-                                options={competitionNames}
-                                selected={field.value}
-                                required
-                                onChange={(e) => {
-                                    form.setFieldValue(
-                                        field.name,
-                                        e.target.value
-                                    );
-                                }}
-                            />
-                        )}
-                    </Field>
+                    <div className="grid gap-2">
+                        <label className="text-xl font-light">Kilpailu</label>
+                        <Field name="competitionlist">
+                            {({ field, form }: any) => (
+                                <Dropdown
+                                    id="competitionDropdown"
+                                    options={competitionNames}
+                                    selected={field.value}
+                                    required
+                                    onChange={(e) => {
+                                        form.setFieldValue(
+                                            field.name,
+                                            e.target.value
+                                        );
+                                    }}
+                                />
+                            )}
+                        </Field>
+                    </div>
                     <Custominput
                         label="Nimi"
                         name="name"
@@ -98,6 +101,34 @@ export default function ScoreCard({
                         type="number"
                         placeholder={`0-${scoreValue.bullseyes}`}
                     />
+                    <Field name="file">
+                        {({ field, form }: any) => (
+                            <label
+                                className="text-2xl grid gap-5 justify-center text-center"
+                                htmlFor="file"
+                            >
+                                Kuva tuloksesta
+                                <input
+                                    {...field}
+                                    id="file"
+                                    type="file"
+                                    placeholder="Joukkue"
+                                    className="border p-20 rounded-lg border-slate-500 w-full hover:brightness-90 hover:bg-slate-100 hover:bg-opacity-30"
+                                    onChange={(event) => {
+                                        if (
+                                            event.currentTarget.files!.length >
+                                            0
+                                        ) {
+                                            form.setFieldValue(
+                                                field.name,
+                                                event.currentTarget.files![0]
+                                            );
+                                        }
+                                    }}
+                                />
+                            </label>
+                        )}
+                    </Field>
                     <button
                         className={`my-2 h-14 hover:bg-opacity-10 md:h-20 w-40 border rounded-lg mx-auto disabled:brightness-75  p-2 text-xl text-light transition duration-300 hover:font-medium hover:text-secondary active:scale-95`}
                         type="submit"

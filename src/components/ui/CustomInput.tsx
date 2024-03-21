@@ -29,7 +29,7 @@ export default function Custominput({ label, ...props }: CustomInputProps) {
                 id={field.name}
                 {...field}
                 {...props}
-                className={`block my-2 w-full text-black rounded-lg border  transition-colors autofill:bg-secondary autofill:bg-opacity-10 duration-300 md:text-xl text-md px-3 py-2 ${
+                className={`block my-2 w-full text-black rounded-lg border transition-colors  duration-300 md:text-xl text-md px-3 py-2 ${
                     meta.touched && meta.error
                         ? "border-red-500"
                         : "border-slate-500"
