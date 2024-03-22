@@ -81,7 +81,7 @@ type User = {
   legalName: string;
   email: string;
   userId: number;
-  roles: string;
+  roles: string[];
   creationDate: string;
   club: string | null;
 };
