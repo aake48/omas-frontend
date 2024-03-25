@@ -23,28 +23,20 @@ export const headerLinks = [
 
 export const footerLinks = [
     {
-        href: "/",
+        href: "/tulokset",
         text: "Tulokset",
     },
     {
-        href: "/",
+        href: "/kilpailut",
         text: "Kilpailut",
     },
     {
-        href: "/",
+        href: "/ilmoitus",
         text: "Ilmoitus"
     },
     {
-        href: "/",
+        href: "/joukkueet",
         text: "Joukkueet"
-    },
-    {
-        href: "/",
-        text: "Kirjaudu",
-    },
-    {
-        href: "/",
-        text: "Rekisteröidy",
     },
     {
         href: '/yhteystiedot',

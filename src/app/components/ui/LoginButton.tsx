@@ -20,14 +20,14 @@ export function LoginButton({}) {
 
   return loggedIn ? (
     <Link
-      className="flex gap-2 text-lg items-center border py-1 px-2 border-slate-400 rounded-lg"
+      className="flex gap-2 text-lg items-center border py-1 px-2 border-slate-400 hover:bg-slate-100 rounded-lg"
       href="/logout"
     >
       Kirjaudu ulos
     </Link>
   ) : (
     <Link
-      className="flex gap-2 text-lg items-center border py-1 px-2 border-slate-400 rounded-lg"
+      className="flex gap-2 text-lg items-center border py-1 px-2 border-slate-400 hover:bg-slate-100 rounded-lg"
       href="/kirjaudu"
     >
       <svg

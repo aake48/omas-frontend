@@ -12,7 +12,6 @@ export default async function Ilmoitus() {
             <div className="flex flex-col  items-center gap-5 md:gap-10  justify-center p-10 rounded-lg shadow-lg container mx-auto">
                 <h1 className="text-center text-3xl">Tuloksen ilmoittaminen</h1>
                 <ClientWrapper competitions={competitions} />
-
             </div>
         </main>
     );
