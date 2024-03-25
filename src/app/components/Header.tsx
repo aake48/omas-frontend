@@ -20,7 +20,7 @@ const Header: React.FC = () => {
                             <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                         </svg>
                     </div>
-                    <Link className="text-3xl hidden sm:block" href="/">
+                    <Link className="text-3xl hidden sm:flex sm:items-center" href="/">
                         OMAS
                     </Link>
                     <nav className="hidden sm:flex sm:gap-2 md:gap-5 items-center">
