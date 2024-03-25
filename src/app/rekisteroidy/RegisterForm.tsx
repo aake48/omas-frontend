@@ -40,6 +40,7 @@ export default function RegisterForm() {
       const data = await response.json();
       console.log(data);
       if (response.ok) {
+        console.log(response.status);
         try {
           const response = await axios.post(loginURL, {
             username: values.username,
@@ -61,9 +62,9 @@ export default function RegisterForm() {
             console.log(error.response.data);
           }
         }
-        router.push("/kirjaudu");
       } else {
         setErrorMessage(data.message);
+        router.push("/kirjaudu");
       }
     } catch (error) {
       console.log(error);
