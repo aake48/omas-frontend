@@ -40,6 +40,7 @@ export default function RegisterForm() {
       const data = await response.json();
       console.log(data);
       if (response.ok) {
+        console.log(response.status);
         try {
           const response = await axios.post(loginURL, {
             username: values.username,
@@ -63,6 +64,7 @@ export default function RegisterForm() {
         }
       } else {
         setErrorMessage(data.message);
+        router.push("/kirjaudu");
       }
     } catch (error) {
       console.log(error);
@@ -90,6 +92,7 @@ export default function RegisterForm() {
         <div className="container shadow-lg p-5 mx-auto max-w-lg">
           <div className="text-center pb-0">
             <h1 className="text-3xl my-2 font-bold">Rekisteröidy</h1>
+            <p>Syötä vaadittavat tiedot</p>
           </div>
           <div className="grid gap-6 p-6">
             <CustomInput
@@ -122,7 +125,12 @@ export default function RegisterForm() {
               type="password"
               placeholder="Salasana uudelleen"
             />
-            <Button variant={"outline"} className=" mx-auto" type="submit">
+            <Button
+              variant={"outline"}
+              size={"lg"}
+              className="mx-auto text-xl hover:bg-slate-100"
+              type="submit"
+            >
               Rekisteröidy
             </Button>
           </div>

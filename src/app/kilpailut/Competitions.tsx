@@ -44,11 +44,11 @@ export default function Competitions() {
         competitions.map((competition, index) => (
           <div
             key={index}
-            className="flex cursor-pointer flex-row items-baseline border my-1 p-2 pl-10"
+            className="flex cursor-pointer sm:flex-row flex-col items-baseline border my-1 p-2 sm:pl-10"
             onClick={() => openTeam(competition)}
           >
             <p>{competition.displayName}</p>
-            <p className="ml-auto mr-5">
+            <p className="sm:ml-auto sm:mr-5 text-slate-700">
               {competition.startDate + " - " + competition.endDate}
             </p>
           </div>

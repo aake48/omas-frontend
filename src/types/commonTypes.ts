@@ -76,12 +76,12 @@ export type loginResponse = {
   token: string; // add "Bearer "+ token when doing authorization
 };
 
-type User = {
+export type User = {
   username: string;
   legalName: string;
   email: string;
   userId: number;
-  authorities: string;
+  roles: string[];
   creationDate: string;
   club: string | null;
 };

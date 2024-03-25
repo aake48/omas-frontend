@@ -70,7 +70,7 @@ const Competition = ({ name, displayName, startDate, endDate, type }: Competitio
     competition.teams !== null
   ) {
     return (
-      <div>
+      <div data-testid={`competition-${name}`}>
         <div
           className='flex items-center h-16 bg-slate-100 rounded-md mb-2 shadow-md ml-8 cursor-pointer'
           onClick={handleShowClubs}
@@ -90,7 +90,6 @@ const Competition = ({ name, displayName, startDate, endDate, type }: Competitio
               <Team
                 key={index}
                 teamDisplayName={team.teamDisplayName}
-
                 position={index}
                 scores={team.scores}
               />

@@ -47,9 +47,9 @@ export default function AddCompetition() {
   };
 
   return (
-    <div className="flex flex-col justify-center p-5 rounded-lg shadow-lg container mx-auto">
+    <div className="flex flex-col justify-center gap-2 p-5 rounded-lg shadow-lg container mx-auto">
       <form></form>
-      <h1 className="text-2xl my-8">Kilpailun luominen</h1>
+      <h1 className="text-2xl my-2">Kilpailun luominen</h1>
       <p className="my-2">Kilpailun nimi</p>
       <Input
         id="competitionName"

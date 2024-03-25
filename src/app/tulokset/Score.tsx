@@ -38,7 +38,7 @@ const Score = ({ year, competitionResults }: ScoreProps) => {
 
   if (competitionResults !== null && competitionResults !== undefined) {
     return (
-      <div>
+      <div data-testid={`score-${year}`}>
         <div
           className={`flex items-center h-16 w-full bg-slate-200 rounded-lg shadow-md mb-2 cursor-pointer`}
           onClick={handleShowDivisions}
@@ -48,7 +48,7 @@ const Score = ({ year, competitionResults }: ScoreProps) => {
           </div>
           <h1 className='ml-2'>{year}</h1>
         </div>
-        <div className={hidden}>
+        <div data-testid={`score-child-2-${year}`} className={hidden}>
           {competitionResults.map((competition, index) => (
             <Competition
               key={index}

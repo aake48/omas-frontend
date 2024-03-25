@@ -17,15 +17,15 @@ export default function ScoreTypeSelectorContainer({
     }
     return (
         <div className=" grid mx-auto text-center container justify-center">
-            <div className=" w-full justify-around gap-20 flex p-5">
+            <div className=" w-full justify-around gap-7 flex p-5">
                 <Button
-                    className="border w-32 px-4 py-2 rounded-lg"
+                    className="border w-32 px-4 py-2 rounded-lg hover:bg-slate-100"
                     onClick={() => handleClick("round")}
                 >
                     Kierros
                 </Button>
                 <Button
-                    className="border px-4 py-2 rounded-lg"
+                    className="border px-4 py-2 rounded-lg hover:bg-slate-100"
                     onClick={() => handleClick("total")}
                 >
                     Kokonaistulos

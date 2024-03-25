@@ -1,15 +1,21 @@
 "use client";
 
+import { User } from "@/types/commonTypes";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 export function LoginButton({}) {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
+  const [user, setUser] = useState<User>();
 
   useEffect(() => {
     const checkLogin = () => {
       const token = localStorage.getItem("token");
-      setLoggedIn(token ? true : false);
+      let user: User = JSON.parse(localStorage.getItem("userInfo")!);
+        if (token) {
+          setLoggedIn(true);
+          setUser(user);
+        }
     };
     checkLogin();
     window.addEventListener("localStorageChange", checkLogin);
@@ -19,15 +25,18 @@ export function LoginButton({}) {
   }, []);
 
   return loggedIn ? (
-    <Link
-      className="flex gap-2 text-lg items-center border py-1 px-2 border-slate-400 rounded-lg"
-      href="/logout"
-    >
-      Kirjaudu ulos
-    </Link>
+    <div className="flex flex-col items-center gap-1">
+      <Link
+        className="flex gap-2 text-lg items-center border py-1 px-2 border-slate-400 hover:bg-slate-100 rounded-lg"
+        href="/logout"
+      >
+        Kirjaudu ulos
+      </Link>
+      <h1 className="text-sm">Käyttäjä: {user?.username}</h1>
+    </div>
   ) : (
     <Link
-      className="flex gap-2 text-lg items-center border py-1 px-2 border-slate-400 rounded-lg"
+      className="flex gap-2 text-lg items-center border py-1 px-2 border-slate-400 hover:bg-slate-100 rounded-lg"
       href="/kirjaudu"
     >
       <svg
