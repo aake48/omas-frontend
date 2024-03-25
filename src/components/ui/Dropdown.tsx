@@ -27,7 +27,7 @@ export default function Dropdown({
             value={selected ?? "none"}
             onChange={onChange}
         >
-            <option value="none" hidden disabled>
+            <option key={"default"} value="none" hidden disabled>
                 Valitse
             </option>
             {options.map((option) => (

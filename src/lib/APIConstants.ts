@@ -60,6 +60,9 @@ export const addTeamMemberURL: string =
 export const addScore: string =
   baseURL + "/api/competition/team/member/score/add";
 
+export const addScoreSum: string =
+  baseURL + "/api/competition/team/member/score/add/sum";
+
 export const getTeamsByCompetitionIdURL = (id: string) => {
   return `${baseURL}${comp}/teams/${id}`;
 };

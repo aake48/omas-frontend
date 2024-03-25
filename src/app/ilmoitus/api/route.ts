@@ -1,6 +1,6 @@
 "use server"
 
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import * as Q from '../../../lib/APIConstants'
 import * as https from 'https';
 import * as fs from 'fs';
@@ -21,24 +21,30 @@ interface ScorePostRequestBody {
   teamName: string;
   score: number;
   bullseyes: number;
+  image? : File;
 }
 
 export async function POST(request: NextRequest) {
   const requestBody: ScorePostRequestBody = await request.json();
-  // TODO: Add token
+
+  const authHeader = request.headers.get('Authorization');
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
 
   try {
     const response = await axios.post(
-      Q.addScore,
+      Q.addScoreSum,
       {
         competitionName: requestBody.competitionlist,
         teamName: requestBody.teamName,
-        scoreList: [requestBody.score, requestBody.bullseyes]
+        scoreList: requestBody.score,
+        bullsEyeCount: requestBody.bullseyes,
       },
       {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Content-Type": "application/json",
+          Authorization: authHeader,
+          "Content-Type": "multipart/form-data",
         },
         httpsAgent,
       }
@@ -46,6 +52,9 @@ export async function POST(request: NextRequest) {
     const data = response.data;
     return NextResponse.json(data);
   } catch (error) {
-    return NextResponse.json({ message: "Error adding score" }, { status: 500 });
+    if (error instanceof AxiosError) {
+      console.error(error.response?.status);
+      return NextResponse.json({ message: error.message }, { status: error.status });
+    }
   }
 }
