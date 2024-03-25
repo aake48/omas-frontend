@@ -19,7 +19,7 @@ export default function ScoreCard({
     const [success, setSuccess] = React.useState(false);
     const [message, setMessage] = React.useState<any | null>(null);
     const competitionNames = competitions.map(
-        (competition) => competition.nameNonId
+        (competition) => competition.displayName
     );
     return (
         <div>
