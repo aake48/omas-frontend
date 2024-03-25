@@ -3,19 +3,9 @@ import { LoginButton } from "./ui/LoginButton";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { headerLinks } from "@/lib/links";
-import { User } from "@/types/commonTypes";
 
 const Header: React.FC = () => {
     const [menuHidden, setMenuHidden] = useState("hidden");
-    const [user, setUser] = useState<User>();
-
-    useEffect(() => {
-        const token = localStorage.getItem("token");
-        let user: User = JSON.parse(localStorage.getItem("userInfo")!);
-        if (token) {
-            setUser(user);
-        }
-    }, [])
 
     const handleMenuOnClick = (state: boolean) => {
         !state ? setMenuHidden("block") : setMenuHidden("hidden");
@@ -40,10 +30,7 @@ const Header: React.FC = () => {
                             </Link>
                         ))}
                     </nav>
-                    <div className="flex flex-col items-center gap-1">
-                        <LoginButton />
-                        <h1 className="text-sm">Käyttäjä: {user?.username}</h1>
-                    </div>
+                    <LoginButton />
                 </div>
             </div>
             <div
