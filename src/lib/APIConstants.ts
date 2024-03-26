@@ -51,6 +51,10 @@ export const addClubURL: string = baseURL + "/api/auth/club/new";
 
 export const joinClubURL: string = baseURL + "/api/auth/club/join";
 
+export const getClubByIdURL = (id: string) => {
+  return `${baseURL}/api/club/${id}`;
+};
+
 export const addTeamToCompetitionURL: string =
   baseURL + "/api/competition/team/new";
 
