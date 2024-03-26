@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { loginURL } from "../../lib/APIConstants";
 import { useRouter } from "next/navigation";
 import { Form, Formik } from "formik";
@@ -33,10 +33,8 @@ export default function Login() {
             localStorage.setItem("userInfo", JSON.stringify(userInfo));
             window.dispatchEvent(new Event("localStorageChange"));
             router.push("/kilpailut");
-        } catch (error: any) {
-            if (error.response.data) {
-                console.log(error.response.data);
-            }
+        } catch (error) {
+                console.log(error);
         }
     };
 
