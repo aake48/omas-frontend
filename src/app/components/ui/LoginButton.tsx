@@ -11,8 +11,8 @@ export function LoginButton({}) {
   useEffect(() => {
     const checkLogin = () => {
       const token = localStorage.getItem("token");
-      let user: User = JSON.parse(localStorage.getItem("userInfo")!);
         if (token) {
+          let user: User = JSON.parse(localStorage.getItem("userInfo")!);
           setLoggedIn(true);
           setUser(user);
         }
