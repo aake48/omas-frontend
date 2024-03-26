@@ -5,10 +5,8 @@ import Input from "@/components/ui/Input";
 import {
   addTeamMemberURL,
   addTeamToCompetitionURL,
-  baseURL,
   getCompetitionByIdUrl,
-  getTeamMembersURL,
-  getTeamsByCompetitionIdURL,
+  getCompetitionInfoQueryURL,
 } from "@/lib/APIConstants";
 import { CompetitionResponse } from "@/types/commonTypes";
 import axios from "axios";
@@ -18,9 +16,12 @@ type TTeamMember = {
   userId: number;
   competitionId: string;
   teamName: string;
+  legalname: string;
 };
 
 type TTeam = {
+  clubName: string;
+  competitionId: string;
   teamName: string;
   teamDisplayName: string;
   teamMembers?: TTeamMember[];
@@ -37,95 +38,65 @@ export default function CompetitionPage(params: any) {
   const competitionId: string = params.params.slug;
   const [teams, setTeams] = useState<TTeam[]>([]);
 
+  const fetchCompetitionData = async (competitionId: string) => {
+    axios
+      .get(getCompetitionByIdUrl(competitionId), {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        setCompetition(res.data);
+      });
+  };
+
+  const fetchTeams = async (competitionId: string) => {
+    axios
+      // size=100 is a temporary solution to get all teams, to be able to find out if use is a member of any team
+      .get(getCompetitionInfoQueryURL(competitionId, 0, 100), {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        setTeams(res.data.content);
+      });
+  };
+
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const fetchCompetitionData = async (competitionId: string) => {
-        axios
-          .get(getCompetitionByIdUrl(competitionId), {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-              "Content-Type": "application/json",
-            },
-          })
-          .then((res) => {
-            setCompetition(res.data);
-          });
-      };
-
-      const fetchTeams = async (competitionId: string) => {
-        axios
-          .get(getTeamsByCompetitionIdURL(competitionId), {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-              "Content-Type": "application/json",
-            },
-          })
-          .then((res) => {
-            setTeams(res.data.teams);
-          });
-      };
-
       fetchCompetitionData(competitionId);
       fetchTeams(competitionId);
     }
   }, [competitionId]);
 
-  const fetchTeamMemberData = async (teamName: string) => {
-    axios
-      .get(getTeamMembersURL(teamName, competitionId), {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => {
-        if (res.status === 200) {
-          const teamIndex = teams.findIndex(
-            (team) => team.teamName === teamName
-          );
-          if (teamIndex !== -1) {
-            const tempTeams = [...teams];
-            tempTeams[teamIndex].teamMembers = res.data;
-            setTeams(tempTeams);
+  useEffect(() => {
+    const checkIfMember = async (userId: number) => {
+      teams.map((team) => {
+        team.teamMembers?.map((member) => {
+          if (member.userId === userId) {
+            console.log("osuu");
+            setIsMember(team.teamName);
           }
-        } else {
-          console.log(res);
-        }
+        });
       });
-  };
-
-  const checkIfMember = async (teamName: string) => {
-    const data = {
-      competitionId: competitionId,
-      teamName: teamName,
     };
-    await axios
-      .get(`${baseURL}/api/competition/team/member/isMember`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Content-Type": "application/json",
-        },
-        data: JSON.stringify(data),
-      })
-      .then((res) => {
-        if (res.status === 200) {
-          if (res.data === "true") {
-            setIsMember(teamName);
-          }
-        }
-      });
-  };
 
-  // useEffect(() => {
-  //   teams.map((team) => checkIfMember(team.teamName));
-  // }, [teams]);
+    const userInfo = JSON.parse(localStorage.getItem("userInfo") ?? "");
+    const userId: number = userInfo.userId ?? -1;
+    checkIfMember(userId);
+  }, [teams]);
 
-  const createTeam = async (teamName: string, competitionName: string) => {
-    if (teamName === "") return;
+  const createTeam = async (teamName: string) => {
+    const trimmedTeamName = teamName.trim();
+    if (trimmedTeamName === "") return;
 
     const response = await axios.post(
       addTeamToCompetitionURL,
-      { teamName, competitionName },
+      { teamName: trimmedTeamName, competitionName: competitionId },
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -134,17 +105,19 @@ export default function CompetitionPage(params: any) {
       }
     );
     if (response.status === 200) {
-      setInfo(`Loit joukkueen ${teamName} kilpailuun ${competitionName}`);
+      setInfo(`Loit joukkueen ${trimmedTeamName} kilpailuun ${competitionId}`);
       setNewTeamName("");
+      fetchTeams(competitionId);
     } else {
       console.log(response);
     }
   };
 
-  const joinTeam = async (teamName: string, competitionName: string) => {
+  const joinTeam = async (teamName: string) => {
+    const trimmedTeamName = teamName.trim();
     const response = await axios.post(
       addTeamMemberURL,
-      { teamName, competitionName },
+      { teamName: trimmedTeamName, competitionName: competitionId },
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -153,10 +126,11 @@ export default function CompetitionPage(params: any) {
       }
     );
     if (response.status === 200) {
-      setIsMember(teamName);
+      setIsMember(trimmedTeamName);
       setInfo(
-        `Liityit joukkueeseen ${teamName} kilpailussa ${competitionName}`
+        `Liityit joukkueeseen ${trimmedTeamName}\nkilpailussa ${competitionId}.`
       );
+      fetchTeams(competitionId);
     } else {
       console.log(response);
     }
@@ -181,10 +155,7 @@ export default function CompetitionPage(params: any) {
             {teams.map((team, index) => (
               <div
                 key={index}
-                className="flex flex-col cursor-pointer border-2 px-2 my-1 rounded-md hover:bg-slate-100"
-                onClick={() => {
-                  fetchTeamMemberData(team.teamName);
-                }}
+                className="flex flex-col cursor-pointer border-2 px-2 pb-2 my-1 rounded-md hover:bg-slate-100"
               >
                 <div className="flex flex-row items-baseline my-2">
                   <p>{team.teamDisplayName}</p>
@@ -192,9 +163,7 @@ export default function CompetitionPage(params: any) {
                   <Button
                     variant="outline"
                     className="hover:bg-slate-100 mx-2 ml-auto"
-                    onClick={() =>
-                      joinTeam(team.teamName, competition.competitionId)
-                    }
+                    onClick={() => joinTeam(team.teamName)}
                     disabled={isMember !== ""}
                   >
                     Liity joukkueeseen
@@ -203,8 +172,7 @@ export default function CompetitionPage(params: any) {
                 {team.teamMembers && team.teamMembers.length > 0 ? (
                   <div>
                     {team.teamMembers.map((member, index) => {
-                      console.log("tapahtuu");
-                      return <p key={index}>{member.userId}</p>;
+                      return <p key={index}>{member.legalname}</p>;
                     })}
                   </div>
                 ) : null}
@@ -225,12 +193,12 @@ export default function CompetitionPage(params: any) {
           <Button
             variant="outline"
             className="hover:bg-slate-100 mx-2"
-            onClick={() => createTeam(newTeamName, competition.competitionId)}
+            onClick={() => createTeam(newTeamName)}
             disabled={isMember !== ""}
           >
             Luo joukkue
           </Button>
-          <p>{info ? info : null}</p>
+          <p className="whitespace-pre">{info ? info : null}</p>
         </div>
       )}
     </div>

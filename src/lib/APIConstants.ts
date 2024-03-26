@@ -71,6 +71,14 @@ export const getTeamsByCompetitionIdURL = (id: string) => {
   return `${baseURL}${comp}/teams/${id}`;
 };
 
+export const getCompetitionInfoQueryURL = (
+  id: string,
+  page: number = 0,
+  size: number = 10
+) => {
+  return `${baseURL}${comp}/teams?search=${id}&page=${page}&size=${size}`;
+};
+
 export const getTeamMembersURL = (teamName: string, competitionId: string) => {
   return `${baseURL}${comp}/team?team=${teamName}&competition=${competitionId}`;
 };
