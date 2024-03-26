@@ -3,12 +3,45 @@ import { LoginButton } from "./ui/LoginButton";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { headerLinks } from "@/lib/links";
+import { User } from "@/types/commonTypes";
 
 const Header: React.FC = () => {
     const [menuHidden, setMenuHidden] = useState("hidden");
+    const [loggedIn, setLoggedIn] = useState<boolean>(false);
+    const [adminLoggedIn, setAdminLoggedIn] = useState<boolean>(false);
+    const [user, setUser] = useState<User>();
+  
 
     const handleMenuOnClick = (state: boolean) => {
         !state ? setMenuHidden("block") : setMenuHidden("hidden");
+    }
+
+    useEffect(() => {
+      const checkLogin = () => {
+        const token = localStorage.getItem("token");
+        let user: User = JSON.parse(localStorage.getItem("userInfo")!);
+          if (token) {
+            setLoggedIn(true);
+            setUser(user);
+            if (user.roles.includes("ROLE_ADMIN")) {
+                setAdminLoggedIn(true);
+            }
+          }
+      };
+      checkLogin();
+      window.addEventListener("localStorageChange", checkLogin);
+      return () => {
+        window.removeEventListener("localStorageChange", checkLogin);
+      };
+    }, []);
+
+    let newHeaderLinks = [...headerLinks];
+
+    if (adminLoggedIn) {
+        newHeaderLinks.push({
+            href: "/admin",
+            text: "Pääkäyttäjänäkymä"
+        })
     }
 
     return (
@@ -24,13 +57,13 @@ const Header: React.FC = () => {
                         OMAS
                     </Link>
                     <nav className="hidden sm:flex sm:gap-2 md:gap-5 items-center">
-                        {headerLinks.map((link, index) => (
+                        {newHeaderLinks.map((link, index) => (
                             <Link key={index} href={link.href}>
                                 {link.text}
                             </Link>
                         ))}
                     </nav>
-                    <LoginButton />
+                    <LoginButton user={user!}/>
                 </div>
             </div>
             <div
@@ -46,7 +79,7 @@ const Header: React.FC = () => {
                     <Link className="text-3xl" href="/">
                         Etusivu
                     </Link>
-                    {headerLinks.map((link, index) => (
+                    {newHeaderLinks.map((link, index) => (
                         <Link key={index} href={link.href}>
                             {link.text}
                         </Link>
