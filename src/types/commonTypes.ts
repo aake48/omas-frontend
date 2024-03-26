@@ -144,6 +144,22 @@ export type QueryCompetition = {
   empty: boolean;
 };
 
+/**
+ * get competition data /api/admin/user/query?...
+ */
+export type AdminQueryUser = {
+  content: User[] | null;
+  pageable: Pageable;
+  last: boolean; // isLastPage
+  totalElements: number; // how many element are there in the DB
+  totalPages: number; // how many pages are there wi
+  size: number;
+  first: true;
+  number: number;
+  numberOfElements: number; //in this page
+  empty: boolean;
+};
+
 export type Pageable = {
   pageNumber: number; // current page
   pageSize: number; // current page size

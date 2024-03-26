@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { CompetitionResponse, QueryCompetition, competitionResults } from '@/types/commonTypes';
 import fetchData from '@/lib/get';
 import Score from './Score';
-import Paginator from './Paginator';
+import Paginator from '../components/Paginator';
 import { groupBy } from 'lodash';
 import { getCompetitionsQueryUrl } from '@/lib/APIConstants';
 
