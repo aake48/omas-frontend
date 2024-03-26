@@ -25,8 +25,8 @@ export default function RegisterForm() {
 
   const [errorMessage, setErrorMessage] = useState<string>("");
 
-  const postRegister = async (values : any) => {
-    console.log(values)
+  const postRegister = async (values: any) => {
+    console.log(values);
     setErrorMessage("");
     const payload = values;
     try {
@@ -71,78 +71,76 @@ export default function RegisterForm() {
     }
   };
 
-    return (
-        <Formik
-            id="registerForm"
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={(values, { setSubmitting }) => {
-                setSubmitting(true);
-                postRegister(values);
-                setSubmitting(false);
-            }}
+  return (
+    <Formik
+      id="registerForm"
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={(values, { setSubmitting }) => {
+        setSubmitting(true);
+        postRegister(values);
+        setSubmitting(false);
+      }}
+    >
+      <Form>
+        <div
+          hidden={!errorMessage}
+          className="text-center mx-auto mt-2 text-red-500"
         >
-            <Form>
-                <div
-                    hidden={!errorMessage}
-                    className="text-center mx-auto mt-2 text-red-500"
-                >
-                    <p>{errorMessage}</p>
-                </div>
-                <div className="container shadow-lg p-5 mx-auto max-w-lg">
-                    <div className="text-center pb-0">
-                        <h1 className="text-3xl my-2 font-bold">
-                            Rekisteröidy
-                        </h1>
-                        <p>Syötä vaadittavat tiedot</p>
-                    </div>
-                    <div className="grid gap-6 p-6">
-                        <CustomInput
-                            label="Sähköposti"
-                            name="email"
-                            type="email"
-                            placeholder="Sähköposti"
-                        />
-                        <CustomInput
-                            label="Nimi"
-                            name="name"
-                            type="text"
-                            placeholder="Nimi"
-                        />
-                        <CustomInput
-                            label="Käyttäjätunnus"
-                            name="username"
-                            placeholder="Käyttäjätunnus"
-                            type="text"
-                        />
-                        <CustomInput
-                            label="Salasana"
-                            name="password"
-                            type="password"
-                            placeholder="Salasana"
-                        />
-                        <CustomInput
-                            label="Salasana uudelleen"
-                            name="passrepeat"
-                            type="password"
-                            placeholder="Salasana uudelleen"
-                        />
-                        <Button
-                            variant={"outline"}
-                            size={"lg"}
-                            className="mx-auto text-xl hover:bg-slate-100"
-                            type="submit"
-                        >
-                            Rekisteröidy
-                        </Button>
-                    </div>
-                    <div className="text-center grid gap-5 pt-0">
-                        <Link className="text-sm underline" href="/kirjaudu">
-                            Onko sinulla jo tili? Kirjaudu
-                        </Link>
-                    </div>
-                </div>
-            </Form>
-        </Formik>
-    );
+          <p>{errorMessage}</p>
+        </div>
+        <div className="container shadow-lg p-5 mx-auto max-w-lg">
+          <div className="text-center pb-0">
+            <h1 className="text-3xl my-2 font-bold">Rekisteröidy</h1>
+            <p>Syötä vaadittavat tiedot</p>
+          </div>
+          <div className="grid gap-6 p-6">
+            <CustomInput
+              label="Sähköposti"
+              name="email"
+              type="email"
+              placeholder="Sähköposti"
+            />
+            <CustomInput
+              label="Nimi"
+              name="name"
+              type="text"
+              placeholder="Nimi"
+            />
+            <CustomInput
+              label="Käyttäjätunnus"
+              name="username"
+              placeholder="Käyttäjätunnus"
+              type="text"
+            />
+            <CustomInput
+              label="Salasana"
+              name="password"
+              type="password"
+              placeholder="Salasana"
+            />
+            <CustomInput
+              label="Salasana uudelleen"
+              name="passrepeat"
+              type="password"
+              placeholder="Salasana uudelleen"
+            />
+            <Button
+              variant={"outline"}
+              size={"lg"}
+              className="mx-auto text-xl hover:bg-slate-100"
+              type="submit"
+            >
+              Rekisteröidy
+            </Button>
+          </div>
+          <div className="text-center grid gap-5 pt-0">
+            <Link className="text-sm underline" href="/kirjaudu">
+              Onko sinulla jo tili? Kirjaudu
+            </Link>
+          </div>
+        </div>
+      </Form>
+    </Formik>
+  );
 }
