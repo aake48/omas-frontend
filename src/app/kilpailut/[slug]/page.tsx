@@ -155,7 +155,9 @@ export default function CompetitionPage(params: any) {
             {teams.map((team, index) => (
               <div
                 key={index}
-                className="flex flex-col cursor-pointer border-2 px-2 pb-2 my-1 rounded-md hover:bg-slate-100"
+                className={`flex flex-col cursor-pointer border-2 px-2 pb-2 my-1 rounded-md ${
+                  isMember === team.teamName ? "bg-slate-200" : null
+                }`}
               >
                 <div className="flex flex-row items-baseline my-2">
                   <p>{team.teamDisplayName}</p>
@@ -166,7 +168,9 @@ export default function CompetitionPage(params: any) {
                     onClick={() => joinTeam(team.teamName)}
                     disabled={isMember !== ""}
                   >
-                    Liity joukkueeseen
+                    {isMember !== team.teamName
+                      ? "Liity joukkueeseen"
+                      : "Olet joukkueessa"}
                   </Button>
                 </div>
                 {team.teamMembers && team.teamMembers.length > 0 ? (
