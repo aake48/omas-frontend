@@ -61,7 +61,6 @@ export default function CompetitionPage(params: any) {
         },
       })
       .then((res) => {
-        console.log(res);
         setTeams(res.data.content);
       });
   };
@@ -78,7 +77,6 @@ export default function CompetitionPage(params: any) {
       teams.map((team) => {
         team.teamMembers?.map((member) => {
           if (member.userId === userId) {
-            console.log("osuu");
             setIsMember(team.teamName);
           }
         });
@@ -141,7 +139,7 @@ export default function CompetitionPage(params: any) {
       {competition === null ? (
         <p>Loading...</p>
       ) : (
-        <div className="flex flex-col p-10 gap-3 shadow-lg">
+        <div className="flex flex-col p-10 gap-3 shadow-lg min-w-96">
           <p className="text-3xl">{competition.displayName}</p>
           <p>
             Tyyppi:{" "}
