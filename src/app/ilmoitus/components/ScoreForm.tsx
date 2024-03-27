@@ -6,6 +6,11 @@ import Dropdown from "@/components/ui/Dropdown";
 import { CompetitionResponse, ScoreType } from "@/types/commonTypes";
 import UploadFile from "./UploadFile";
 
+interface PostReturn {
+    message: string;
+    status: number;
+}
+
 export default function ScoreCard({
     scoreType,
     competitions,
@@ -13,24 +18,25 @@ export default function ScoreCard({
     scoreType: ScoreType;
     competitions: CompetitionResponse[];
 }) {
+    const userInfo = localStorage.getItem("userInfo")
+    const teamName = userInfo ? JSON.parse(userInfo).club : null;
     const round = { bullseyes: 10, score: 10.9 };
     const total = { bullseyes: 60, score: 520 };
     const scoreValue = scoreType === "round" ? round : total;
-    const [success, setSuccess] = React.useState(false);
-    const [message, setMessage] = React.useState<any | null>(null);
+    const [message, setMessage] = React.useState<PostReturn | null>(null);
     const competitionNames = competitions.map(
         (competition) => competition.displayName
     );
     return (
         <div>
-            {message && <div>{message.toString()}</div>}
+            {message && <div className={`grid justify-center text-2xl ${message.status === 200 ? ' text-green-500' : 'text-red-500' }`}>{message.message}</div>}
             <Formik
                 id="scoreCardForm"
                 initialValues={{
-                    competitionlist: "none",
+                    competitionName: "none",
+                    bullseyes: "",
                     // name: "",
                     score: "",
-                    bullseyes: "",
                 }}
                 validationSchema={
                     scoreType === "round"
@@ -38,31 +44,29 @@ export default function ScoreCard({
                         : fullCompValidationSchema
                 }
                 onSubmit={(values, { setSubmitting, resetForm }) => {
+                    const request = { ...values, teamName: teamName };
                     fetch("ilmoitus/api", {
                         method: "POST",
                         headers: {
                             "Content-Type": "multipart/form-data",
                             "Authorization": "Bearer " + localStorage.getItem("token"),
                         },
-                        body: JSON.stringify(values),
+                        body: JSON.stringify(request),
                         
                     })
                         .then((response) => response.json())
                         .then((response) => {
                             setSubmitting(false);
                             resetForm();
-                            setMessage(response.message);
-                            setSuccess(true);
-                            setTimeout(() => {
-                                setSuccess(false);
-                            }, 3000);
+                            response.status === 200 ? setMessage( { message: "Ilmoitus lähetetty", status: response.status} ) : setMessage( {message:"Ilmoituksen lähetys epäonnistui", status: response.status} );
+
                         })
                 }}
             >
                 <Form className=" my-5 w-full justify-around gap-5 grid p-5">
                     <div className="grid gap-2">
                         <label className="text-xl font-light">Kilpailu</label>
-                        <Field name="competitionlist">
+                        <Field name="competitionName">
                             {({ field, form }: any) => (
                                 <div className="grid">
                                     <Dropdown
@@ -77,8 +81,8 @@ export default function ScoreCard({
                                             );
                                         }}
                                     />
-                                    {form.errors.competitionlist && form.touched ? (
-                                        <div className="text-red-500 w-fit p-1 bg-red-100 rounded-b-md translate-x-1">{form.errors.competitionlist}</div>
+                                    {form.errors.competitionName && form.touched ? (
+                                        <div className="text-red-500 w-fit p-1 bg-red-100 rounded-b-md translate-x-1">{form.errors.competitionName}</div>
                                     ) : null}
                                 </div>
 
