@@ -12,7 +12,7 @@ function isValidFileType(fileName: any, fileType: FileType) {
 
 
 export const roundValidationSchema = Yup.object().shape({
-    competitionlist: Yup.string()
+    competitionName: Yup.string()
         .required('Kilpailu on pakollinen')
         .notOneOf(['none'], 'Kilpailu on pakollinen')
         .default('none'),
@@ -37,7 +37,7 @@ export const roundValidationSchema = Yup.object().shape({
 });
 
 export const fullCompValidationSchema = Yup.object().shape({
-    competitionlist: Yup.string()
+    competitionName: Yup.string()
         .required('Kilpailu on pakollinen')
         .notOneOf(['none'], 'Kilpailu on pakollinen')
         .default('none'),
