@@ -98,15 +98,11 @@ export default function RegisterForm() {
 
           if (userInfo.club === null) {
             try {
-              addClub();
+              addClub().then(() => {
+                joinClub();
+              });
             } catch (error) {
               console.log(error);
-            } finally {
-              try {
-                joinClub();
-              } catch (error) {
-                console.log(error);
-              }
             }
           }
           // For demo purposes ends here
