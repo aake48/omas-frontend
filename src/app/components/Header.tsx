@@ -3,13 +3,33 @@ import { LoginButton } from "./ui/LoginButton";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { headerLinks } from "@/lib/links";
+import { User } from "@/types/commonTypes";
 
 const Header: React.FC = () => {
     const [menuHidden, setMenuHidden] = useState("hidden");
+    const [loggedIn, setLoggedIn] = useState<boolean>(false);
+    const [user, setUser] = useState<User>();
+  
 
     const handleMenuOnClick = (state: boolean) => {
         !state ? setMenuHidden("block") : setMenuHidden("hidden");
     }
+
+    useEffect(() => {
+      const checkLogin = () => {
+        const token = localStorage.getItem("token");
+        let user: User = JSON.parse(localStorage.getItem("userInfo")!);
+          if (token) {
+            setLoggedIn(true);
+            setUser(user);
+          }
+      };
+      checkLogin();
+      window.addEventListener("localStorageChange", checkLogin);
+      return () => {
+        window.removeEventListener("localStorageChange", checkLogin);
+      };
+    }, []);
 
     return (
         <header>
@@ -30,7 +50,7 @@ const Header: React.FC = () => {
                             </Link>
                         ))}
                     </nav>
-                    <LoginButton />
+                    <LoginButton user={user!} />
                 </div>
             </div>
             <div
