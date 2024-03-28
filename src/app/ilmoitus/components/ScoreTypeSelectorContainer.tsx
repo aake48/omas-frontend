@@ -16,21 +16,19 @@ export default function ScoreTypeSelectorContainer({
         onScoreTypeChange(scoreType);
     }
     return (
-        <div className=" grid mx-auto text-center container justify-center">
-            <div className=" w-full justify-around gap-7 flex p-5">
-                <Button
-                    className="border w-32 px-4 py-2 rounded-lg hover:bg-slate-100"
-                    onClick={() => handleClick("round")}
-                >
-                    Kierros
-                </Button>
-                <Button
-                    className="border px-4 py-2 rounded-lg hover:bg-slate-100"
-                    onClick={() => handleClick("total")}
-                >
-                    Kokonaistulos
-                </Button>
-            </div>
+        <div className=" w-full justify-around gap-7 flex p-2 md:p-5">
+            <Button
+                className="border w-32 px-4 py-2 rounded-lg hover:bg-slate-100"
+                onClick={() => handleClick("round")}
+            >
+                Kierros
+            </Button>
+            <Button
+                className="border px-4 py-2 rounded-lg hover:bg-slate-100"
+                onClick={() => handleClick("total")}
+            >
+                Kokonaistulos
+            </Button>
         </div>
     );
 }
