@@ -9,20 +9,28 @@ interface UserProps {
 }
 
 const User = ({ user }: UserProps) => {
-    const [club, setClub] = useState("ei seuraa");
     const [message, setMessage] = useState("");
+    // const [club, setClub] = useState("ei seuraa");
 
-    if (user.club !== null) {
-        setClub(user.club);
-    }
+    // if (user.club !== null) {
+    //     setClub(user.club);
+    // }
+    
+    if (user.username === "admin") return;
 
     const handleSubmit = async (data: FormData) => {
         const role = data.get("role");
         if (data.get("promote")) {
             try {
                 const res = await axios.post(getAdminPromoteUserUrl(), {
-                    userId: user.userId,
-                    role: role,
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: {
+                        userId: user.id,
+                        role: role,
+                    }
                 });
 
                 if (res.status !== 200) {
@@ -37,12 +45,18 @@ const User = ({ user }: UserProps) => {
         } else {
             try {
                 const res = await axios.post(getAdminDemoteUserUrl(), {
-                    userId: user.userId,
-                    role: role,
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: {
+                        userId: user.id,
+                        role: role,
+                    }
                 });
 
                 if (res.status !== 200) {
-                    setMessage("roolin lisääminen onnistui");
+                    setMessage("roolin poistamisessa onnistui");
                 } else {
                     setMessage("Virhe roolin poistamisessa");
                 }
@@ -56,17 +70,17 @@ const User = ({ user }: UserProps) => {
     return (
         <div className="items-center gap-2 w-full border-solid border border-slate-300 rounded-lg shadow-md cursor-pointer">
             <div className='px-4 p-2 block rounded-lg'>
-                <h1>{`id: ${user.userId}`}</h1>
+                <h1>{`id: ${user.id}`}</h1>
                 <h1>{`käyttäjänimi: ${user.username}`}</h1>
-                <h1>{`nimi: ${user.legalName}`}</h1>
+                <h1>{`nimi: ${user.legalname}`}</h1>
                 <h1>{`sähköposti: ${user.email}`}</h1>
                 <h1>{`luontipäivä: ${user.creationDate}`}</h1>
-                <h1>{`seura: ${club}`}</h1>
+                <h1>{`seura: ${user.partOfClub}`}</h1>
                 <h1>roolit:</h1>
                 <div className='flex flex-row gap-2'>
-                    {user.roles.map((role, index) => (
+                    {/* {user.roles.length !== 0 && user.roles.map((role, index) => (
                         <p key={index}>{role}</p>
-                    ))}
+                    ))} */}
                 </div>
             </div>
             <div className='px-4 p-2'>

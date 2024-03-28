@@ -1,14 +1,14 @@
 'use client';
-import fetchData from "@/lib/get";
 import { getAdminUserQueryUrl } from "@/lib/APIConstants";
 import { AdminQueryUser, User as UserType } from '@/types/commonTypes';
 import React, { useEffect, useState } from "react";
 import Paginator from "../components/Paginator";
-import User from "./User";
 import Input from "@/components/ui/Input";
 import { testDataAdminViewUsers } from '@/lib/constants';
+import axios from "axios";
+import Users from "./Users";
 
-const Admin = () => {
+const UsersMain = () => {
     const [user, setUser] = useState<UserType>();
     const [adminLogin, setAdminLogin] = useState(false);
     const [data, setData] = useState<AdminQueryUser>();
@@ -17,17 +17,33 @@ const Admin = () => {
 
     let apiUrl = getAdminUserQueryUrl(search, pageNumber, 10);
 
-    const checkAdminLogin = () => {
-        let user: UserType = JSON.parse(localStorage.getItem("userInfo")!);
-        if (user.roles.includes("ROLE_ADMIN")) {
-            setAdminLogin(true);
-            setUser(user);
+    const checkAdminLogin = async () => {
+        try {
+            let user: UserType = JSON.parse(localStorage.getItem("userInfo")!);
+            if (user.roles.includes("ROLE_ADMIN")) {
+                setAdminLogin(true);
+                setUser(user);
+                fetchUsers();
+            }
+        } catch (e: any) {
+            console.log(e);
         }
     }
 
     const fetchUsers = async () => {
-        const data: any = await fetchData(apiUrl);
-        setData(data);
+        try {
+            console.log(apiUrl);
+            const res = await axios.get(apiUrl, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            console.log(res);
+            setData(res.data);
+        } catch (e: any) {
+            console.error(e);
+        }
     }
 
     const handlePageNumberChange = (page: number) => {
@@ -38,7 +54,6 @@ const Admin = () => {
 
     useEffect(() => {
         checkAdminLogin();
-        fetchUsers();
     }, [pageNumber, search]);
 
     if (!adminLogin) return (
@@ -54,25 +69,25 @@ const Admin = () => {
     )
 
     return (
-        <main className="flex min-h-screen flex-col items-center p-4 gap-2">
-            <h1>admin logged in</h1>
-            <Input
-                id="search"
-                placeholder="Hae käyttäjää"
-                type="text"
-                onChange={(e) => setSearch(e.target.value)}
-                required={false}
-            />
-            {data.content && data.content.map((user: UserType) => (
-                <User user={user} key={user.userId} />
-            ))}
+        <div className="flex min-h-screen w-full flex-col items-center p-4 gap-2">
+            <div className="flex flex-col items-center gap-8">
+                <Input
+                    id="search"
+                    placeholder="Hae käyttäjää"
+                    type="text"
+                    onChange={(e) => setSearch(e.target.value)}
+                    required={false}
+                />
+                <p className="text-md">Muista mennä ensimmäiselle sivulle, ennen kuin etsit</p>
+            </div>
             <Paginator
                 pageNumber={pageNumber}
                 totalPages={data.totalPages}
                 handlePageNumberChange={handlePageNumberChange}
             />
-        </main>
+            <Users data={data} />
+        </div>
     )
 }
 
-export default Admin;
+export default UsersMain;

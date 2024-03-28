@@ -7,10 +7,9 @@ import { User } from "@/types/commonTypes";
 
 const Header: React.FC = () => {
     const [menuHidden, setMenuHidden] = useState("hidden");
-    const [loggedIn, setLoggedIn] = useState<boolean>(false);
+    const [adminLoggedIn, setAdminLoggedIn] = useState<boolean>(false);
     const [user, setUser] = useState<User>();
   
-
     const handleMenuOnClick = (state: boolean) => {
         !state ? setMenuHidden("block") : setMenuHidden("hidden");
     }
@@ -18,9 +17,9 @@ const Header: React.FC = () => {
     useEffect(() => {
       const checkLogin = () => {
         const token = localStorage.getItem("token");
-        let user: User = JSON.parse(localStorage.getItem("userInfo")!);
           if (token) {
-            setLoggedIn(true);
+            let user: User = JSON.parse(localStorage.getItem("userInfo")!);
+            if (user.roles.includes("ROLE_ADMIN")) setAdminLoggedIn(true);
             setUser(user);
           }
       };
@@ -30,6 +29,14 @@ const Header: React.FC = () => {
         window.removeEventListener("localStorageChange", checkLogin);
       };
     }, []);
+
+    let newHeaderLinks = [...headerLinks];
+    if (adminLoggedIn) {
+        newHeaderLinks.push({
+            href: "/admin",
+            text: "Pääkäyttäjänäkymä"
+        });
+    }
 
     return (
         <header>
@@ -44,7 +51,7 @@ const Header: React.FC = () => {
                         OMAS
                     </Link>
                     <nav className="hidden sm:flex sm:gap-2 md:gap-5 items-center">
-                        {headerLinks.map((link, index) => (
+                        {newHeaderLinks.map((link, index) => (
                             <Link key={index} href={link.href}>
                                 {link.text}
                             </Link>
@@ -66,7 +73,7 @@ const Header: React.FC = () => {
                     <Link className="text-3xl" href="/">
                         Etusivu
                     </Link>
-                    {headerLinks.map((link, index) => (
+                    {newHeaderLinks.map((link, index) => (
                         <Link key={index} href={link.href}>
                             {link.text}
                         </Link>
