@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { loginURL } from "../../lib/APIConstants";
 import { useRouter } from "next/navigation";
 import { Form, Formik } from "formik";
