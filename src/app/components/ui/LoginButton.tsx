@@ -4,17 +4,19 @@ import { User } from "@/types/commonTypes";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-export function LoginButton({}) {
+interface LoginProps {
+  user: User
+}
+
+export function LoginButton({ user }: LoginProps) {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
-  const [user, setUser] = useState<User>();
 
   useEffect(() => {
     const checkLogin = () => {
       const token = localStorage.getItem("token");
-      let user: User = JSON.parse(localStorage.getItem("userInfo")!);
         if (token) {
+          let user: User = JSON.parse(localStorage.getItem("userInfo")!);
           setLoggedIn(true);
-          setUser(user);
         }
     };
     checkLogin();

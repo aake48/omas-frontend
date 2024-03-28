@@ -19,7 +19,7 @@ export default function SeasonComponent() {
                     <Link href="#">Sarjakilpailun säännöt</Link>
                 </Button>
                 <Button variant="outline" className="hover:bg-slate-100">
-                    <Link href="/joukkueet">Ilmoita joukkue</Link>
+                    <Link href="/kilpailut">Ilmoita joukkue</Link>
                 </Button>
             </div>
         </div>

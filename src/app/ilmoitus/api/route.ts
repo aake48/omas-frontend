@@ -17,7 +17,7 @@ const httpsAgent = new https.Agent({
 
 
 interface ScorePostRequestBody {
-  competitionlist: string;
+  competitionName: string;
   teamName: string;
   score: number;
   bullseyes: number;
@@ -36,25 +36,25 @@ export async function POST(request: NextRequest) {
     const response = await axios.post(
       Q.addScoreSum,
       {
-        competitionName: requestBody.competitionlist,
-        teamName: requestBody.teamName,
-        scoreList: requestBody.score,
+        competitionName: requestBody.competitionName,
+        // teamName: requestBody.teamName,
+        teamName: "Poliisi_seura",
+        score: requestBody.score,
         bullsEyeCount: requestBody.bullseyes,
       },
       {
         headers: {
           Authorization: authHeader,
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
         },
         httpsAgent,
       }
     );
-    const data = response.data;
-    return NextResponse.json(data);
+    return NextResponse.json({ status: response.status });
   } catch (error) {
     if (error instanceof AxiosError) {
-      console.error(error.response?.status);
-      return NextResponse.json({ message: error.message }, { status: error.status });
+      console.error(error.response!.data);
+      return NextResponse.json({ message: error.response!.data }, { status: error.status });
     }
   }
 }
