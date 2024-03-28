@@ -16,7 +16,7 @@ export default function ScoreTypeSelectorContainer({
         onScoreTypeChange(scoreType);
     }
     return (
-        <div className=" w-full justify-around gap-7 flex p-2 md:p-5">
+        <div className=" justify-around gap-16 flex p-2">
             <Button
                 className="border w-32 px-4 py-2 rounded-lg hover:bg-slate-100"
                 onClick={() => handleClick("round")}
