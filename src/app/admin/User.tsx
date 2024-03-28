@@ -22,19 +22,22 @@ const User = ({ user }: UserProps) => {
         const role = data.get("role");
         if (data.get("promote")) {
             try {
-                const res = await axios.post(getAdminPromoteUserUrl(), {
+                const res = await axios({
+                    method: 'post',
+                    url: getAdminPromoteUserUrl(),
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem("token")}`,
                         'Content-Type': 'application/json'
                     },
-                    body: {
+                    data: {
                         userId: user.id,
                         role: role,
                     }
                 });
+                console.log(res);
 
-                if (res.status !== 200) {
-                    setMessage("roolin lisääminen onnistui");
+                if (res.status === 200) {
+                    setMessage("Roolin lisääminen onnistui");
                 } else {
                     setMessage("Virhe roolin lisäämisessä");
                 }
@@ -44,19 +47,21 @@ const User = ({ user }: UserProps) => {
             }
         } else {
             try {
-                const res = await axios.post(getAdminDemoteUserUrl(), {
+                const res = await axios({
+                    method: 'post',
+                    url: getAdminDemoteUserUrl(),
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem("token")}`,
                         'Content-Type': 'application/json'
                     },
-                    body: {
+                    data: {
                         userId: user.id,
                         role: role,
                     }
                 });
 
-                if (res.status !== 200) {
-                    setMessage("roolin poistamisessa onnistui");
+                if (res.status === 200) {
+                    setMessage("Roolin poistaminen onnistui");
                 } else {
                     setMessage("Virhe roolin poistamisessa");
                 }

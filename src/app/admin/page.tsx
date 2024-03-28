@@ -29,11 +29,12 @@ export default function page() {
     return (
         <main className="min-h-screen w-full p-4 gap-2">
             <div className="flex flex-row gap-2">
-                {adminFeatures.map(feature => (
+                {adminFeatures.map((feature: any, index: number) => (
                     <Button
                         onClick={() => handleFeatureClick(feature.type)}
                         variant="outline"
                         className="hover:bg-slate-100"
+                        key={index}
                     >
                         {feature.text}
                     </Button>

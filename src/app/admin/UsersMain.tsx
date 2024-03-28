@@ -39,7 +39,6 @@ const UsersMain = () => {
                     'Content-Type': 'application/json'
                 }
             });
-            console.log(res);
             setData(res.data);
         } catch (e: any) {
             console.error(e);
