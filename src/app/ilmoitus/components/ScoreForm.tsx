@@ -5,6 +5,7 @@ import Custominput from "@/components/ui/CustomInput";
 import Dropdown from "@/components/ui/Dropdown";
 import { CompetitionResponse, ScoreType } from "@/types/commonTypes";
 import UploadFile from "./UploadFile";
+import Notification from "@/components/component/Notification";
 
 interface PostReturn {
     message: string;
@@ -29,7 +30,8 @@ export default function ScoreCard({
     );
     return (
         <div>
-            {message && <div className={`grid justify-center text-2xl ${message.status === 200 ? ' text-green-500' : 'text-red-500' }`}>{message.message}</div>}
+            {message && <Notification message={message.message + ' : ' + new Date().toLocaleTimeString()} type={message.status === 200 ? 'success' : 'error'} /> }
+            
             <Formik
                 id="scoreCardForm"
                 initialValues={{
@@ -63,9 +65,9 @@ export default function ScoreCard({
                         })
                 }}
             >
-                <Form className=" my-5 w-full justify-around gap-5 grid p-5">
+                <Form className=" md:my-5 w-full justify-around gap-2 md:gap-5 grid p-5">
                     <div className="grid gap-2">
-                        <label className="text-xl font-light">Kilpailu</label>
+                        <label className="md:text-xl font-light">Kilpailu</label>
                         <Field name="competitionName">
                             {({ field, form }: any) => (
                                 <div className="grid">
