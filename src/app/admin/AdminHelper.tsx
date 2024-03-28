@@ -1,5 +1,6 @@
 import { AdminViewType } from '@/types/commonTypes';
 import UsersMain from "./UsersMain";
+import CreateClub from './CreateClub';
 
 interface AdminHelperProps {
     type: AdminViewType
@@ -16,9 +17,7 @@ const AdminHelper = ({ type }: AdminHelperProps) => {
             )
         case AdminViewType.CreateClub:
             return (
-                <div>
-                    
-                </div>
+                <CreateClub />
             )
         default:
             return (

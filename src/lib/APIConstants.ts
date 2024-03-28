@@ -98,3 +98,7 @@ export const getAdminPromoteUserUrl = () => {
 export const getAdminDemoteUserUrl = () => {
   return `${baseURL}/api/admin/demote`;
 }
+
+export const getAdminDeleteUserUrl = () => {
+  return `${baseURL}/api/admin/delete`;
+}

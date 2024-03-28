@@ -32,7 +32,6 @@ const UsersMain = () => {
 
     const fetchUsers = async () => {
         try {
-            console.log(apiUrl);
             const res = await axios.get(apiUrl, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem("token")}`,
@@ -53,7 +52,7 @@ const UsersMain = () => {
 
     useEffect(() => {
         checkAdminLogin();
-    }, [pageNumber, search]);
+    }, [pageNumber, search, data]);
 
     if (!adminLogin) return (
         <main className="flex min-h-screen flex-col items-center p-4">
