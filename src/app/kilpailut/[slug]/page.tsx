@@ -42,7 +42,6 @@ export default function CompetitionPage(params: any) {
     axios
       .get(getCompetitionByIdUrl(competitionId), {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
           "Content-Type": "application/json",
         },
       })
@@ -56,7 +55,6 @@ export default function CompetitionPage(params: any) {
       // size=100 is a temporary solution to get all teams, to be able to find out if use is a member of any team
       .get(getCompetitionInfoQueryURL(competitionId, 0, 100), {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
           "Content-Type": "application/json",
         },
       })
