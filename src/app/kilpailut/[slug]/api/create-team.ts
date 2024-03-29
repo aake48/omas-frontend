@@ -1,7 +1,8 @@
 import { addTeamToCompetitionURL } from "@/lib/APIConstants";
 import axios from "axios";
+import { NextResponse } from "next/server";
 
-export   const createTeam = async (teamName: string, competitionId: string) => {
+export const createTeam = async (teamName: string, competitionId: string) => {
     const trimmedTeamName = teamName.trim();
     if (trimmedTeamName === "") return;
 
@@ -16,8 +17,9 @@ export   const createTeam = async (teamName: string, competitionId: string) => {
             },
           }
         );
-        return response.data;
+        return NextResponse.json(response.data);
     } catch (error) {
         console.error(error)
+        throw Error("Virhe joukkueen luomisessa")
     }
   };

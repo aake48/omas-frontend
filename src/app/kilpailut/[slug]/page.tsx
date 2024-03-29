@@ -18,10 +18,6 @@ type TTeamMember = {
     legalname: string;
 };
 
-async function fetchTeams() {
-    return await fetchData(Q.getCompetitionInfoQueryURL("", 0, 100));
-}
-
 
 export default async function CompetitionPage({
   params,
@@ -29,7 +25,7 @@ export default async function CompetitionPage({
   params: { slug: string };
 }) {
     const competition = await fetchData(Q.getCompetitionByIdUrl(params.slug));
-    const teams = await fetchTeams();
+    const teams = await fetchData(Q.getCompetitionInfoQueryURL(params.slug, 0, 100));
     return (
         <div className="grid p-10 gap-3 shadow-lg">
             <p className="text-3xl">{competition.displayName}</p>

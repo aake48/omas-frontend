@@ -19,5 +19,6 @@ export const joinTeam = async (teamName: string, competitionId: string) => {
         
     } catch (error) {
         console.error(error)
+        throw Error("Virhe joukkueeseen liittymisessä")
     }
   };
