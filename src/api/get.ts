@@ -1,6 +1,7 @@
 import * as https from 'https';
 import axios from 'axios';
 import * as fs from 'fs';
+import { NextResponse } from 'next/server';
 
 const cert = fs.readFileSync('certificates/localhost.pem');
 
@@ -20,6 +21,6 @@ export default async function fetchData(url: string): Promise<any> {
         return response.data;
     } catch (error) {
         console.error(error);
-        throw new Error('Error fetching data.');
+        return NextResponse.json({ error: 'Virhe datan hakemisessa' });
     }
 }

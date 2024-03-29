@@ -20,6 +20,6 @@ export const createTeam = async (teamName: string, competitionId: string) => {
         return NextResponse.json(response.data);
     } catch (error) {
         console.error(error)
-        throw Error("Virhe joukkueen luomisessa")
+        return NextResponse.json({ error: "Virhe joukkueen luonnissa"})
     }
   };
