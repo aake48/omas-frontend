@@ -82,3 +82,11 @@ export const getCompetitionInfoQueryURL = (
 export const getTeamMembersURL = (teamName: string, competitionId: string) => {
   return `${baseURL}${comp}/team?team=${teamName}&competition=${competitionId}`;
 };
+
+export const getUpdatePasswordUrl = () => {
+  return `${baseURL}/api/updatePassword`;
+}
+
+export const getUpdateEmailUrl = () => {
+  return `${baseURL}/api/updateEmail`;
+}
