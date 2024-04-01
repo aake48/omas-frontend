@@ -17,9 +17,9 @@ export default function Settings() {
 
     
     if (!loggedIn) return (
-        <main className="flex flex-col min-h-screen items-center justify-between p-2">
+        <div className="flex flex-col min-h-screen items-center justify-between p-2">
             <p>Asetuksia ei voi muuttaa, ennen kuin olet kirjautunut sisään</p>
-        </main>
+        </div<
     )
 
     return (
