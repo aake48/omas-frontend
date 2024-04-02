@@ -2,8 +2,8 @@
 
 import { Button } from "@/components/ui/Button";
 import React, { Suspense, useEffect, useState } from "react";
-import { joinTeam } from "./api/join-team";
 import useIsLoggedIn from "@/lib/is-logged-in";
+import { usePathname } from "next/navigation";
 
 type TTeamMember = {
     userId: number;
@@ -21,11 +21,23 @@ type TTeam = {
 };
 
 export default function TeamCard({ team }: { competition: any; team: TTeam }) {
+    const pathName = usePathname();
     const isLoggedIn = useIsLoggedIn();
     const [isMember, setIsMember] = useState(false); // Initialize state
 
-    function handleClick(teamName: string, competitionId: string) {
-        joinTeam(teamName, competitionId);
+    async function handleClick(teamName: string, competitionId: string) {
+        const response = await fetch(`${pathName}/api/join`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+            body: JSON.stringify({
+                teamName: teamName,
+                competitionName: competitionId,
+            }),
+        });
+        console.log(response);
     }
 
     useEffect(() => {
