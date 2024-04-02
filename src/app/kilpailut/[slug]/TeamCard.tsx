@@ -37,7 +37,8 @@ export default function TeamCard({ team }: { competition: any; team: TTeam }) {
                 competitionName: competitionId,
             }),
         });
-        console.log(response);
+        const data = await response.json();
+        data.status === 200 ? setIsMember(true) : null;
     }
 
     useEffect(() => {
@@ -62,8 +63,8 @@ export default function TeamCard({ team }: { competition: any; team: TTeam }) {
                     isMember ? "bg-slate-200" : null
                 }`}
             >
-                <div className="flex flex-col md:flex-row items-center">
-                    <p className="text-xl">{team.teamDisplayName}</p>
+                <div className="flex flex-col gap-2 justify-between md:flex-row items-center">
+                    <p className="text-lg truncate">{team.teamDisplayName}</p>
                     {isLoggedIn && (
                         <Button
                             variant="outline"
@@ -81,9 +82,9 @@ export default function TeamCard({ team }: { competition: any; team: TTeam }) {
                 </div>
 
                 <div className="grid gap-1">
-                    <p className=" text-lg">Jäsenet:</p>
+                    <p className=" text-md">Jäsenet:</p>
                     {team.teamMembers && team.teamMembers.length > 0 ? (
-                        <div className="grid border h-full border-slate-300 bg-slate-100 p-2 shadow-md rounded-md grid-cols-2">
+                        <div className="grid border h-full border-slate-300 gap-x-4 bg-slate-100 p-2 shadow-md rounded-md grid-cols-2">
                             {team.teamMembers.map((member, index) => {
                                 return <p key={index}>{member.legalname}</p>;
                             })}

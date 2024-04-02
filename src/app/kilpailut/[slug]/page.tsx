@@ -28,7 +28,7 @@ export default async function CompetitionPage({
         Q.getCompetitionInfoQueryURL(params.slug, 0, 100)
     );
     return (
-        <div className="grid p-5 my-5 justify-center md:p-20 gap-3 shadow-lg">
+        <div className="grid p-5 my-5 justify-center md:p-10 gap-3 shadow-lg">
             <h1 className="text-3xl md:text-5xl">{competition.displayName}</h1>
             <p>
                 Tyyppi:{" "}
@@ -39,7 +39,7 @@ export default async function CompetitionPage({
                 <p>Päättyy: {competition.endDate}</p>
             </span>
             <TeamCreator competition={competition} />
-            <div className="grid justify-start md:grid-cols-4 gap-10">
+            <div className="grid justify-center sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8">
                 {teams.content.map((team: TTeam) => (
                     <TeamCard
                         key={team.teamName}

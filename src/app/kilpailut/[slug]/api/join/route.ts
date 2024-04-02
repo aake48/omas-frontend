@@ -1,10 +1,12 @@
 import { addTeamMemberURL } from "@/lib/APIConstants";
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
+import { useHTTPSAgent } from "@/lib/get-https-agent";
 
 export async function POST(request: NextRequest) {
     const requestbody = await request.json();
     const trimmedTeamName = requestbody.teamName.trim();
+    const httpsAgent = useHTTPSAgent();
 
     const authHeader = request.headers.get('Authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -19,13 +21,13 @@ export async function POST(request: NextRequest) {
               Authorization: authHeader,
               "Content-Type": "application/json",
             },
+            httpsAgent,
           }
         );
-        return NextResponse.json(response.data);
+        return NextResponse.json({body: response.data, status: response.status });
         
     } catch (error: any) {
-        console.log("Route error");
-        console.log(error);
-        return NextResponse.json({ error: "Virhe joukkueeseen liittymisessä"})
+        console.error(error);
+        return NextResponse.json({ message: "Virhe joukkueeseen liittymisessä"}, { status: 500 })
     }
   };

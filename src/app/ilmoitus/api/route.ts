@@ -2,18 +2,10 @@
 
 import axios, { AxiosError } from 'axios';
 import * as Q from '../../../lib/APIConstants'
-import * as https from 'https';
-import * as fs from 'fs';
 import { NextResponse } from 'next/server';
 import { NextRequest } from 'next/server';
+import { useHTTPSAgent } from '@/lib/get-https-agent';
 
-
-const cert = fs.readFileSync('certificates/localhost.pem');
-
-const httpsAgent = new https.Agent({
-  rejectUnauthorized: false,
-  ca: cert,
-});
 
 
 interface ScorePostRequestBody {
@@ -21,11 +13,12 @@ interface ScorePostRequestBody {
   teamName: string;
   score: number;
   bullseyes: number;
-  image? : File;
+  image?: File;
 }
 
 export async function POST(request: NextRequest) {
   const requestBody: ScorePostRequestBody = await request.json();
+  const httpsAgent = useHTTPSAgent();
 
   const authHeader = request.headers.get('Authorization');
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -50,7 +43,7 @@ export async function POST(request: NextRequest) {
         httpsAgent,
       }
     );
-    return NextResponse.json({ status: response.status });
+    return NextResponse.json({ body: response.data, status: response.status });
   } catch (error) {
     if (error instanceof AxiosError) {
       console.error(error.response!.data);

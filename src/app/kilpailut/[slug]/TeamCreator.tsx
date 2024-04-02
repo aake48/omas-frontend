@@ -4,14 +4,15 @@ import React, { ChangeEvent, useState } from 'react'
 import Input from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button';
 import { usePathname } from 'next/navigation';
+import { CompetitionResponse } from '@/types/commonTypes';
 
-export default function TeamCreator({competition}: {competition: any}) {
+export default function TeamCreator({competition}: {competition: CompetitionResponse}) {
     const [newTeamName, setNewTeamName] = useState("");
     const [info, setInfo] = useState("");
     const [isMember, setIsMember] = useState("");
     const pathName = usePathname();
 
-    async function handleSubmit(teamName: string, competitionId: string) {
+    async function handleSubmit(teamName: string) {
       const response = await fetch(`${pathName}/api/create`, {
         method: "POST",
         headers: {
@@ -20,10 +21,11 @@ export default function TeamCreator({competition}: {competition: any}) {
         },
         body: JSON.stringify({
           teamName: teamName,
-          competitionName: competitionId,
+          competitionName: competition.displayName,
         }),
       });
-      console.log(response);
+      const data = await response.json();
+      setInfo(data.message);
     }
   return (
     <><Input
@@ -38,7 +40,7 @@ export default function TeamCreator({competition}: {competition: any}) {
           variant="outline"
           className="hover:bg-slate-100 mx-2"
           onClick={() =>
-            handleSubmit(newTeamName, competition.id)
+            handleSubmit(newTeamName)
           }
 
           disabled={isMember !== ""}
