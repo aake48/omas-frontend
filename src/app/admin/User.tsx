@@ -92,7 +92,7 @@ const User = ({ user }: UserProps) => {
                     'Content-Type': 'application/json'
                 },
                 data: {
-                    username: user.username
+                    userId: user.id
                 }
             });
 
