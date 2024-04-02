@@ -103,6 +103,14 @@ export const getAdminDeleteUserUrl = () => {
   return `${baseURL}/api/admin/delete`;
 }
 
+export const getUpdatePasswordUrl = () => {
+  return `${baseURL}/api/updatePassword`;
+}
+
+export const getUpdateEmailUrl = () => {
+  return `${baseURL}/api/updateEmail`;
+}
+ 
 //Get all users competitions and teams
 //https://localhost:8080/api/user/teams
 

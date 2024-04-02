@@ -9,7 +9,7 @@ const Header: React.FC = () => {
     const [menuHidden, setMenuHidden] = useState("hidden");
     const [adminLoggedIn, setAdminLoggedIn] = useState<boolean>(false);
     const [user, setUser] = useState<User>();
-  
+
     const handleMenuOnClick = (state: boolean) => {
         !state ? setMenuHidden("block") : setMenuHidden("hidden");
     }
