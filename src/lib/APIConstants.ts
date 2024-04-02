@@ -81,6 +81,14 @@ export const getCompetitionInfoQueryURL = (
 
 export const getTeamMembersURL = (teamName: string, competitionId: string) => {
   return `${baseURL}${comp}/team?team=${teamName}&competition=${competitionId}`;
+}
+
+export const getForgotPasswordUrl = () => {
+  return `${baseURL}/api/forgot_password`;
+}
+
+export const getResetPasswordUrl = (token: string, newPassword: string) => {
+  return `${baseURL}/api/reset_password?token=${token}&password=${newPassword}`;
 };
 
 export const getAdminUserQueryUrl = (

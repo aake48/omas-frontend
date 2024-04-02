@@ -78,7 +78,7 @@ export default function Login() {
           </Formik>
         </div>
         <div className="text-center grid gap-5 my-6">
-          <Link className="text-sm underline" href="#">
+          <Link className="text-sm underline" href="/recovery">
             Unohditko salasanasi?
           </Link>
           <Link className="text-sm underline" href="/rekisteroidy">
