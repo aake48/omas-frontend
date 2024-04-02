@@ -90,3 +90,10 @@ export const getUpdatePasswordUrl = () => {
 export const getUpdateEmailUrl = () => {
   return `${baseURL}/api/updateEmail`;
 }
+ 
+//Get all users competitions and teams
+//https://localhost:8080/api/user/teams
+
+export const getUserCompetitions = () => {
+  return `${baseURL}/api/user/teams`;
+};

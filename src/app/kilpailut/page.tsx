@@ -3,6 +3,7 @@ import Competitions from "./Competitions";
 import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 
+
 export default function page() {
   return (
     <main className="flex flex-col min-h-screen items-center justify-between p-8 sm:p-24">

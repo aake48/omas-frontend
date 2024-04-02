@@ -18,7 +18,6 @@ export default async function fetchData(url: string, data?: Object): Promise<any
     }
 
     try {
-        console.log(url);
         const response = await axios.get(url, {
             httpsAgent,
             data: jsonData,
