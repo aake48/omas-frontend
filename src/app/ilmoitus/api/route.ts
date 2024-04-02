@@ -1,51 +1,70 @@
-"use server"
-
 import axios from 'axios';
 import * as Q from '../../../lib/APIConstants'
-import * as https from 'https';
-import * as fs from 'fs';
 import { NextResponse } from 'next/server';
 import { NextRequest } from 'next/server';
-
-
-const cert = fs.readFileSync('certificates/localhost.pem');
-
-const httpsAgent = new https.Agent({
-  rejectUnauthorized: false,
-  ca: cert,
-});
-
+import { useHTTPSAgent } from '@/lib/get-https-agent';
 
 interface ScorePostRequestBody {
-  competitionlist: string;
+  competitionName: string;
   teamName: string;
   score: number;
   bullseyes: number;
+  image?: File;
 }
+
 
 export async function POST(request: NextRequest) {
   const requestBody: ScorePostRequestBody = await request.json();
-  // TODO: Add token
+  const httpsAgent = useHTTPSAgent();
+
+  const authHeader = request.headers.get('Authorization');
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    console.error("No auth header found in request.");
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
 
   try {
     const response = await axios.post(
-      Q.addScore,
+      Q.addScoreSum,
       {
-        competitionName: requestBody.competitionlist,
+        competitionName: requestBody.competitionName,
         teamName: requestBody.teamName,
-        scoreList: [requestBody.score, requestBody.bullseyes]
+        score: requestBody.score,
+        bullsEyeCount: requestBody.bullseyes,
       },
       {
         headers: {
-          Authorization: `Bearer ${("token")}`,
+          Authorization: authHeader,
           "Content-Type": "application/json",
         },
         httpsAgent,
       }
     );
-    const data = response.data;
-    return NextResponse.json(data);
-  } catch (error) {
-    return NextResponse.json({ message: "Error adding score" }, { status: 500 });
+    return NextResponse.json({ body: response.data, status: response.status });
+  } catch (error: any) {
+      console.error(error.response!.data);
+      return NextResponse.json({ message: error.response!.data }, { status: error.status });
+  }
+}
+
+export async function GET(request: NextRequest) {
+  const authHeader = request.headers.get('Authorization');
+  const httpsAgent = useHTTPSAgent();
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    console.error("No auth header found in request.");
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
+  
+  try {
+    const response = await axios.get(Q.getUserCompetitions(), {
+      headers: {
+        Authorization: authHeader,
+        "Content-Type": "application/json",
+      },
+      httpsAgent,
+    });
+    return NextResponse.json(response.data);
+  } catch (error: any) {
+      return NextResponse.json({ message: error.response!.data }, { status: error.status });
   }
 }

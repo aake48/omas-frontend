@@ -33,10 +33,8 @@ export default function Login() {
             localStorage.setItem("userInfo", JSON.stringify(userInfo));
             window.dispatchEvent(new Event("localStorageChange"));
             router.push("/kilpailut");
-        } catch (error: any) {
-            if (error.response.data) {
-                console.log(error.response.data);
-            }
+        } catch (error) {
+                console.log(error);
         }
     };
 

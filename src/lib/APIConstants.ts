@@ -51,6 +51,10 @@ export const addClubURL: string = baseURL + "/api/auth/club/new";
 
 export const joinClubURL: string = baseURL + "/api/auth/club/join";
 
+export const getClubByIdURL = (id: string) => {
+  return `${baseURL}/api/club/${id}`;
+};
+
 export const addTeamToCompetitionURL: string =
   baseURL + "/api/competition/team/new";
 
@@ -60,13 +64,24 @@ export const addTeamMemberURL: string =
 export const addScore: string =
   baseURL + "/api/competition/team/member/score/add";
 
+export const addScoreSum: string =
+  baseURL + "/api/competition/team/member/score/add/sum";
+
 export const getTeamsByCompetitionIdURL = (id: string) => {
   return `${baseURL}${comp}/teams/${id}`;
 };
 
+export const getCompetitionInfoQueryURL = (
+  id: string,
+  page: number = 0,
+  size: number = 10
+) => {
+  return `${baseURL}${comp}/teams?search=${id}&page=${page}&size=${size}`;
+};
+
 export const getTeamMembersURL = (teamName: string, competitionId: string) => {
   return `${baseURL}${comp}/team?team=${teamName}&competition=${competitionId}`;
-};
+}
 
 export const getForgotPasswordUrl = () => {
   return `${baseURL}/api/forgot_password`;
@@ -75,3 +90,10 @@ export const getForgotPasswordUrl = () => {
 export const getResetPasswordUrl = (token: string, newPassword: string) => {
   return `${baseURL}/api/reset_password?token=${token}&password=${newPassword}`;
 }
+ 
+//Get all users competitions and teams
+//https://localhost:8080/api/user/teams
+
+export const getUserCompetitions = () => {
+  return `${baseURL}/api/user/teams`;
+};

@@ -1,15 +1,35 @@
 'use client';
 import { LoginButton } from "./ui/LoginButton";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { headerLinks } from "@/lib/links";
+import { User } from "@/types/commonTypes";
 
 const Header: React.FC = () => {
     const [menuHidden, setMenuHidden] = useState("hidden");
+    const [loggedIn, setLoggedIn] = useState<boolean>(false);
+    const [user, setUser] = useState<User>();
+  
 
     const handleMenuOnClick = (state: boolean) => {
         !state ? setMenuHidden("block") : setMenuHidden("hidden");
     }
+
+    useEffect(() => {
+      const checkLogin = () => {
+        const token = localStorage.getItem("token");
+        let user: User = JSON.parse(localStorage.getItem("userInfo")!);
+          if (token) {
+            setLoggedIn(true);
+            setUser(user);
+          }
+      };
+      checkLogin();
+      window.addEventListener("localStorageChange", checkLogin);
+      return () => {
+        window.removeEventListener("localStorageChange", checkLogin);
+      };
+    }, []);
 
     return (
         <header>
@@ -20,7 +40,7 @@ const Header: React.FC = () => {
                             <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                         </svg>
                     </div>
-                    <Link className="text-3xl hidden sm:block" href="/">
+                    <Link className="text-3xl hidden sm:flex sm:items-center" href="/">
                         OMAS
                     </Link>
                     <nav className="hidden sm:flex sm:gap-2 md:gap-5 items-center">
@@ -30,7 +50,7 @@ const Header: React.FC = () => {
                             </Link>
                         ))}
                     </nav>
-                    <LoginButton />
+                    <LoginButton user={user!} />
                 </div>
             </div>
             <div

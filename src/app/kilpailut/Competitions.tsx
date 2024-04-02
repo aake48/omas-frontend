@@ -6,6 +6,7 @@ import { CompetitionResponse } from "@/types/commonTypes";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export default function Competitions() {
   const [competitions, setCompetitions] = useState<CompetitionResponse[]>([]);
@@ -17,7 +18,6 @@ export default function Competitions() {
     async function fetchData() {
       const competitions = await axios.get(getCompetitionsQueryUrl(search, 0), {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
           "Content-Type": "application/json",
         },
       });
@@ -25,11 +25,6 @@ export default function Competitions() {
     }
     fetchData();
   }, [search]);
-
-  const openTeam = (competition: CompetitionResponse) => {
-    const competitionId = competition.competitionId;
-    router.push("/kilpailut/" + competitionId);
-  };
 
   return (
     <div className="flex flex-col py-5">
@@ -42,16 +37,16 @@ export default function Competitions() {
       />
       {competitions &&
         competitions.map((competition, index) => (
-          <div
+          <Link
             key={index}
-            className="flex cursor-pointer flex-row items-baseline border my-1 p-2 pl-10"
-            onClick={() => openTeam(competition)}
+            className="flex cursor-pointer sm:flex-row flex-col items-baseline border my-1 p-2 sm:pl-10"
+            href={"/kilpailut/" + competition.competitionId}
           >
             <p>{competition.displayName}</p>
-            <p className="ml-auto mr-5">
+            <p className="sm:ml-auto sm:mr-5 text-slate-700">
               {competition.startDate + " - " + competition.endDate}
             </p>
-          </div>
+          </Link>
         ))}
     </div>
   );

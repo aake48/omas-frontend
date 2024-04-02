@@ -1,15 +1,23 @@
 "use client";
 
+import { User } from "@/types/commonTypes";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-export function LoginButton({}) {
+interface LoginProps {
+  user: User
+}
+
+export function LoginButton({ user }: LoginProps) {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
 
   useEffect(() => {
     const checkLogin = () => {
       const token = localStorage.getItem("token");
-      setLoggedIn(token ? true : false);
+        if (token) {
+          let user: User = JSON.parse(localStorage.getItem("userInfo")!);
+          setLoggedIn(true);
+        }
     };
     checkLogin();
     window.addEventListener("localStorageChange", checkLogin);
@@ -19,12 +27,15 @@ export function LoginButton({}) {
   }, []);
 
   return loggedIn ? (
-    <Link
-      className="flex gap-2 text-lg items-center border py-1 px-2 border-slate-400 hover:bg-slate-100 rounded-lg"
-      href="/logout"
-    >
-      Kirjaudu ulos
-    </Link>
+    <div className="flex flex-col items-center gap-1">
+      <Link
+        className="flex gap-2 text-lg items-center border py-1 px-2 border-slate-400 hover:bg-slate-100 rounded-lg"
+        href="/logout"
+      >
+        Kirjaudu ulos
+      </Link>
+      <h1 className="text-sm">Käyttäjä: {user?.username}</h1>
+    </div>
   ) : (
     <Link
       className="flex gap-2 text-lg items-center border py-1 px-2 border-slate-400 hover:bg-slate-100 rounded-lg"

@@ -34,6 +34,17 @@ export type CompetitionResponse = {
 };
 
 /**
+ * received from backend in /api/user/teams
+ */
+export interface UsersCompetition {
+  competitionId: string;
+  teamName: string;
+  clubName: string;
+  teamDisplayName: string;
+  teamMembers: Object[];
+}
+
+/**
  * add teams with this
  */
 export type PostTeam = {
@@ -76,12 +87,12 @@ export type loginResponse = {
   token: string; // add "Bearer "+ token when doing authorization
 };
 
-type User = {
+export type User = {
   username: string;
   legalName: string;
   email: string;
   userId: number;
-  authorities: string;
+  roles: string[];
   creationDate: string;
   club: string | null;
 };
