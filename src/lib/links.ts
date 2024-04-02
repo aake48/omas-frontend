@@ -19,6 +19,10 @@ export const headerLinks = [
         href: '/yhteystiedot',
         text: "Yhteystiedot"
     },
+    {
+        href: '/asetukset',
+        text: "Asetukset"
+    },
 ];
 
 export const footerLinks = [
