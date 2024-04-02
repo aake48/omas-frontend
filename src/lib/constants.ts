@@ -30,3 +30,42 @@ export const upcoming: CompetitionResponse[] = [
     endDate: "03.06.2024",
   },
 ];
+
+export const testDataAdminViewUsers = [
+  {
+      username: "user1",
+      legalName: "user1",
+      email: "user1@gmail",
+      userId: 1,
+      roles: [
+          "ADMIN",
+          "BLABLA"
+      ],
+      creationDate: "string",
+      club: null,
+  },
+  {
+      username: "user2",
+      legalName: "user2",
+      email: "user2@gmail",
+      userId: 2,
+      roles: [
+          "ADMIN",
+          "BLABLA"
+      ],
+      creationDate: "string",
+      club: null,
+  },
+  {
+      username: "user3",
+      legalName: "user3",
+      email: "user3@gmail",
+      userId: 3,
+      roles: [
+          "ADMIN",
+          "BLABLA"
+      ],
+      creationDate: "string",
+      club: null,
+  }
+]

@@ -83,6 +83,26 @@ export const getTeamMembersURL = (teamName: string, competitionId: string) => {
   return `${baseURL}${comp}/team?team=${teamName}&competition=${competitionId}`;
 };
 
+export const getAdminUserQueryUrl = (
+  search: string = "",
+  page: number,
+  size: number = 10
+  ) => {
+  return `${baseURL}/api/admin/user/query?search=${search}&page=${page}&size=${size}`
+};
+
+export const getAdminPromoteUserUrl = () => {
+  return `${baseURL}/api/admin/promote`;
+}
+
+export const getAdminDemoteUserUrl = () => {
+  return `${baseURL}/api/admin/demote`;
+}
+
+export const getAdminDeleteUserUrl = () => {
+  return `${baseURL}/api/admin/delete`;
+}
+
 export const getUpdatePasswordUrl = () => {
   return `${baseURL}/api/updatePassword`;
 }
