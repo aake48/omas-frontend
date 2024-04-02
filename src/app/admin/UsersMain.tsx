@@ -4,7 +4,6 @@ import { AdminQueryUser, User as UserType } from '@/types/commonTypes';
 import React, { useEffect, useState } from "react";
 import Paginator from "../components/Paginator";
 import Input from "@/components/ui/Input";
-import { testDataAdminViewUsers } from '@/lib/constants';
 import axios from "axios";
 import Users from "./Users";
 

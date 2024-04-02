@@ -89,12 +89,12 @@ export type loginResponse = {
 
 export type User = {
   username: string;
-  legalname: string;
+  legalName: string;
   email: string;
   id: number;
   roles: string[];
   creationDate: string;
-  partOfClub: string | null;
+  club: string | null;
 };
 /**
  * returned from ./competition/result/${competitionName} -endpoint
