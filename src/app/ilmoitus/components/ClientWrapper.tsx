@@ -1,16 +1,40 @@
 "use client"
 
-import { CompetitionResponse, ScoreType } from "@/types/commonTypes";
-import React, { useState } from "react";
+import { ScoreType, UsersCompetition } from "@/types/commonTypes";
+import React, { useEffect, useState } from "react";
 import ScoreTypeSelectorContainer from "./ScoreTypeSelectorContainer";
 import ScoreCard from "./ScoreForm";
 
-export default function NotificationClientWrapper({ competitions }: { competitions: CompetitionResponse[] }) {
+async function getUserCompetitions() {
+    const response = fetch("ilmoitus/api", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+        }
+    })
+    return response;
+}
 
+
+export default function NotificationClientWrapper() {
     const [scoreType, setScoreType] = useState<ScoreType | null>(null);
     const handleScoreTypeChange = (scoreType: ScoreType | null) => {
         setScoreType(scoreType as ScoreType);
     };
+    const [competitions, setCompetitions] = useState<UsersCompetition[]>([]);
+
+
+    useEffect(() => {
+        getUserCompetitions().then((response) => {
+            if (response.ok) {
+                response.json().then((data) => {
+                    setCompetitions(data);
+                    console.log(data[0]);
+                });
+            }
+        });
+    }, []);
 
     return (
         <>

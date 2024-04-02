@@ -82,3 +82,10 @@ export const getCompetitionInfoQueryURL = (
 export const getTeamMembersURL = (teamName: string, competitionId: string) => {
   return `${baseURL}${comp}/team?team=${teamName}&competition=${competitionId}`;
 };
+ 
+//Get all users competitions and teams
+//https://localhost:8080/api/user/teams
+
+export const getUserCompetitions = () => {
+  return `${baseURL}/api/user/teams`;
+};
