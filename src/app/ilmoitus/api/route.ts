@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import * as Q from '../../../lib/APIConstants'
 import { NextResponse } from 'next/server';
 import { NextRequest } from 'next/server';
@@ -41,16 +41,15 @@ export async function POST(request: NextRequest) {
       }
     );
     return NextResponse.json({ body: response.data, status: response.status });
-  } catch (error) {
-    if (error instanceof AxiosError) {
+  } catch (error: any) {
       console.error(error.response!.data);
       return NextResponse.json({ message: error.response!.data }, { status: error.status });
-    }
   }
 }
 
 export async function GET(request: NextRequest) {
   const authHeader = request.headers.get('Authorization');
+  const httpsAgent = useHTTPSAgent();
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     console.error("No auth header found in request.");
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -65,9 +64,7 @@ export async function GET(request: NextRequest) {
       httpsAgent,
     });
     return NextResponse.json(response.data);
-  } catch (error) {
-    if (error instanceof AxiosError) {
+  } catch (error: any) {
       return NextResponse.json({ message: error.response!.data }, { status: error.status });
-    }
   }
 }
