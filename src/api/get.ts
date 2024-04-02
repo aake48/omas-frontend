@@ -14,10 +14,9 @@ const httpsAgent = new https.Agent({
 export default async function fetchData(url: string): Promise<any> {
     try {
         const response = await axios.get(url, { httpsAgent });
-        const data = response.data;
-        return data;
+        return response.data;
     } catch (error) {
         console.error('Error:', error);
-        throw error;
+        throw Error('Virhe haettaessa tietoja palvelimelta');
     }
 }

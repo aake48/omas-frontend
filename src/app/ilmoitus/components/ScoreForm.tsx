@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Formik, Form, Field } from "formik";
 import { fullCompValidationSchema, roundValidationSchema } from "../validation";
 import Custominput from "@/components/ui/CustomInput";
 import Dropdown from "@/components/ui/Dropdown";
-import { CompetitionResponse, ScoreType } from "@/types/commonTypes";
+import { ScoreType, UsersCompetition } from "@/types/commonTypes";
 import UploadFile from "./UploadFile";
 import Notification from "@/components/component/Notification";
 
@@ -17,17 +17,26 @@ export default function ScoreCard({
     competitions,
 }: {
     scoreType: ScoreType;
-    competitions: CompetitionResponse[];
+    competitions: UsersCompetition[];
 }) {
-    const userInfo = localStorage.getItem("userInfo")
-    const teamName = userInfo ? JSON.parse(userInfo).club : null;
     const round = { bullseyes: 10, score: 10.9 };
     const total = { bullseyes: 60, score: 520 };
     const scoreValue = scoreType === "round" ? round : total;
     const [message, setMessage] = React.useState<PostReturn | null>(null);
+    const [teamName, setTeamName] = React.useState<string | null>(null);
     const competitionNames = competitions.map(
-        (competition) => competition.displayName
+        (competition) => competition.competitionId
     );
+
+    function handleDropDownChange(competitionName: string) {
+        const foundCompetition = competitions.find((competition) => competition.competitionId === competitionName);
+        if (foundCompetition) {
+            setTeamName(foundCompetition.teamName);
+        }
+    }
+    
+
+
     return (
         <div>
             {message && <Notification message={message.message + ' : ' + new Date().toLocaleTimeString()} type={message.status === 200 ? 'success' : 'error'} /> }
@@ -60,6 +69,7 @@ export default function ScoreCard({
                         .then((response) => {
                             setSubmitting(false);
                             resetForm();
+                            setTeamName(null);
                             response.status === 200 ? setMessage( { message: "Ilmoitus lähetetty", status: response.status} ) : setMessage( {message:"Ilmoituksen lähetys epäonnistui", status: response.status} );
 
                         })
@@ -81,6 +91,7 @@ export default function ScoreCard({
                                                 field.name,
                                                 e.target.value
                                             );
+                                            handleDropDownChange(e.target.value);
                                         }}
                                     />
                                     {form.errors.competitionName && form.touched ? (
@@ -90,6 +101,7 @@ export default function ScoreCard({
 
                             )}
                         </Field>
+                        <div>{teamName}</div>
                     </div>
                     {/* <Custominput
                         label="Nimi"
