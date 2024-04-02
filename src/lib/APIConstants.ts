@@ -51,6 +51,10 @@ export const addClubURL: string = baseURL + "/api/auth/club/new";
 
 export const joinClubURL: string = baseURL + "/api/auth/club/join";
 
+export const getClubByIdURL = (id: string) => {
+  return `${baseURL}/api/club/${id}`;
+};
+
 export const addTeamToCompetitionURL: string =
   baseURL + "/api/competition/team/new";
 
@@ -65,6 +69,14 @@ export const addScoreSum: string =
 
 export const getTeamsByCompetitionIdURL = (id: string) => {
   return `${baseURL}${comp}/teams/${id}`;
+};
+
+export const getCompetitionInfoQueryURL = (
+  id: string,
+  page: number = 0,
+  size: number = 10
+) => {
+  return `${baseURL}${comp}/teams?search=${id}&page=${page}&size=${size}`;
 };
 
 export const getTeamMembersURL = (teamName: string, competitionId: string) => {
@@ -85,4 +97,8 @@ export const getAdminPromoteUserUrl = () => {
 
 export const getAdminDemoteUserUrl = () => {
   return `${baseURL}/api/admin/demote`;
+}
+
+export const getAdminDeleteUserUrl = () => {
+  return `${baseURL}/api/admin/delete`;
 }

@@ -7,11 +7,9 @@ import { User } from "@/types/commonTypes";
 
 const Header: React.FC = () => {
     const [menuHidden, setMenuHidden] = useState("hidden");
-    const [loggedIn, setLoggedIn] = useState<boolean>(false);
     const [adminLoggedIn, setAdminLoggedIn] = useState<boolean>(false);
     const [user, setUser] = useState<User>();
   
-
     const handleMenuOnClick = (state: boolean) => {
         !state ? setMenuHidden("block") : setMenuHidden("hidden");
     }
@@ -19,13 +17,10 @@ const Header: React.FC = () => {
     useEffect(() => {
       const checkLogin = () => {
         const token = localStorage.getItem("token");
-        let user: User = JSON.parse(localStorage.getItem("userInfo")!);
           if (token) {
-            setLoggedIn(true);
+            let user: User = JSON.parse(localStorage.getItem("userInfo")!);
+            if (user.roles.includes("ROLE_ADMIN")) setAdminLoggedIn(true);
             setUser(user);
-            if (user.roles.includes("ROLE_ADMIN")) {
-                setAdminLoggedIn(true);
-            }
           }
       };
       checkLogin();
@@ -36,12 +31,11 @@ const Header: React.FC = () => {
     }, []);
 
     let newHeaderLinks = [...headerLinks];
-
     if (adminLoggedIn) {
         newHeaderLinks.push({
             href: "/admin",
             text: "Pääkäyttäjänäkymä"
-        })
+        });
     }
 
     return (
@@ -63,7 +57,7 @@ const Header: React.FC = () => {
                             </Link>
                         ))}
                     </nav>
-                    <LoginButton user={user!}/>
+                    <LoginButton user={user!} />
                 </div>
             </div>
             <div

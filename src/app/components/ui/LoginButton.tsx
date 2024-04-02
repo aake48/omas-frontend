@@ -4,7 +4,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 interface LoginProps {
-  user: User | null
+  user: User
 }
 
 export function LoginButton({ user }: LoginProps) {
@@ -14,6 +14,7 @@ export function LoginButton({ user }: LoginProps) {
     const checkLogin = () => {
       const token = localStorage.getItem("token");
         if (token) {
+          let user: User = JSON.parse(localStorage.getItem("userInfo")!);
           setLoggedIn(true);
         }
     };

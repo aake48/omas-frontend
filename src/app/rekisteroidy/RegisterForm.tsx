@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/Button";
-import { loginURL } from "../../lib/APIConstants";
+import { addClubURL, joinClubURL, loginURL } from "../../lib/APIConstants";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -10,6 +10,7 @@ import { Form, Formik } from "formik";
 import validationSchema from "./validation";
 
 import CustomInput from "@/components/ui/CustomInput";
+import JoinClub from "../kilpailut/liitySeuraan/JoinClub";
 
 export default function RegisterForm() {
   const initialValues = {
@@ -55,6 +56,56 @@ export default function RegisterForm() {
 
           localStorage.setItem("token", token);
           localStorage.setItem("userInfo", JSON.stringify(userInfo));
+
+          // This is for demo purposes to allow creating teams
+          const addClub = async () => {
+            const response = await axios.post(
+              addClubURL,
+              {
+                clubName: "Feikki_seura",
+              },
+              {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem("token")}`,
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+            console.log(response.data);
+          };
+
+          const joinClub = async () => {
+            const response2 = await axios.post(
+              joinClubURL,
+              {
+                clubName: "Feikki_seura",
+              },
+              {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem("token")}`,
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+            console.log(response2.data);
+            const userInfoFromLocalStorage = localStorage.getItem("userInfo");
+            if (userInfoFromLocalStorage) {
+              const userInfo = JSON.parse(userInfoFromLocalStorage);
+              userInfo.club = "Feikki_seura";
+              localStorage.setItem("userInfo", JSON.stringify(userInfo));
+            }
+          };
+
+          if (userInfo.club === null) {
+            try {
+              addClub().then(() => {
+                joinClub();
+              });
+            } catch (error) {
+              console.log(error);
+            }
+          }
+          // For demo purposes ends here
           window.dispatchEvent(new Event("localStorageChange"));
           router.push("/kilpailut");
         } catch (error: any) {

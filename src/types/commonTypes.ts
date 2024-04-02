@@ -78,12 +78,12 @@ export type loginResponse = {
 
 export type User = {
   username: string;
-  legalName: string;
+  legalname: string;
   email: string;
-  userId: number;
+  id: number;
   roles: string[];
   creationDate: string;
-  club: string | null;
+  partOfClub: string | null;
 };
 /**
  * returned from ./competition/result/${competitionName} -endpoint
@@ -164,3 +164,9 @@ export type Pageable = {
   pageNumber: number; // current page
   pageSize: number; // current page size
 };
+
+export enum AdminViewType {
+  Users,
+  CreateClub,
+  Other
+}
