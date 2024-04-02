@@ -89,6 +89,14 @@ export const getForgotPasswordUrl = () => {
 
 export const getResetPasswordUrl = (token: string, newPassword: string) => {
   return `${baseURL}/api/reset_password?token=${token}&password=${newPassword}`;
+};
+
+export const getUpdatePasswordUrl = () => {
+  return `${baseURL}/api/updatePassword`;
+}
+
+export const getUpdateEmailUrl = () => {
+  return `${baseURL}/api/updateEmail`;
 }
  
 //Get all users competitions and teams
