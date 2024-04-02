@@ -34,6 +34,17 @@ export type CompetitionResponse = {
 };
 
 /**
+ * received from backend in /api/user/teams
+ */
+export interface UsersCompetition {
+  competitionId: string;
+  teamName: string;
+  clubName: string;
+  teamDisplayName: string;
+  teamMembers: Object[];
+}
+
+/**
  * add teams with this
  */
 export type PostTeam = {
