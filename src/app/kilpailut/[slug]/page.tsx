@@ -18,17 +18,18 @@ type TTeamMember = {
     legalname: string;
 };
 
-
 export default async function CompetitionPage({
-  params,
+    params,
 }: {
-  params: { slug: string };
+    params: { slug: string };
 }) {
     const competition = await fetchData(Q.getCompetitionByIdUrl(params.slug));
-    const teams = await fetchData(Q.getCompetitionInfoQueryURL(params.slug, 0, 100));
+    const teams = await fetchData(
+        Q.getCompetitionInfoQueryURL(params.slug, 0, 100)
+    );
     return (
-        <div className="grid p-10 gap-3 shadow-lg">
-            <p className="text-3xl">{competition.displayName}</p>
+        <div className="grid p-5 my-5 justify-center md:p-20 gap-3 shadow-lg">
+            <h1 className="text-3xl md:text-5xl">{competition.displayName}</h1>
             <p>
                 Tyyppi:{" "}
                 {competition.type === "rifle" ? "ilmakivääri" : "ilmapistooli"}
@@ -37,7 +38,8 @@ export default async function CompetitionPage({
                 <p>Alkaa: {competition.startDate}</p>
                 <p>Päättyy: {competition.endDate}</p>
             </span>
-            <div className="grid grid-cols-3 grid-flow-dense">
+            <TeamCreator competition={competition} />
+            <div className="grid justify-start md:grid-cols-4 gap-10">
                 {teams.content.map((team: TTeam) => (
                     <TeamCard
                         key={team.teamName}
@@ -46,8 +48,6 @@ export default async function CompetitionPage({
                     />
                 ))}
             </div>
-
-            <TeamCreator competition={competition} />
         </div>
     );
 }
