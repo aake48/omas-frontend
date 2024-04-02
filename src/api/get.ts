@@ -20,7 +20,7 @@ export default async function fetchData(url: string): Promise<any> {
         });
         return response.data;
     } catch (error) {
-        console.error(error);
-        return NextResponse.json({ error: 'Virhe datan hakemisessa' });
+        console.error('Error:', error);
+        throw Error('Virhe haettaessa tietoja palvelimelta');
     }
 }
