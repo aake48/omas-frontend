@@ -10,7 +10,7 @@ const httpsAgent = new https.Agent({
   ca: cert,
 });
 
-export async function fetchData(url: string): Promise<any> {
+export default async function fetchData(url: string): Promise<any> {
     try {
         const response = await axios.get(url, {
             headers: {
@@ -22,23 +22,5 @@ export async function fetchData(url: string): Promise<any> {
     } catch (error) {
         console.error('Error:', error);
         throw Error('Virhe haettaessa tietoja palvelimelta');
-    }
-}
-
-export async function postData(url: string, body?: Object): Promise<any> {
-    try {
-        const response = await axios.post(url,
-            { 
-                httpsAgent,
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                data: body
-            });
-        const data = response.data;
-        return data;
-    } catch (error) {
-        console.error('Error:', error);
-        throw error;
     }
 }
