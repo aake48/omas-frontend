@@ -107,7 +107,7 @@ export default function RegisterForm() {
           }
           // For demo purposes ends here
           window.dispatchEvent(new Event("localStorageChange"));
-          router.push("/kilpailut");
+          router.push("/");
         } catch (error: any) {
           if (error.response.data) {
             console.log(error.response.data);
