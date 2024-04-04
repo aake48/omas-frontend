@@ -47,7 +47,7 @@ export const fullCompValidationSchema = Yup.object().shape({
     //     .required('Nimi on pakollinen'),
     score: Yup.number()
         .min(0, 'Tulos ei voi olla negatiivinen')
-        .max(520, 'Tulos ei voi olla yli 520')
+        .max(654, 'Tulos ei voi olla yli 654')
         .required('Tulos on pakollinen'),
     bullseyes: Yup.number()
         .min(0, 'Napakymppi ei voi olla negatiivinen')

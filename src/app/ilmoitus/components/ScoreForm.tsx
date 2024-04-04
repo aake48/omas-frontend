@@ -19,8 +19,9 @@ export default function ScoreCard({
     scoreType: ScoreType;
     competitions: UsersCompetition[];
 }) {
+    console.log(competitions);
     const round = { bullseyes: 10, score: 10.9 };
-    const total = { bullseyes: 60, score: 520 };
+    const total = { bullseyes: 60, score: 654 };
     const scoreValue = scoreType === "round" ? round : total;
     const [message, setMessage] = React.useState<PostReturn | null>(null);
     const [teamName, setTeamName] = React.useState<string | null>(null);

@@ -31,7 +31,6 @@ export default function NotificationClientWrapper() {
             if (response.ok) {
                 response.json().then((data) => {
                     setCompetitions(data);
-                    console.log(data[0]);
                 });
             }
         });
