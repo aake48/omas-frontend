@@ -57,10 +57,12 @@ export default function CardContainer({
         }
     }, [competitions, competition]);
 
+
+
     return (
         <div className="grid my-5 justify-center sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8">
             {teams.content.map((team: TTeam) => (
-                <TeamCard key={team.teamName} team={team} memberOf={memberOf} />
+                <TeamCard setIsMember={setIsMemberOf} key={team.teamName} team={team} memberOf={memberOf} />
             ))}
         </div>
     );

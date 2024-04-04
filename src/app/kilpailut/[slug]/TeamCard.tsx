@@ -1,15 +1,20 @@
 "use client";
 
 import { Button } from "@/components/ui/Button";
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense, useEffect } from "react";
 import useIsLoggedIn from "@/lib/hooks/is-logged-in";
 import { usePathname } from "next/navigation";
 import {TTeam,} from "@/types/commonTypes";
 
-export default function TeamCard({ team, memberOf }: { team: TTeam , memberOf: string | null}) {
+export default function TeamCard({ team, memberOf, setIsMember }: { team: TTeam , memberOf: string | null, setIsMember: (teamName: string) => void}) {
     const pathName = usePathname();
     const isLoggedIn = useIsLoggedIn();
-    const [isMember, setIsMember] = useState(memberOf === team.teamName);
+
+    useEffect(() => {
+        if (memberOf === team.teamName) {
+            setIsMember(memberOf);
+        }
+    }, [memberOf, team, setIsMember]);
 
     async function handleClick(teamName: string, competitionId: string) {
         const response = await fetch(`${pathName}/api/join`, {
@@ -24,13 +29,14 @@ export default function TeamCard({ team, memberOf }: { team: TTeam , memberOf: s
             }),
         });
         const data = await response.json();
-        data.status === 200 ? setIsMember(true) : null;
+        data.status === 200 ? setIsMember(teamName) : null;
     }
+
     return (
         <Suspense fallback={<div>Loading...</div>}>
             <div
                 className={`flex flex-col border-2 shadow-md p-5 gap-5 rounded-md ${
-                    isMember ? "bg-slate-200" : null
+                    memberOf === team.teamName ? "bg-slate-200" : null
                 }`}
             >
                 <div className="flex flex-col gap-2 justify-between md:flex-row items-center">
@@ -42,11 +48,11 @@ export default function TeamCard({ team, memberOf }: { team: TTeam , memberOf: s
                             onClick={() =>
                                 handleClick(team.teamName, team.competitionId)
                             }
-                            disabled={isMember}
+                            disabled={memberOf !== null}
                         >
-                            {isMember === false
-                                ? "Liity joukkueeseen"
-                                : "Olet joukkueessa"}
+                            {memberOf === team.teamName
+                                ? "Olet joukkueessa"
+                                : "Liity joukkueeseen"}
                         </Button>
                     )}
                 </div>
