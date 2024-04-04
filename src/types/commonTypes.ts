@@ -94,7 +94,7 @@ export type User = {
   id: number;
   roles: string[];
   creationDate: string;
-  partOfClub: string | null;
+  club: string | null;
 };
 /**
  * returned from ./competition/result/${competitionName} -endpoint
@@ -160,7 +160,7 @@ export type QueryCompetition = {
  * get competition data /api/admin/user/query?...
  */
 export type AdminQueryUser = {
-  content: User[] | null;
+  content: AdminUser[] | null;
   pageable: Pageable;
   last: boolean; // isLastPage
   totalElements: number; // how many element are there in the DB
@@ -171,6 +171,21 @@ export type AdminQueryUser = {
   numberOfElements: number; //in this page
   empty: boolean;
 };
+
+export type AdminUser = {
+  username: string;
+  legalName: string;
+  email: string;
+  id: number;
+  roles: Role[];
+  creationDate: string;
+  partOfClub: string | null;
+};
+
+export type Role = {
+  userId: number,
+  role: string
+}
 
 export type Pageable = {
   pageNumber: number; // current page
