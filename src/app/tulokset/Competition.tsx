@@ -76,7 +76,7 @@ const Competition = ({ name, displayName, startDate, endDate, type }: Competitio
     return (
       <div data-testid={`competition-${competition.displayName}`}>
         <div
-          className='flex items-center h-16 bg-slate-100 rounded-md mb-2 shadow-md ml-8 cursor-pointer'
+          className='flex items-center h-16 bg-slate-100 rounded-md mb-2 shadow-md ml-4 cursor-pointer'
           onClick={handleShowClubs}
           >
           <div className='ml-2'>
@@ -88,7 +88,7 @@ const Competition = ({ name, displayName, startDate, endDate, type }: Competitio
             <p className='ml-2 text-sm text-slate-500'>{typeFinnish}</p>
           </div>
         </div>
-        <div className={`${hidden} h-full p-4 bg-slate-50 rounded-md mb-2 shadow-md ml-16`}>
+        <div className={`${hidden} h-full p-4 bg-slate-50 rounded-md mb-2 shadow-md ml-4`}>
           {competition.teams && competition.teams.slice(0, 8).map((team, index) => (
             <div key={index} className='odd:bg-slate-200 even:bg-slate-100 p-2'>
               <Team

@@ -1,27 +1,37 @@
 'use client';
 import React, { useState, useEffect } from 'react'
 import { CompetitionResponse, QueryCompetition, competitionResults } from '@/types/commonTypes';
-import fetchData from '@/lib/get';
 import Score from './Score';
 import Paginator from '../components/Paginator';
 import { groupBy } from 'lodash';
 import { getCompetitionsQueryUrl } from '@/lib/APIConstants';
+import axios from 'axios';
+import Input from '@/components/ui/Input';
 
 const PastCompetitions = () => {
   const [content, setContent] = useState<QueryCompetition>();
   const [pageNumber, setPageNumber] = useState(0);
+  const [search, setSearch] = useState("");
   
   let currentDate = new Date();
-  let apiUrl = getCompetitionsQueryUrl("", pageNumber, 5);
+  let apiUrl = getCompetitionsQueryUrl(search, pageNumber, 5);
   
   const fetchContent = async () => {
-    const data: QueryCompetition = await fetchData(apiUrl);
-    setContent(data)
-  };
+    try {
+        const res = await axios.get(apiUrl, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        setContent(res.data);
+    } catch (e: any) {
+        console.error(e);
+    }
+}
 
   useEffect(() => {
     fetchContent();
-  }, [pageNumber])
+  }, [pageNumber, search])
   
   if (
     content?.content !== undefined &&
@@ -58,6 +68,21 @@ const PastCompetitions = () => {
     return (
       <div className="p-4">
         <h1 className='text-3xl mb-4'>Viimeisimmät tulokset</h1>
+        <div className="flex flex-col items-center gap-4 mb-8">
+            <Input
+                id="search"
+                placeholder="Hae kilpailua"
+                type="text"
+                onChange={(e) => setSearch(e.target.value)}
+                required={false}
+            />
+            <p className="text-md">Muista mennä ensimmäiselle sivulle, ennen kuin etsit</p>
+            <Paginator
+              pageNumber={pageNumber}
+              totalPages={content.totalPages}
+              handlePageNumberChange={handlePageNumberChange}
+            />
+          </div>
           {groups.map((group: any, index) => (
             <Score
               key={index}
@@ -65,11 +90,6 @@ const PastCompetitions = () => {
               competitionResults={group[1]}
             />
           ))}
-        <Paginator
-          pageNumber={pageNumber}
-          totalPages={content.totalPages}
-          handlePageNumberChange={handlePageNumberChange}
-        />
       </div>
     )
   } else {
