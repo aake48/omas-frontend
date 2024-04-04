@@ -3,21 +3,22 @@ import UsersMain from "./UsersMain";
 import CreateClub from './CreateClub';
 
 interface AdminHelperProps {
-    type: AdminViewType
+    type: AdminViewType,
+    token: string
 }
 
-const AdminHelper = ({ type }: AdminHelperProps) => {
+const AdminHelper = ({ type, token }: AdminHelperProps) => {
 
     switch (type) {
         case AdminViewType.Users:
             return (
                 <div>
-                    <UsersMain />
+                    <UsersMain token={token} />
                 </div>
             )
         case AdminViewType.CreateClub:
             return (
-                <CreateClub />
+                <CreateClub token={token} />
             )
         default:
             return (

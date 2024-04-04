@@ -1,9 +1,13 @@
 import { Button } from "@/components/ui/Button";
-import { addClubURL, getAdminDeleteUserUrl } from "@/lib/APIConstants";
+import { addClubURL } from "@/lib/APIConstants";
 import axios from "axios";
 import { useState } from "react";
 
-const CreateClub = () => {
+interface CreateClubProps {
+    token: string
+}
+
+const CreateClub = ({ token }: CreateClubProps) => {
     const [message, setMessage] = useState("");
     const [messageStyle, setMessageStyle] = useState("text-black");
 
@@ -14,7 +18,7 @@ const CreateClub = () => {
                 method: 'post',
                 url: addClubURL,
                 headers: {
-                    'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 },
                 data: {
@@ -38,28 +42,33 @@ const CreateClub = () => {
     }
 
     return (
-        <div className="flex items-center gap-2 mt-4 p-4 w-full border-solid border border-slate-300 rounded-lg shadow-md cursor-pointer">
-            <div className='px-4 p-2'>
-                <form
-                    action={handleSubmit}
-                    className='flex flex-row gap-2'
-                >
-                    <input
-                        className='border rounded-lg p-2'
-                        type="text"
-                        name="club"
-                        placeholder="seuran nimi"
-                    />
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        className="hover:bg-slate-100"
-                        type="submit"
-                    >
-                        Luo seura
-                    </Button>
-                </form>
-                <p className={`${messageStyle} mt-3`}>{message}</p>
+        <div>
+            <div className="p-4">
+                <p className="text-md">Tällä sivulla voit luoda uusia seuroja.</p>
+            </div>
+            <div className="flex items-center gap-2 mt-4 p-4 w-full border-solid border border-slate-300 rounded-lg shadow-md cursor-pointer">
+                <div className='px-4 p-2'>
+                    <form
+                        action={handleSubmit}
+                        className='flex flex-row gap-2'
+                        >
+                        <input
+                            className='border rounded-lg p-2'
+                            type="text"
+                            name="club"
+                            placeholder="seuran nimi"
+                            />
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            className="hover:bg-slate-100"
+                            type="submit"
+                            >
+                            Luo seura
+                        </Button>
+                    </form>
+                    <p className={`${messageStyle} mt-3`}>{message}</p>
+                </div>
             </div>
         </div>
     )
