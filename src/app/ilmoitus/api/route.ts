@@ -2,7 +2,7 @@ import axios from 'axios';
 import * as Q from '../../../lib/APIConstants'
 import { NextResponse } from 'next/server';
 import { NextRequest } from 'next/server';
-import { useHTTPSAgent } from '@/lib/get-https-agent';
+import { useHTTPSAgent } from '@/lib/hooks/get-https-agent';
 
 interface ScorePostRequestBody {
   competitionName: string;

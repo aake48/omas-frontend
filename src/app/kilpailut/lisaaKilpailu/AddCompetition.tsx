@@ -7,10 +7,23 @@ import { PostCompetition } from "@/types/commonTypes";
 import axios from "axios";
 import { Field, Form, Formik } from "formik";
 import CustomInput from "@/components/ui/CustomInput";
+import useIsLoggedIn from "@/lib/hooks/is-logged-in";
 
 export default function AddCompetition() {
     type CompetitionType = "rifle" | "pistol";
     const competitionTypes = ["rifle", "pistol"];
+    const isLoggedIn = useIsLoggedIn();
+
+    if (!isLoggedIn) {
+        return (
+            <div className="grid gap-5">
+                <h1>Sinun täytyy olla kirjautunut sisään luodaksesi kilpailun</h1>
+                <Button>
+                    <a className="border p-2 rounded-lg shadow-md" href="/kirjaudu">Kirjaudu sisään</a>
+                </Button>
+            </div>
+        );
+    }
 
     return (
         <div className="flex flex-col justify-center gap-2 p-5 rounded-lg shadow-lg container mx-auto">
@@ -52,7 +65,7 @@ export default function AddCompetition() {
                                 id={"competitionType"}
                                 selected={field.value}
                                 onChange={(e) => {
-                                    form.setFieldValue(field.name, e.target.value);
+                                    form.setFieldValue(field.name, e.target.value as CompetitionType);
 
                                 }}
                                 required={true}

@@ -2,28 +2,14 @@
 
 import { Button } from "@/components/ui/Button";
 import React, { Suspense, useEffect, useState } from "react";
-import useIsLoggedIn from "@/lib/is-logged-in";
+import useIsLoggedIn from "@/lib/hooks/is-logged-in";
 import { usePathname } from "next/navigation";
+import {TTeam,} from "@/types/commonTypes";
 
-type TTeamMember = {
-    userId: number;
-    competitionId: string;
-    teamName: string;
-    legalname: string;
-};
-
-type TTeam = {
-    clubName: string;
-    competitionId: string;
-    teamName: string;
-    teamDisplayName: string;
-    teamMembers?: TTeamMember[];
-};
-
-export default function TeamCard({ team }: { competition: any; team: TTeam }) {
+export default function TeamCard({ team, memberOf }: { team: TTeam , memberOf: string | null}) {
     const pathName = usePathname();
     const isLoggedIn = useIsLoggedIn();
-    const [isMember, setIsMember] = useState(false); // Initialize state
+    const [isMember, setIsMember] = useState(memberOf === team.teamName);
 
     async function handleClick(teamName: string, competitionId: string) {
         const response = await fetch(`${pathName}/api/join`, {
@@ -40,22 +26,6 @@ export default function TeamCard({ team }: { competition: any; team: TTeam }) {
         const data = await response.json();
         data.status === 200 ? setIsMember(true) : null;
     }
-
-    useEffect(() => {
-        if (isLoggedIn) {
-            const checkIfMember = async (userId: number) => {
-                const isMember =
-                    team.teamMembers?.some(
-                        (member) => member.userId === userId
-                    ) ?? false;
-                setIsMember(isMember); // Update state based on check
-            };
-
-            const userInfo = JSON.parse(localStorage.getItem("userInfo") ?? "");
-            const userId: number = userInfo.userId ?? -1;
-            checkIfMember(userId);
-        }
-    }, [isLoggedIn, team]);
     return (
         <Suspense fallback={<div>Loading...</div>}>
             <div
@@ -86,7 +56,7 @@ export default function TeamCard({ team }: { competition: any; team: TTeam }) {
                     {team.teamMembers && team.teamMembers.length > 0 ? (
                         <div className="grid border h-full border-slate-300 gap-x-4 bg-slate-100 p-2 shadow-md rounded-md grid-cols-2">
                             {team.teamMembers.map((member, index) => {
-                                return <p key={index}>{member.legalname}</p>;
+                                return <p key={index}>{member.legalName}</p>;
                             })}
                         </div>
                     ) : null}
