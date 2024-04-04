@@ -19,6 +19,8 @@ export type ClubResponse = {
 export type PostCompetition = {
   competitionName: string; // name is the id
   competitionType: "rifle" | "pistol";
+  competitionStartDate?: string;
+  competitionEndDate?: string;
 };
 
 /**
@@ -103,7 +105,7 @@ export type competitionResults = {
   name: string;
   NameNonId: string;
   creationDate: string;
-  type: 'rifle' | 'pistol';
+  type: "rifle" | "pistol";
   startDate: string;
   endDate: string;
   teams: competitionResultsTeam[] | null;
@@ -179,5 +181,5 @@ export type Pageable = {
 export enum AdminViewType {
   Users,
   CreateClub,
-  Other
+  Other,
 }
