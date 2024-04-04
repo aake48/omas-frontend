@@ -94,7 +94,7 @@ export type User = {
   id: number;
   roles: string[];
   creationDate: string;
-  club: string | null;
+  partOfClub: string | null;
 };
 /**
  * returned from ./competition/result/${competitionName} -endpoint

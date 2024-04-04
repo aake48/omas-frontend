@@ -1,27 +1,39 @@
-import { footerLinks } from "@/lib/links";
+import { User } from "@/types/commonTypes";
 import Link from "next/link";
-import React from "react";
-
-const userLinks = [
-    {
-        text: "Asetukset",
-        href: "/asetukset"
-    },
-];
+import React, { useEffect, useState } from "react";
+import { userLinks } from '@/lib/links';
 
 const UserMenu = () => {
+    const [loggedIn, setLoggedIn] = useState(false);
+    const [adminLoggedIn, setAdminLoggedIn] = useState(false);
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (token) {
+            setLoggedIn(true);
+            const user: User = JSON.parse(localStorage.getItem("userInfo")!);
+            if (user.roles.includes("ROLE_ADMIN")) setAdminLoggedIn(true);
+        }
+    }, [])
+
+    let newUserLinks = [...userLinks];
+    if (adminLoggedIn) newUserLinks.push(
+        {
+            text: "Pääkäyttäjä",
+            href: "/admin"
+        }
+    )
+
+    if (!loggedIn) return;
+
     return (
-        <footer className="w-full flex items-center py-10 border-t-2 border-slate-400">
-            <div className="mx-20 flex justify-between w-full">
-                <nav className=" grid gap-5 items-center">
-                    {userLinks.map((link, index) => (
-                        <Link key={index} href={link.href}>
-                            {link.text}
-                        </Link>
-                    ))}
-                </nav>
-            </div>
-        </footer>
+        <div className="flex gap-4 text-xl items-center flex-col overflow-hidden">
+            {newUserLinks.map((link, index) => (
+                <Link className="hover:text-zinc-400" key={index} href={link.href}>
+                    {link.text}
+                </Link>
+            ))}
+        </div>
     );
 };
 

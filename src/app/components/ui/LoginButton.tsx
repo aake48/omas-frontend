@@ -4,12 +4,13 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 interface LoginProps {
-  user: User
+  user: User,
+  onClick: any
 }
 
-export function LoginButton({ user }: LoginProps) {
+export function LoginButton({ user, onClick }: LoginProps) {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
-
+  
   useEffect(() => {
     const checkLogin = () => {
       const token = localStorage.getItem("token");
@@ -29,7 +30,8 @@ export function LoginButton({ user }: LoginProps) {
     <div>
       <Link
         className="flex gap-2 text-lg items-center border py-1 px-2 border-slate-400 hover:bg-slate-100 rounded-lg"
-        href="/kirjaudu"
+        href="#"
+        onClick={onClick}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
