@@ -8,6 +8,7 @@ import validationSchema from "./validation";
 import CustomInput from "@/components/ui/CustomInput";
 import CustomDropdown from "@/components/ui/CustomDropdown";
 import { useRouter } from "next/navigation";
+import { PostCompetition } from "@/types/commonTypes";
 
 export default function AddCompetition() {
   const router = useRouter();
@@ -24,42 +25,8 @@ export default function AddCompetition() {
   const initialValues = {
     competitionName: "",
     competitionType: "Ilmakivääri",
-    startDate: null,
-    endDate: null,
-  };
-
-  const handleSubmit = async (values: any) => {
-    const competition =
-      values.competitionStartDate && values.competitionEndDate
-        ? {
-            competitionName: values.competitionName,
-            competitionType: competitionTypes[values.competitionType],
-            startDate: new Date(values.competitionStartDate).getTime(),
-            endDate: new Date(values.competitionEndDate).getTime(),
-          }
-        : {
-            competitionName: values.competitionName,
-            competitionType: competitionTypes[values.competitionType],
-          };
-
-    try {
-      const response = await axios.post(addCompetitionURL, competition, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (response.status === 201) {
-        console.log(response.data);
-      } else {
-        console.log(response.data.message);
-      }
-    } catch (error: any) {
-      if (error.response.data) {
-        console.log(error.response.data);
-      }
-    }
+    startDate: "",
+    endDate: "",
   };
 
   return (
@@ -67,11 +34,41 @@ export default function AddCompetition() {
       id="addCompetitionForm"
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={(values, { setSubmitting }) => {
-        setSubmitting(true);
-        handleSubmit(values);
-        setSubmitting(false);
-        router.push("/kilpailut");
+      onSubmit={(values, { setSubmitting, resetForm }) => {
+        try {
+          const competitonInfo: PostCompetition =
+            values.startDate || values.endDate
+              ? {
+                  competitionName: values.competitionName,
+                  competitionType: competitionTypes[values.competitionType],
+                  competitionStartDate: values.startDate,
+                  competitionEndDate: values.endDate,
+                }
+              : {
+                  competitionName: values.competitionName,
+                  competitionType: competitionTypes[values.competitionType],
+                };
+          axios
+            .post(addCompetitionURL, {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+                "Content-Type": "application/json",
+              },
+              data: competitonInfo,
+            })
+            .then((response) => {
+              if (response.status === 201) {
+                console.log(response.data);
+                router.push(`/kilpailut/${response.data.competitionId}`);
+              } else {
+                console.log(response.data.message);
+              }
+            });
+        } catch (error: any) {
+          if (error.response.data) {
+            console.log(error.response.data);
+          }
+        }
       }}
     >
       <Form>
