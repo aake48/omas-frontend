@@ -9,13 +9,31 @@ interface ScorePostRequestBody {
   teamName: string;
   score: number;
   bullseyes: number;
-  image?: File;
+  images?: FileList;
 }
 
 
 export async function POST(request: NextRequest) {
-  const requestBody: ScorePostRequestBody = await request.json();
   const httpsAgent = useHTTPSAgent();
+
+  if (request.body === null) {
+    return NextResponse.json({ message: "No body found in request." }, { status: 400 });
+  }
+
+  if (request.body === null) {
+    return NextResponse.json({ message: "No body found in request." }, { status: 400 });
+  }
+
+
+
+  const reader = request.body.getReader();
+
+  reader.read().then(({ done, value }) => {
+    if (done) {
+      return;
+    }
+    console.log(value.toString());
+  });
 
   const authHeader = request.headers.get('Authorization');
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -27,10 +45,10 @@ export async function POST(request: NextRequest) {
     const response = await axios.post(
       Q.addScoreSum,
       {
-        competitionName: requestBody.competitionName,
-        teamName: requestBody.teamName,
-        score: requestBody.score,
-        bullsEyeCount: requestBody.bullseyes,
+        // competitionName: requestBody.competitionName,
+        // teamName: requestBody.teamName,
+        // score: requestBody.score,
+        // bullsEyeCount: requestBody.bullseyes,
       },
       {
         headers: {
