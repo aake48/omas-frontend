@@ -1,23 +1,21 @@
-import { Button } from '@/components/ui/Button';
 import { User } from '@/types/commonTypes';
 import ChangeEmail from './ChangeEmail';
 import ChangePassword from './ChangePassword';
 
-interface UserProps {
+interface UserDetailsProps {
     user: User,
-    token: string
 }
 
-const UserDetails = ({ user, token }: UserProps) => {
+const UserDetails = ({ user }: UserDetailsProps) => {
 
     return (
         <div>
             <h1>{`Käyttäjänimi: ${user.username}`}</h1>
             <h1>{`Nimi: ${user.legalName}`}</h1>
             <h1>{`Sähköposti: ${user.email}`}</h1>
-            <ChangeEmail token={token} />
+            <ChangeEmail />
             <h1>Salasana: ******</h1>
-            <ChangePassword token={token} />
+            <ChangePassword />
             <h1>{(user.club) ? `seura: ${user.club}`: `seura: et ole seurassa`}</h1>
             <h1>{`Luontipäivä: ${user.creationDate}`}</h1>
         </div>

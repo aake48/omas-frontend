@@ -7,14 +7,12 @@ import { validationSchemaPasswordChange } from "./validation";
 import CustomInput from "@/components/ui/CustomInput";
 import { Button } from "@/components/ui/Button";
 
-interface PasswordChangeProps {
-    token: string
-}
-
-export default function ChangePassword({ token }: PasswordChangeProps) {
+export default function ChangePassword() {
     const [message, setMessage] = useState("");
     const [messageStyle, setMessageStyle] = useState("text-black");
     const [isHidden, setIsHidden] = useState(true);
+
+    const token = localStorage.getItem("token");
 
     const initialValues = {
         oldPassword: "",
