@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import ChangePassword from "./ChangePassword";
 import ChangeEmail from "./ChangeEmail";
 import UserDetails from "./UserDetails";
+import JoinClub from "./JoinClub";
 
 export default function Settings() {
     const [loggedIn, setLoggedIn] = useState(false);
@@ -34,7 +35,9 @@ export default function Settings() {
 
     return (
         <div>
-            <UserDetails user={user} token={token} />
+            <p className="text-md py-4">!! Osa tiedoista päivittyy vasta, kun olet kirjautunut uudelleen sisään.</p>
+            <UserDetails user={user} />
+            <JoinClub />
         </div>
     );
 }
