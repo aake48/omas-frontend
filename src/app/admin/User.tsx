@@ -3,6 +3,7 @@ import { User as UserType } from '@/types/commonTypes';
 import { Button } from '@/components/ui/Button';
 import axios from 'axios';
 import { getAdminDeleteUserUrl, getAdminDemoteUserUrl, getAdminPromoteUserUrl } from '@/lib/APIConstants';
+import AreYouSure from '@/app/admin/AreYouSure';
 
 interface UserProps {
     user: UserType
@@ -92,7 +93,7 @@ const User = ({ user }: UserProps) => {
                     'Content-Type': 'application/json'
                 },
                 data: {
-                    username: user.username
+                    userId: user.id
                 }
             });
 
@@ -125,17 +126,14 @@ const User = ({ user }: UserProps) => {
                 <h1>{`nimi: ${user.legalName}`}</h1>
                 <h1>{`sähköposti: ${user.email}`}</h1>
                 <h1>{`luontipäivä: ${user.creationDate}`}</h1>
-                <h1>{`seura: ${user.club}`}</h1>
+                <h1>{`seura: ${user.partOfClub}`}</h1>
                 <h1>roolit:</h1>
                 <div className='flex flex-row gap-2'>
-                    
-                    {/* 
-                    
-                    TODO: fix bug, throws objects are not valid as a a react child error
-
-                    {roles.length !== 0 && roles.map((role: string, index: number) => (
+                    {(roles.length !== 0) ? roles.map((role: string, index: number) => (
                         <p key={index}>{role}</p>
-                    ))} */}
+                    )) : (
+                        <p>ei rooleja</p>
+                    )}
                 </div>
             </div>
             <div className='px-4 p-2'>
@@ -172,6 +170,7 @@ const User = ({ user }: UserProps) => {
                     </Button>
                 </form>
                 <p className={`${messageStyle} mt-3`}>{message}</p>
+                {/* <AreYouSure hidden={true} prompt={`Haluatko varmasti poistaa käyttäjän ${user.username}?`} onClickYes={1+1} /> */}
             </div>
         </div>
     )

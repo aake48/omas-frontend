@@ -51,7 +51,7 @@ const UsersMain = () => {
 
     useEffect(() => {
         checkAdminLogin();
-    }, [pageNumber, search, data]);
+    }, [pageNumber, search]);
 
     if (!adminLogin) return (
         <main className="flex min-h-screen flex-col items-center p-4">
