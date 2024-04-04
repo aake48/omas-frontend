@@ -100,8 +100,8 @@ export type User = {
  * returned from ./competition/result/${competitionName} -endpoint
  */
 export type competitionResults = {
-  name: string;
-  NameNonId: string;
+  competitionId: string;
+  displayName: string;
   creationDate: string;
   type: 'rifle' | 'pistol';
   startDate: string;
@@ -121,6 +121,7 @@ export type competitionResultsUser = {
   userId: number;
   name: string; // name associated with the userId
   scorePerShot: string; // ScoreList.toString()
+  creationDate: string
 };
 
 /**
