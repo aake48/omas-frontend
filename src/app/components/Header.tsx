@@ -10,6 +10,8 @@ const Header: React.FC = () => {
     const [menuHidden, setMenuHidden] = useState("hidden");
     const [userMenuHidden, setUserMenuHidden] = useState(true);
     const [user, setUser] = useState<User>();
+    const [loggedIn, setLoggedIn] = useState(false);
+    const [adminLoggedIn, setAdminLoggedIn] = useState(false);
   
     const handleMenuOnClick = (state: boolean) => {
         !state ? setMenuHidden("block") : setMenuHidden("hidden");
@@ -25,6 +27,8 @@ const Header: React.FC = () => {
           if (token) {
             let user: User = JSON.parse(localStorage.getItem("userInfo")!);
             setUser(user);
+            setLoggedIn(true);
+            if (user.roles.includes("ROLE_ADMIN")) setAdminLoggedIn(true);
           }
       };
       checkLogin();
@@ -53,7 +57,7 @@ const Header: React.FC = () => {
                             </Link>
                         ))}
                     </nav>
-                    <LoginButton onClick={handleUserMenuOnClick} user={user!} />
+                    <LoginButton onClick={handleUserMenuOnClick} loggedIn={loggedIn} user={user!} />
                 </div>
             </div>
             <div
@@ -81,7 +85,7 @@ const Header: React.FC = () => {
                 onClick={handleUserMenuOnClick}
                 className={`fixed right-4 top-20 shadow p-4 bg-white overflow-hidden`}
             >
-                <UserMenu />
+                <UserMenu adminLoggedIn={adminLoggedIn} />
             </div>
         </header>
     );

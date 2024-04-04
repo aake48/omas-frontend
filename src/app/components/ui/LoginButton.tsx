@@ -5,27 +5,11 @@ import React, { useEffect, useState } from "react";
 
 interface LoginProps {
   user: User,
+  loggedIn: boolean,
   onClick: any
 }
 
-export function LoginButton({ user, onClick }: LoginProps) {
-  const [loggedIn, setLoggedIn] = useState<boolean>(false);
-  
-  useEffect(() => {
-    const checkLogin = () => {
-      const token = localStorage.getItem("token");
-        if (token) {
-          let user: User = JSON.parse(localStorage.getItem("userInfo")!);
-          setLoggedIn(true);
-        }
-    };
-    checkLogin();
-    window.addEventListener("localStorageChange", checkLogin);
-    return () => {
-      window.removeEventListener("localStorageChange", checkLogin);
-    };
-  }, []);
-
+export function LoginButton({ user, loggedIn, onClick }: LoginProps) {
   return loggedIn ? (
     <div>
       <Link
