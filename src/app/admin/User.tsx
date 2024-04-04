@@ -118,6 +118,7 @@ const User = ({ user }: UserProps) => {
             <div className='px-4 p-2 block rounded-lg'>
                 <h1>{`id: ${user.id}`}</h1>
                 <h1>{`käyttäjänimi: ${user.username}`}</h1>
+                <h1>{`nimi: ${user.legalName}`}</h1>
                 <h1>{`sähköposti: ${user.email}`}</h1>
                 <h1>{`luontipäivä: ${user.creationDate}`}</h1>
                 <h1>{`seura: ${user.partOfClub}`}</h1>

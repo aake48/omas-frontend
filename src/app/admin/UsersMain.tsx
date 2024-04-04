@@ -26,6 +26,7 @@ const UsersMain = ({ token }: UsersMainProps) => {
                     'Content-Type': 'application/json'
                 }
             });
+            console.log(res.data);
             setData(res.data);
         } catch (e: any) {
             console.error(e);
@@ -53,9 +54,11 @@ const UsersMain = ({ token }: UsersMainProps) => {
             <div className="p-4">
                 <p className="text-md">Tällä sivulla voit hallinnoida käyttäjiä: lisätä/poistaa rooleja ja poistaa käyttäjiä.</p>
                 <p className="text-md">Tiedot päivittyvät sivun päivittämisen jälkeen.</p>
+                <p className="text-md">Etsiminen tapahtuu koko nimen perusteella.</p>
+                <p className="text-md">Muista mennä ensimmäiselle sivulle, ennen kuin etsit.</p>
             </div>
             <div className="flex min-h-screen w-full flex-col items-center p-4 gap-2">
-                <div className="flex flex-col items-center gap-8">
+                <div className="flex flex-col items-center mb-4">
                     <Input
                         id="search"
                         placeholder="Hae käyttäjää"
@@ -63,7 +66,6 @@ const UsersMain = ({ token }: UsersMainProps) => {
                         onChange={(e) => setSearch(e.target.value)}
                         required={false}
                     />
-                    <p className="text-md">Muista mennä ensimmäiselle sivulle, ennen kuin etsit</p>
                 </div>
                 <Paginator
                     pageNumber={pageNumber}
