@@ -14,6 +14,10 @@ const adminFeatures = [
         type: AdminViewType.CreateClub
     },
     {
+        text: "Tarkastele kuvia",
+        type: AdminViewType.ImageViewer
+    },
+    {
         text: "Muut",
         type: AdminViewType.Other
     }
@@ -67,7 +71,7 @@ export default function page() {
                     </Button>
                 ))}
             </div>
-            <AdminHelper type={type} token={token} />
+            <AdminHelper type={type} />
         </main>
     )
 }

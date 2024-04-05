@@ -1,24 +1,28 @@
 import { AdminViewType } from '@/types/commonTypes';
 import UsersMain from "./UsersMain";
 import CreateClub from './CreateClub';
+import ImageViewer from './ImageViewer';
 
 interface AdminHelperProps {
     type: AdminViewType,
-    token: string
 }
 
-const AdminHelper = ({ type, token }: AdminHelperProps) => {
+const AdminHelper = ({ type }: AdminHelperProps) => {
 
     switch (type) {
         case AdminViewType.Users:
             return (
                 <div>
-                    <UsersMain token={token} />
+                    <UsersMain />
                 </div>
             )
         case AdminViewType.CreateClub:
             return (
-                <CreateClub token={token} />
+                <CreateClub />
+            )
+        case AdminViewType.ImageViewer:
+            return (
+                <ImageViewer />
             )
         default:
             return (

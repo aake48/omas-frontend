@@ -3,11 +3,7 @@ import { addClubURL } from "@/lib/APIConstants";
 import axios from "axios";
 import { useState } from "react";
 
-interface CreateClubProps {
-    token: string
-}
-
-const CreateClub = ({ token }: CreateClubProps) => {
+const CreateClub = () => {
     const [message, setMessage] = useState("");
     const [messageStyle, setMessageStyle] = useState("text-black");
 
@@ -18,7 +14,7 @@ const CreateClub = ({ token }: CreateClubProps) => {
                 method: 'post',
                 url: addClubURL,
                 headers: {
-                    'Authorization': `Bearer ${token}`,
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`,
                     'Content-Type': 'application/json'
                 },
                 data: {

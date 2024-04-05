@@ -7,11 +7,7 @@ import Input from "@/components/ui/Input";
 import axios from "axios";
 import Users from "./Users";
 
-interface UsersMainProps {
-    token: string
-}
-
-const UsersMain = ({ token }: UsersMainProps) => {
+const UsersMain = () => {
     const [data, setData] = useState<AdminQueryUser>();
     const [pageNumber, setPageNumber] = useState(0);
     const [search, setSearch] = useState("");
@@ -22,7 +18,7 @@ const UsersMain = ({ token }: UsersMainProps) => {
         try {
             const res = await axios.get(apiUrl, {
                 headers: {
-                    'Authorization': `Bearer ${token}`,
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`,
                     'Content-Type': 'application/json'
                 }
             });
