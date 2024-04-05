@@ -48,7 +48,7 @@ const UsersMain = () => {
     return (
         <div>
             <div className="p-4">
-                <p className="text-md">Tällä sivulla voit hallinnoida käyttäjiä: lisätä/poistaa rooleja ja poistaa käyttäjiä.</p>
+                <p className="text-md">Tällä sivulla voit hallinnoida käyttäjiä, voit muokata heidän rooleja sekä poistaa käyttäjiä</p>
                 <p className="text-md">Tiedot päivittyvät sivun päivittämisen jälkeen.</p>
                 <p className="text-md">Etsiminen tapahtuu koko nimen perusteella.</p>
                 <p className="text-md">Muista mennä ensimmäiselle sivulle, ennen kuin etsit.</p>
