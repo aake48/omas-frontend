@@ -195,5 +195,6 @@ export type Pageable = {
 export enum AdminViewType {
   Users,
   CreateClub,
+  ImageViewer,
   Other
 }
