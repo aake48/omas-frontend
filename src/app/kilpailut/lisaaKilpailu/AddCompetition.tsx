@@ -48,22 +48,22 @@ export default function AddCompetition() {
                   competitionName: values.competitionName,
                   competitionType: competitionTypes[values.competitionType],
                 };
-          axios
-            .post(addCompetitionURL, {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-                "Content-Type": "application/json",
-              },
-              data: competitonInfo,
-            })
-            .then((response) => {
-              if (response.status === 201) {
-                console.log(response.data);
-                router.push(`/kilpailut/${response.data.competitionId}`);
-              } else {
-                console.log(response.data.message);
-              }
-            });
+          axios({
+            method: "post",
+            url: addCompetitionURL,
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              "Content-Type": "application/json",
+            },
+            data: competitonInfo,
+          }).then((response) => {
+            if (response.status === 201) {
+              console.log(response.data);
+              router.push(`/kilpailut/${response.data.competitionId}`);
+            } else {
+              console.log(response.data.message);
+            }
+          });
         } catch (error: any) {
           if (error.response.data) {
             console.log(error.response.data);
