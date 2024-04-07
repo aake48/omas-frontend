@@ -1,6 +1,11 @@
 import * as yup from "yup";
 
 const today = new Date();
+const startOfToday = new Date(
+  today.getFullYear(),
+  today.getMonth(),
+  today.getDate()
+);
 const oneYearFromNow = new Date(
   today.getFullYear() + 1,
   today.getMonth(),
@@ -8,12 +13,12 @@ const oneYearFromNow = new Date(
 );
 
 const validationSchema = yup.object().shape({
-  competitionName: yup.string().required("Kilpailun nimi on pakollinen"),
+  competitionName: yup.string().required("Kilpailun nimi on pakollinen").min(3),
   competitionType: yup.string().required("Kilpailun tyyppi on pakollinen"),
   startDate: yup
     .date()
     .nullable()
-    .min(new Date(), "Kilpailun alkupäivämäärän pitää olla tulevaisuudessa")
+    .min(startOfToday, "Kilpailun alkupäivämäärän pitää olla tulevaisuudessa")
     .max(
       oneYearFromNow,
       "Kilpailun alkupäivämäärä saa olla korkeintaan vuoden päässä"
