@@ -6,33 +6,48 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Images from "./Images";
 
-
 const ImageViewer = () => {
-    const [images, setImages] = useState<string>();
-    const [searchUserId, setSearchUserId] = useState<number>();
-    const [searchCompetitionId, setSearchCompetitionId] = useState("");
-    const [searchTeamName, setSearchTeamName] = useState("");
+    const [data, setData] = useState<ImageProof[]>();
+    const [message, setMessage] = useState("");
 
     const apiUrl = getFileDownloadUrl();
 
-    const fetchImages = async () => {
+    const fetchImages = async (form: FormData) => {
         try {
-            const res = await axios({
+            const userId = form.get("userId")?.toString();
+            const competitionId = form.get("competitionId");
+            const teamName = form.get("teamName");
+            const fileName = form.get("fileName") || null;
+    
+            const res = await axios(apiUrl, {
                 method: "post",
-                url: apiUrl,
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem("token")}`,
                     'Content-Type': 'application/json'
                 },
                 data: {
-                    userId: searchUserId,
-                    competitionId: searchCompetitionId,
-                    teamName: searchTeamName
+                    userId: parseInt(userId!),
+                    competitionId: competitionId,
+                    teamName: teamName,
+                    fileName: fileName
                 }
             });
+
             console.log(res);
-            setImages(res.data);
+            // const formData = await res.formData();
+            // const images: ImageProof[] = [];
+
+            // for (const entry of formData.entries()) {
+            //     images.push({
+            //         name: entry[0],
+            //         data: entry[1]
+            //     })
+            // }
+
+            setMessage("");
+            setData(res.data);
         } catch (e: any) {
+            setMessage("Virhe kuvien haussa. Tarkista kentät.");
             console.error(e);
         }
     }
@@ -58,69 +73,75 @@ const ImageViewer = () => {
             console.error(e);
         }
     }
-    
-    useEffect(() => {
-        fetchImages();
-    }, [searchUserId, searchCompetitionId, searchTeamName])
 
     return (
         <div>
-            <div className="flex flex-col mb-4 gap-2 py-2">
-                <Input
-                    id="searchuserid"
-                    placeholder="käyttäjä id"
-                    type="text"
-                    onChange={(e) => setSearchUserId(parseInt(e.target.value))}
-                    required={false}
-                />
-                <Input
-                    id="searchcompetitionid"
-                    placeholder="kilpailu id"
-                    type="text"
-                    onChange={(e) => setSearchCompetitionId(e.target.value)}
-                    required={false}
-                />
-                <Input
-                    id="searchteamname"
-                    placeholder="joukkueen nimi"
-                    type="text"
-                    onChange={(e) => setSearchTeamName(e.target.value)}
-                    required={false}
-                />
+            <div className="p-4">
+                <p className="text-md">Kuvien hakeminen tapahtuu käyttäjän ja kilpailun id:llä sekä joukkueen nimellä (tällä saa haettua kaikki kuvat).</p>
+                <p className="text-md">Yhden kuvan hakeminen tapahtuu lisäämällä muiden tietojen lisäksi kuvatiedoston nimi (tiedostopääte mukaan lukien) viimeiseen kenttään.</p>
             </div>
-            <form
-                action={handleUploadImage}
-                className='flex flex-row gap-2'
-            >
-                <input
-                    className='border rounded-lg p-2'
-                    type="file"
-                    name="file"
-                    placeholder="kuva"
-                />
-                <Button
-                    variant="outline"
-                    size="sm"
-                    className="hover:bg-slate-100"
-                    type="submit"
+            <div className="flex flex-col mb-4 gap-2 py-2">
+                <form
+                    action={fetchImages}
+                    className='flex flex-col gap-2 max-w-sm'
                 >
-                    Lähetä
-                </Button>
-            </form>
-            <Images images={images} />
+                    <input
+                        className='border rounded-lg p-2'
+                        type="text"
+                        name="userId"
+                        placeholder="käyttäjän id"
+                    />
+                    <input
+                        className='border rounded-lg p-2'
+                        type="text"
+                        name="competitionId"
+                        placeholder="kilpailun id"
+                    />
+                    <input
+                        className='border rounded-lg p-2'
+                        type="text"
+                        name="teamName"
+                        placeholder="joukkueen nimi"
+                    />
+                    <input
+                        className='border rounded-lg p-2'
+                        type="text"
+                        name="fileName"
+                        placeholder="tiedoston nimi"
+                    />
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        className="hover:bg-slate-100"
+                        type="submit"
+                    >
+                        Hae kuvat
+                    </Button>
+                </form>
+                <p>{message}</p>
+                <form
+                    action={handleUploadImage}
+                    className='flex flex-row gap-2'
+                >
+                    <input
+                        className='border rounded-lg p-2'
+                        type="file"
+                        name="file"
+                        placeholder="kuva"
+                    />
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        className="hover:bg-slate-100"
+                        type="submit"
+                    >
+                        Lähetä
+                    </Button>
+                </form>
+                <Images data={data} />
+            </div>
         </div>
     )
-}
-
-const getBinary = (image: string) => {
-    const newIm = image.split("\n");
-    const newIm2 = newIm.slice(4);
-    const newIm3 = newIm2.join("\n");
-    const buf = Buffer.from(image, 'base64');
-    const buf2 = buf.toString('base64')
-    console.log(buf2);
-    const i = image.replace(/(..)/gim,'%$1')
-    return i;
 }
 
 export default ImageViewer;

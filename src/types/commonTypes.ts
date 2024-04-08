@@ -193,8 +193,8 @@ export type Pageable = {
 };
 
 export type ImageProof = {
-  name: string,
-  bytes: number[]
+  fileName: string,
+  image: string
 }
 
 export enum AdminViewType {
