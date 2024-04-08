@@ -115,7 +115,7 @@ const ImageViewer = () => {
                         className="hover:bg-slate-100"
                         type="submit"
                     >
-                        Hae kuvat
+                        Hae kuvia
                     </Button>
                 </form>
                 <p>{message}</p>
