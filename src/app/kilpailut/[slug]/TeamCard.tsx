@@ -9,6 +9,13 @@ import {TTeam,} from "@/types/commonTypes";
 export default function TeamCard({ team, memberOf, setIsMember }: { team: TTeam , memberOf: string | null, setIsMember: (teamName: string) => void}) {
     const pathName = usePathname();
     const isLoggedIn = useIsLoggedIn();
+    const [isFull , setIsFull] = React.useState<boolean>(false);
+
+    useEffect(() => {
+        if (team.teamMembers && team.teamMembers.length === 5) {
+            setIsFull(true);
+        }
+    }, [team]);
 
     useEffect(() => {
         if (memberOf === team.teamName) {
@@ -48,11 +55,11 @@ export default function TeamCard({ team, memberOf, setIsMember }: { team: TTeam 
                             onClick={() =>
                                 handleClick(team.teamName, team.competitionId)
                             }
-                            disabled={memberOf !== null}
+                            disabled={memberOf !== null || isFull}
                         >
                             {memberOf === team.teamName
                                 ? "Olet joukkueessa"
-                                : "Liity joukkueeseen"}
+                                : isFull ? "Joukkue on täynnä" : "Liity joukkueeseen"}
                         </Button>
                     )}
                 </div>

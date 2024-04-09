@@ -1,10 +1,12 @@
-import React from "react";
+"use client"
+
+import React, { useEffect, useState } from "react";
 import Competitions from "./Competitions";
 import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 
 
-export default function page() {
+export default function LisääKilpailu() {
   const [competitions, setCompetitions] = useState<CompetitionType[]>([]);
 
   useEffect(() => {
