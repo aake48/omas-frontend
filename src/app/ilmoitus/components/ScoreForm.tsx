@@ -6,6 +6,7 @@ import Dropdown from "@/components/ui/Dropdown";
 import { ScoreType, UsersCompetition } from "@/types/commonTypes";
 import UploadFile from "./UploadFile";
 import Notification from "@/components/component/Notification";
+import { sendScore } from "@/app/actions";
 import useUserInfo from "@/lib/hooks/get-user.info";
 
 interface PostReturn {
@@ -66,6 +67,7 @@ export default function ScoreCard({
                         ? roundValidationSchema
                         : fullCompValidationSchema
                 }
+                
                 onSubmit={(values, { setSubmitting, resetForm }) => {
                     const formData = new FormData();
                     console.log(values);
@@ -77,41 +79,31 @@ export default function ScoreCard({
                         }
                     });
 
-                    // Handle file inputs separately
-                    let files: File[] = [];
-                    for (let i = 0; i < files.length; i++) {
-                        files.push(values.images[i]);
-                    }
-                    files.forEach((file, index) => {
-                        formData.append(`images[]`, file, file.name);
-                    });
+                    formData.append("teamName", teamName!);
 
-                    fetch("ilmoitus/api", {
-                        method: "POST",
-                        headers: {
-                            Authorization: "Bearer " + token,
-                        },
-                        body: formData,
-                    })
-                        .then((response) => response.json())
-                        .then((response) => {
-                            setSubmitting(false);
-                            resetForm();
-                            setTeamName(null);
-                            response.status === 200
-                                ? setMessage({
-                                      message: "Ilmoitus lähetetty",
-                                      status: response.status,
-                                  })
-                                : setMessage({
-                                      message:
-                                          "Ilmoituksen lähetys epäonnistui",
-                                      status: response.status,
-                                  });
-                        });
+                        for (let index = 0; index < values.images.length; index++) {
+                            
+                            formData.append(`image`, values.images[index], values.images[index].name);
+                        }
+
+                    sendScore(token, formData).then((response) => {
+                        setSubmitting(false);
+                        resetForm();
+                        setTeamName(null);
+                        response === 200
+                            ? setMessage({
+                                  message: "Ilmoitus lähetetty",
+                                  status: 200,
+                              })
+                            : setMessage({
+                                  message: "Ilmoituksen lähetys epäonnistui",
+                                  status: 500,
+                              });
+                    });
                 }}
             >
-                <Form className=" md:my-5 w-full justify-around gap-2 md:gap-5 grid p-5">
+                <Form className=" md:my-5 w-full justify-around gap-2 md:gap-5 grid p-5"
+                >
                     <div className="grid gap-2">
                         <label className="md:text-xl font-light">
                             Kilpailu
