@@ -10,7 +10,6 @@ import useUserInfo from "@/lib/hooks/get-user.info";
 import { useEffect, useState } from "react";
 
 async function getUserCompetitions(slug: string, token: any) {
-    if (token) {
         const response = await fetch(`/kilpailut/${slug}/api/competition`, {
             method: "GET",
             headers: {
@@ -19,8 +18,6 @@ async function getUserCompetitions(slug: string, token: any) {
             },
         });
         return response;
-    }
-    return null;
 }
 
 export default function CardContainer({
@@ -38,18 +35,22 @@ export default function CardContainer({
 
     // Fetch user's competitions
     useEffect(() => {
+        if (token == null) {
+            return;
+        }
+
         getUserCompetitions(slug, token).then((response) => {
-            if (response && response.ok) {
-                response.json().then((data) => {
+            response.json().then((data) => {
+                if (data.status === 200) {
                     setCompetitions(data);
-                });
-            }
+                }
+            });
         });
     }, [token, slug]);
-
     // Check if user is member of any team
+
     useEffect(() => {
-        if (competitions) {
+        if (competitions != null) {
             const memberOf = competitions.find(
                 (comp) => comp.competitionId === competition.competitionId
             );

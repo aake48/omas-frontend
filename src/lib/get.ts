@@ -28,7 +28,6 @@ export default async function fetchData(url: string, data?: Object, headers?: Ob
             data: jsonData,
             headers: headers2
         });
-        console.log(response);
         return response.data;
     } catch (error) {
         console.error('Error:', error);

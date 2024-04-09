@@ -24,6 +24,7 @@ export async function GET(request: NextRequest) {
       });
       return NextResponse.json(response.data);
     } catch (error: any) {
-        return NextResponse.json({ message: error.response!.data }, { status: error.status });
+      console.error(error);
+        return NextResponse.json({ message: error.response!.data, status: error.status });
     }
   }

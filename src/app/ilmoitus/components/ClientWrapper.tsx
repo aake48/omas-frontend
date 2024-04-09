@@ -5,13 +5,15 @@ import React, { useEffect, useState } from "react";
 import ScoreTypeSelectorContainer from "./ScoreTypeSelectorContainer";
 import ScoreCard from "./ScoreForm";
 import useLoggedIn from "@/lib/hooks/is-logged-in";
+import useUserInfo from "@/lib/hooks/get-user.info";
 
-async function getUserCompetitions() {
+async function getUserCompetitions(token: string) {
+
     const response = await fetch("ilmoitus/api", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": "Bearer " + localStorage.getItem("token"),
+            "Authorization": "Bearer " + token,
         }
     })
     return response;
@@ -25,16 +27,23 @@ export default function NotificationClientWrapper() {
     };
     const [competitions, setCompetitions] = useState<UsersCompetition[] | null>(null);
     const isLoggedin = useLoggedIn();
+    const { token } = useUserInfo();
 
     useEffect(() => {
-        getUserCompetitions().then((response) => {
+        if (token == null) {
+            return;
+        }
+        
+        getUserCompetitions(token).then((response) => {
+                
+
                 response.json().then((data) => {
                     if (data.status === 200) {
                         setCompetitions(data);
                     }
                 });
         });
-    }, []);
+    }, [token]);
 
     if (!isLoggedin) {
         return (
