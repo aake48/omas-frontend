@@ -1,7 +1,7 @@
 import { addTeamMemberURL } from "@/lib/APIConstants";
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
-import { useHTTPSAgent } from "@/lib/get-https-agent";
+import { useHTTPSAgent } from "@/lib/hooks/get-https-agent";
 
 export async function POST(request: NextRequest) {
     const requestbody = await request.json();

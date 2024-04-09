@@ -124,6 +124,21 @@ export type competitionResultsUser = {
   creationDate: string
 };
 
+export type TTeam = {
+  clubName: string;
+  competitionId: string;
+  teamName: string;
+  teamDisplayName: string;
+  teamMembers?: TTeamMember[];
+};
+
+export type TTeamMember = {
+  userId: number;
+  competitionId: string;
+  teamName: string;
+  legalName: string;
+};
+
 /**
  * get club and competition data with this ./club|competition/query?search=&page=0&size=5
  */
