@@ -111,6 +111,14 @@ export const getAdminDeleteUserUrl = () => {
   return `${baseURL}/api/admin/delete`;
 }
 
+export const getFileDownloadUrl = () => {
+  return `${baseURL}/api/file/download`;
+}
+
+export const getFileUploadUrl = () => {
+  return `${baseURL}/api/file/upload`;
+}
+
 export const getUpdatePasswordUrl = () => {
   return `${baseURL}/api/updatePassword`;
 }

@@ -8,8 +8,10 @@ import { useRouter } from "next/navigation";
 import { Form, Formik } from "formik";
 import Custominput from "@/components/ui/CustomInput";
 import validation from "./validation";
+import { useState } from "react";
 
 export default function Login() {
+    const [message, setMessage] = useState("");
     const router = useRouter();
 
 
@@ -34,16 +36,18 @@ export default function Login() {
             window.dispatchEvent(new Event("localStorageChange"));
             router.push("/kilpailut");
         } catch (error) {
-                console.log(error);
+          setMessage("Kirjautuminen ei onnistunut. Tarkista, että syöttämäsi tiedot ovat oikein.")
+          console.log(error);
         }
     };
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between my-2 p-5">
       <div className="container shadow-lg p-5 mx-auto max-w-lg">
-        <div className="text-center pb-0">
+        <div className="flex flex-col gap-2 text-center pb-0">
           <h1 className="text-3xl my-2 font-bold">Kirjaudu</h1>
           <p>Syötä käyttäjänimesi ja salasanasi</p>
+          <p>{message}</p>
         </div>
         <div className="my-5">
           <Formik

@@ -7,13 +7,12 @@ import { validationSchemaEmailChange } from "./validation";
 import CustomInput from "@/components/ui/CustomInput";
 import { Button } from "@/components/ui/Button";
 
-interface PasswordChangeProps {
-    token: string
-}
-
-export default function ChangePassword({ token }: PasswordChangeProps) {
+export default function ChangePassword() {
     const [message, setMessage] = useState("");
     const [messageStyle, setMessageStyle] = useState("text-black");
+    const [isHidden, setIsHidden] = useState(true);
+
+    const token = localStorage.getItem("token");
 
     const initialValues = {
         email: "",
@@ -53,57 +52,59 @@ export default function ChangePassword({ token }: PasswordChangeProps) {
         }
     }
 
+    const handleHidden = () => {
+        (isHidden) ? setIsHidden(false) : setIsHidden(true);
+    }
+
     return (
-        <main className="flex flex-col items-center justify-between p-2">
-            <Formik
-                initialValues={initialValues}
-                validationSchema={validationSchemaEmailChange}
-                onSubmit={(values, { setSubmitting }) => {
-                    setSubmitting(true);
-                    handleChangeEmail(values);
-                    setSubmitting(false);
-                }}
+        <div>
+            <Button
+                variant={"outline"}
+                size={"sm"}
+                className="mx-auto text-sm hover:bg-slate-100 my-2"
+                onClick={handleHidden}
             >
-                <Form>
-                    {/* <div
-                        hidden={!errorMessage}
-                        className="text-center mx-auto mt-2 text-red-500"
-                    >
-                        <p>{errorMessage}</p>
-                    </div> */}
-                    <div className="container shadow-lg p-4 mx-auto max-w-lg">
-                        <div className="text-center pb-0">
-                            <h1 className="text-3xl my-2 font-bold">
-                                Sähköpostin vaihto
-                            </h1>
-                            <p>Syötä salasanasi ja uusi sähköposti</p>
+                Vaihda sähköposti
+            </Button>
+            <div hidden={isHidden} className="flex-col items-center justify-between p-2">
+                <Formik
+                    initialValues={initialValues}
+                    validationSchema={validationSchemaEmailChange}
+                    onSubmit={(values, { setSubmitting }) => {
+                        setSubmitting(true);
+                        handleChangeEmail(values);
+                        setSubmitting(false);
+                    }}
+                >
+                    <Form>
+                        <div className="container border p-4 mx-auto max-w-lg">
+                            <div className="grid gap-6 p-2">
+                                <CustomInput
+                                    label="Uusi sähköposti"
+                                    name="email"
+                                    type="text"
+                                    placeholder="Uusi sähköposti"
+                                />
+                                <CustomInput
+                                    label="Salasana"
+                                    name="password"
+                                    type="password"
+                                    placeholder="Salasana"
+                                />
+                                <Button
+                                    variant={"outline"}
+                                    size={"lg"}
+                                    className="mx-auto text-xl hover:bg-slate-100 my-2"
+                                    type="submit"
+                                >
+                                    Vaihda
+                                </Button>
+                            </div>
+                            <p className={messageStyle}>{message}</p>
                         </div>
-                        <div className="grid gap-6 p-2">
-                            <CustomInput
-                                label="Uusi sähköposti"
-                                name="email"
-                                type="text"
-                                placeholder="Uusi sähköposti"
-                            />
-                            <CustomInput
-                                label="Salasana"
-                                name="password"
-                                type="password"
-                                placeholder="Salasana"
-                            />
-                            <Button
-                                variant={"outline"}
-                                size={"lg"}
-                                className="mx-auto text-xl hover:bg-slate-100 my-2"
-                                type="submit"
-                            >
-                                Vaihda
-                            </Button>
-                        </div>
-                        <p className={messageStyle}>{message}</p>
-                    </div>
-                </Form>
-            </Formik>
-        </main>
+                    </Form>
+                </Formik>
+            </div>
+        </div>
     );
 }

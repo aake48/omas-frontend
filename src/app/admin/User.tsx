@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { User as UserType } from '@/types/commonTypes';
 import { Button } from '@/components/ui/Button';
 import axios from 'axios';
 import { getAdminDeleteUserUrl, getAdminDemoteUserUrl, getAdminPromoteUserUrl } from '@/lib/APIConstants';
+import AreYouSure from '@/app/admin/AreYouSure';
+import { AdminUser, Role } from '@/types/commonTypes';
 
 interface UserProps {
-    user: UserType
+    user: AdminUser
 }
 
 const User = ({ user }: UserProps) => {
@@ -13,14 +14,7 @@ const User = ({ user }: UserProps) => {
     const [messageStyle, setMessageStyle] = useState("text-black");
 
     const roles = user.roles;
-    // const [club, setClub] = useState("ei seuraa");
-
-    // if (user.club !== null) {
-    //     setClub(user.club);
-    // }
     
-    // if (user.username === "admin") return;
-
     const handleSubmit = async (data: FormData) => {
         const role = data.get("role");
         if (data.get("promote")) {
@@ -66,6 +60,8 @@ const User = ({ user }: UserProps) => {
                     }
                 });
 
+                console.log(res);
+
                 if (res.status === 200) {
                     setMessage("Roolin poistaminen onnistui");
                     setMessageStyle("text-black");
@@ -82,7 +78,6 @@ const User = ({ user }: UserProps) => {
     }
 
     const handleDeleteUser = async () => {
-
         try {
             const res = await axios({
                 method: 'delete',
@@ -92,12 +87,13 @@ const User = ({ user }: UserProps) => {
                     'Content-Type': 'application/json'
                 },
                 data: {
-                    username: user.username
+                    userId: user.id
                 }
             });
 
             if (res.status === 200) {
-                
+                setMessage("Käyttäjän poistaminen onnistui");
+                setMessageStyle("text-black");
             } else {
                 setMessage("Käyttäjän poistaminen epäonnistui");
                 setMessageStyle("text-red-500");
@@ -110,7 +106,7 @@ const User = ({ user }: UserProps) => {
     }
 
     return (
-        <div className="items-center gap-2 p-2 w-full border-solid border border-slate-300 rounded-lg shadow-md cursor-pointer">
+        <div className="items-center gap-2 p-2 w-full border-solid border border-slate-300 rounded-lg shadow-md">
             <Button
                 variant="outline"
                 size="sm"
@@ -122,20 +118,17 @@ const User = ({ user }: UserProps) => {
             <div className='px-4 p-2 block rounded-lg'>
                 <h1>{`id: ${user.id}`}</h1>
                 <h1>{`käyttäjänimi: ${user.username}`}</h1>
-                <h1>{`nimi: ${user.legalname}`}</h1>
+                <h1>{`nimi: ${user.legalName}`}</h1>
                 <h1>{`sähköposti: ${user.email}`}</h1>
                 <h1>{`luontipäivä: ${user.creationDate}`}</h1>
                 <h1>{`seura: ${user.partOfClub}`}</h1>
-                <h1>roolit:</h1>
                 <div className='flex flex-row gap-2'>
-                    
-                    {/* 
-                    
-                    TODO: fix bug, throws objects are not valid as a a react child error
-
-                    {roles.length !== 0 && roles.map((role: string, index: number) => (
-                        <p key={index}>{role}</p>
-                    ))} */}
+                    <h1>roolit:</h1>
+                    {roles.length !== 0 ? roles.map((role: Role, index: number) => (
+                        <p key={index}>{role.role}</p>
+                    )) : (
+                        <p>ei rooleja</p>
+                    )}
                 </div>
             </div>
             <div className='px-4 p-2'>
@@ -172,6 +165,7 @@ const User = ({ user }: UserProps) => {
                     </Button>
                 </form>
                 <p className={`${messageStyle} mt-3`}>{message}</p>
+                {/* <AreYouSure hidden={true} prompt={`Haluatko varmasti poistaa käyttäjän ${user.username}?`} onClickYes={1+1} /> */}
             </div>
         </div>
     )
