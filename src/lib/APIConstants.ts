@@ -81,4 +81,55 @@ export const getCompetitionInfoQueryURL = (
 
 export const getTeamMembersURL = (teamName: string, competitionId: string) => {
   return `${baseURL}${comp}/team?team=${teamName}&competition=${competitionId}`;
+}
+
+export const getForgotPasswordUrl = () => {
+  return `${baseURL}/api/forgot_password`;
+}
+
+export const getResetPasswordUrl = (token: string, newPassword: string) => {
+  return `${baseURL}/api/reset_password?token=${token}&password=${newPassword}`;
+};
+
+export const getAdminUserQueryUrl = (
+  search: string = "",
+  page: number,
+  size: number = 10
+  ) => {
+  return `${baseURL}/api/admin/user/query?search=${search}&page=${page}&size=${size}`
+};
+
+export const getAdminPromoteUserUrl = () => {
+  return `${baseURL}/api/admin/promote`;
+}
+
+export const getAdminDemoteUserUrl = () => {
+  return `${baseURL}/api/admin/demote`;
+}
+
+export const getAdminDeleteUserUrl = () => {
+  return `${baseURL}/api/admin/delete`;
+}
+
+export const getFileDownloadUrl = () => {
+  return `${baseURL}/api/file/download`;
+}
+
+export const getFileUploadUrl = () => {
+  return `${baseURL}/api/file/upload`;
+}
+
+export const getUpdatePasswordUrl = () => {
+  return `${baseURL}/api/updatePassword`;
+}
+
+export const getUpdateEmailUrl = () => {
+  return `${baseURL}/api/updateEmail`;
+}
+ 
+//Get all users competitions and teams
+//https://localhost:8080/api/user/teams
+
+export const getUserCompetitions = () => {
+  return `${baseURL}/api/user/teams`;
 };

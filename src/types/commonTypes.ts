@@ -19,6 +19,8 @@ export type ClubResponse = {
 export type PostCompetition = {
   competitionName: string; // name is the id
   competitionType: "rifle" | "pistol";
+  competitionStartDate?: string;
+  competitionEndDate?: string;
 };
 
 /**
@@ -32,6 +34,17 @@ export type CompetitionResponse = {
   endDate: string;
   creationDate: string;
 };
+
+/**
+ * received from backend in /api/user/teams
+ */
+export interface UsersCompetition {
+  competitionId: string;
+  teamName: string;
+  clubName: string;
+  teamDisplayName: string;
+  teamMembers: Object[];
+}
 
 /**
  * add teams with this
@@ -80,7 +93,7 @@ export type User = {
   username: string;
   legalName: string;
   email: string;
-  userId: number;
+  id: number;
   roles: string[];
   creationDate: string;
   club: string | null;
@@ -89,10 +102,10 @@ export type User = {
  * returned from ./competition/result/${competitionName} -endpoint
  */
 export type competitionResults = {
-  name: string;
-  NameNonId: string;
+  competitionId: string;
+  displayName: string;
   creationDate: string;
-  type: 'rifle' | 'pistol';
+  type: "rifle" | "pistol";
   startDate: string;
   endDate: string;
   teams: competitionResultsTeam[] | null;
@@ -110,6 +123,22 @@ export type competitionResultsUser = {
   userId: number;
   name: string; // name associated with the userId
   scorePerShot: string; // ScoreList.toString()
+  creationDate: string
+};
+
+export type TTeam = {
+  clubName: string;
+  competitionId: string;
+  teamName: string;
+  teamDisplayName: string;
+  teamMembers?: TTeamMember[];
+};
+
+export type TTeamMember = {
+  userId: number;
+  competitionId: string;
+  teamName: string;
+  legalName: string;
 };
 
 /**
@@ -144,7 +173,50 @@ export type QueryCompetition = {
   empty: boolean;
 };
 
+/**
+ * get competition data /api/admin/user/query?...
+ */
+export type AdminQueryUser = {
+  content: AdminUser[] | null;
+  pageable: Pageable;
+  last: boolean; // isLastPage
+  totalElements: number; // how many element are there in the DB
+  totalPages: number; // how many pages are there wi
+  size: number;
+  first: true;
+  number: number;
+  numberOfElements: number; //in this page
+  empty: boolean;
+};
+
+export type AdminUser = {
+  username: string;
+  legalName: string;
+  email: string;
+  id: number;
+  roles: Role[];
+  creationDate: string;
+  partOfClub: string | null;
+};
+
+export type Role = {
+  userId: number,
+  role: string
+}
+
 export type Pageable = {
   pageNumber: number; // current page
   pageSize: number; // current page size
 };
+
+export type ImageProof = {
+  fileName: string,
+  image: string
+}
+
+export enum AdminViewType {
+  Users,
+  CreateClub,
+  ImageViewer,
+  Other
+}

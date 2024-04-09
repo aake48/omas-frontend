@@ -9,7 +9,7 @@ const httpsAgent = new https.Agent({
   cert: fs.readFileSync('certificates/localhost.pem')
 });
 
-export default async function fetchData(url: string, data?: Object): Promise<any> {
+export default async function fetchData(url: string, data?: Object, headers?: Object): Promise<any> {
     let jsonData;
     if (data === undefined) {
         jsonData = "";
@@ -17,11 +17,16 @@ export default async function fetchData(url: string, data?: Object): Promise<any
         jsonData = JSON.stringify(data);
     }
 
+    let headers2 = {};
+    if (!headers) {
+        headers2 = {}
+    }
+
     try {
-        console.log(url);
         const response = await axios.get(url, {
             httpsAgent,
             data: jsonData,
+            headers: headers2
         });
         return response.data;
     } catch (error) {

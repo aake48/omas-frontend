@@ -4,24 +4,31 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { headerLinks } from "@/lib/links";
 import { User } from "@/types/commonTypes";
+import UserMenu from "./UserMenu";
 
 const Header: React.FC = () => {
     const [menuHidden, setMenuHidden] = useState("hidden");
-    const [loggedIn, setLoggedIn] = useState<boolean>(false);
+    const [userMenuHidden, setUserMenuHidden] = useState(true);
     const [user, setUser] = useState<User>();
+    const [loggedIn, setLoggedIn] = useState(false);
+    const [adminLoggedIn, setAdminLoggedIn] = useState(false);
   
-
     const handleMenuOnClick = (state: boolean) => {
         !state ? setMenuHidden("block") : setMenuHidden("hidden");
+    }
+
+    const handleUserMenuOnClick = () => {
+        userMenuHidden ? setUserMenuHidden(false) : setUserMenuHidden(true);
     }
 
     useEffect(() => {
       const checkLogin = () => {
         const token = localStorage.getItem("token");
-        let user: User = JSON.parse(localStorage.getItem("userInfo")!);
           if (token) {
-            setLoggedIn(true);
+            let user: User = JSON.parse(localStorage.getItem("userInfo")!);
             setUser(user);
+            setLoggedIn(true);
+            if (user.roles.includes("ROLE_ADMIN")) setAdminLoggedIn(true);
           }
       };
       checkLogin();
@@ -50,7 +57,7 @@ const Header: React.FC = () => {
                             </Link>
                         ))}
                     </nav>
-                    <LoginButton user={user!} />
+                    <LoginButton onClick={handleUserMenuOnClick} loggedIn={loggedIn} user={user!} />
                 </div>
             </div>
             <div
@@ -72,6 +79,13 @@ const Header: React.FC = () => {
                         </Link>
                     ))}
                 </nav>
+            </div>
+            <div
+                hidden={userMenuHidden}
+                onClick={handleUserMenuOnClick}
+                className={`fixed right-4 top-20 shadow p-4 bg-white overflow-hidden`}
+            >
+                <UserMenu adminLoggedIn={adminLoggedIn} />
             </div>
         </header>
     );
