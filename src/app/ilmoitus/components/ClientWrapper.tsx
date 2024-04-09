@@ -7,7 +7,7 @@ import ScoreCard from "./ScoreForm";
 import useLoggedIn from "@/lib/hooks/is-logged-in";
 
 async function getUserCompetitions() {
-    const response = fetch("ilmoitus/api", {
+    const response = await fetch("ilmoitus/api", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -23,23 +23,28 @@ export default function NotificationClientWrapper() {
     const handleScoreTypeChange = (scoreType: ScoreType | null) => {
         setScoreType(scoreType as ScoreType);
     };
-    const [competitions, setCompetitions] = useState<UsersCompetition[]>([]);
+    const [competitions, setCompetitions] = useState<UsersCompetition[] | null>(null);
     const isLoggedin = useLoggedIn();
 
     useEffect(() => {
         getUserCompetitions().then((response) => {
-            if (response.ok) {
                 response.json().then((data) => {
-                    setCompetitions(data);
-                    console.log(data[0]);
+                    if (data.status === 200) {
+                        setCompetitions(data);
+                    }
                 });
-            }
         });
     }, []);
 
+    if (!isLoggedin) {
+        return (
+            <h2>Kirjaudu sisään syöttääksesi tuloksia</h2>
+        )
+    }
+
     return (
         <>
-            {isLoggedin ? (
+            {competitions != null ? (
                 <>
                     <ScoreTypeSelectorContainer
                         onScoreTypeChange={handleScoreTypeChange}
@@ -47,7 +52,7 @@ export default function NotificationClientWrapper() {
                     {scoreType && <ScoreCard scoreType={scoreType} competitions={competitions} />}
                 </>
             ) : (
-                <h2>Kirjaudu sisään syöttääksesi tuloksia</h2>
+                <h2>Liity tiimiin syöttääksesi tuloksia.</h2>
             )}
         </>
     );
