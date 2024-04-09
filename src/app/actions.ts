@@ -1,7 +1,8 @@
 'use server'
 
 import axios from "axios";
-import {addScoreSum} from "@/lib/APIConstants";
+
+import {addScoreSum, addTeamMemberURL} from "@/lib/APIConstants";
 import * as https from 'https';
 import * as fs from 'fs';
 
@@ -45,9 +46,6 @@ export async function sendScore(token: string, formData: FormData) {
   }
 }
 
-
-
-
 // upload image
 // POST api/file/upload/
 // Authorization: required
@@ -79,5 +77,33 @@ export async function uploadImage(token: string, file: File, competitionId: stri
   } catch (error: any) {
     console.log(error);
     return 500;
+  }
+
+}
+
+export async function joinTeam(token: string, teamName: string, competitionName: string) {
+
+  const trimmedTeamName = teamName.trim();
+
+  if (token == null) {
+    return { message: "Virheellinen käyttäjä", status: 400 }
+  }
+  try {
+      const response = await axios.post(
+        addTeamMemberURL,
+        { teamName: trimmedTeamName, competitionName: competitionName },
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "application/json",
+          },
+          httpsAgent,
+        }
+      );
+      return {body: "Joukkueesen liittyminen onnistui", status: 200 };
+      
+  } catch (error: any) {
+      console.error(error);
+      return { message: "Virhe joukkueeseen liittymisessä", status: 500 }
   }
 }

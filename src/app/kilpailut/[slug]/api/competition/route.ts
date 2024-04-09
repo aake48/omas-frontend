@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
         },
         httpsAgent,
       });
-      return NextResponse.json(response.data);
+      return NextResponse.json({body: response.data, status: response.status});
     } catch (error: any) {
       console.error(error);
         return NextResponse.json({ message: error.response!.data, status: error.status });
