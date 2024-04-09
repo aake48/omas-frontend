@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field } from "formik";
 import { fullCompValidationSchema, roundValidationSchema } from "../validation";
 import Custominput from "@/components/ui/CustomInput";
@@ -30,6 +30,7 @@ export default function ScoreCard({
         (competition) => competition.competitionId
     );
     const { token } = useUserInfo();
+    const [resetUploadKey, setResetUploadKey] = useState(0); // A key used to trigger a reset
 
     function handleDropDownChange(competitionName: string) {
         const foundCompetition = competitions.find(
@@ -70,7 +71,6 @@ export default function ScoreCard({
                 
                 onSubmit={(values, { setSubmitting, resetForm }) => {
                     const formData = new FormData();
-                    console.log(values);
 
                     Object.entries(values).forEach(([key, value]) => {
                         if (key !== "images") {
@@ -89,6 +89,7 @@ export default function ScoreCard({
                     sendScore(token, formData).then((response) => {
                         setSubmitting(false);
                         resetForm();
+                        setResetUploadKey(prevKey => prevKey + 1);
                         setTeamName(null);
                         response === 200
                             ? setMessage({
@@ -158,7 +159,7 @@ export default function ScoreCard({
                     <Field name="images">
                         {({ field, form }: any) => (
                             <UploadFile
-                                resetForm={() => form.resetForm()}
+                                key={resetUploadKey}
                                 data={field.value}
                                 setFieldValue={(name, value) => {
                                     form.setFieldValue(name, value);

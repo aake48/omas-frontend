@@ -1,5 +1,5 @@
 import { FunctionComponent, useEffect, useRef } from "react";
-import { FormikErrors } from "formik";
+import { FormikErrors, useField } from "formik";
 
 interface IUploadFile {
     data: { images?: FileList };
@@ -9,9 +9,7 @@ interface IUploadFile {
         shouldValidate?: boolean | undefined,
     ) => Promise<FormikErrors<{ images?: FileList }>> | Promise<void>;
     errors: FormikErrors<{ images?: FileList }>;
-    resetForm?: () => void;
 }
-
 
 const UploadFile: FunctionComponent<IUploadFile> = ({
   data,
@@ -19,10 +17,12 @@ const UploadFile: FunctionComponent<IUploadFile> = ({
     errors,
   }) => {
     const fileref = useRef<HTMLInputElement>(null);
+    const MAX_IMAGES = 10
 
     useEffect(() => {
       if (data === null || data === undefined) {
         fileref.current!.value = "";
+
       }
     }, [data]);
 
@@ -38,7 +38,12 @@ const UploadFile: FunctionComponent<IUploadFile> = ({
                     accept="image/png, image/jpg, image/jpeg, image/webp"
                     onChange={(e) => {
                         if (e.currentTarget.files) {
-                            setFieldValue("images", e.currentTarget.files);
+                            if (e.currentTarget.files.length > MAX_IMAGES) {
+                                alert(`Voit lähettää maksimissaan ${MAX_IMAGES} kuvaa.`);
+                                fileref.current!.value = "";
+                            } else {
+                                setFieldValue("images", e.currentTarget.files);
+                            }
                         }
                     }}
                 />
