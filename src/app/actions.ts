@@ -1,7 +1,6 @@
 'use server'
 
 import axios from "axios";
-import { NextResponse } from "next/server";
 import {addScoreSum} from "@/lib/APIConstants";
 import * as https from 'https';
 import * as fs from 'fs';
@@ -17,7 +16,7 @@ export async function sendScore(token: string, formData: FormData) {
 
   if (token == null) {
     console.error("No auth header found in request.");
-    // return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    return 500;
   }
   try {
     const response = await axios.post(
@@ -32,6 +31,45 @@ export async function sendScore(token: string, formData: FormData) {
         headers: {
           Authorization:"Bearer " + token,
           "Content-Type": "application/json",
+        },
+        httpsAgent
+      }
+    );
+
+    // uploadImage(token, formData.get("image") as File, formData.get("competitionName")?.toString() as string);
+
+    return 200;
+  } catch (error: any) {
+    console.log(error);
+    return 500;
+  }
+}
+
+
+
+
+// upload image
+// POST api/file/upload/
+// Authorization: required
+// Content-Type: multipart/form-data
+// Requires competitionId field and file field for the image. Currently only accepts one image at a time.
+
+export async function uploadImage(token: string, file: File, competitionId: string) {
+  if (token == null) {
+    console.error("No auth header found in request.");
+    // return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
+  try {
+    const response = await axios.post(
+      "https://localhost:8080/api/file/upload/",
+      {
+        competitionId: competitionId,
+        file: file,
+      },
+      {
+        headers: {
+          Authorization:"Bearer " + token,
+          "Content-Type": "multipart/form-data",
         },
         httpsAgent
       }

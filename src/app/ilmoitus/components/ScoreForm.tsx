@@ -57,8 +57,8 @@ export default function ScoreCard({
                 id="scoreCardForm"
                 initialValues={{
                     competitionName: "none",
-                    bullseyes: 0,
-                    score: 0.0,
+                    bullseyes: "",
+                    score: "",
                     images: [] as FileList | [],
                     // name: "",
                 }}
