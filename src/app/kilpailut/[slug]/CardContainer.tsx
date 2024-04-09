@@ -42,7 +42,7 @@ export default function CardContainer({
         getUserCompetitions(slug, token).then((response) => {
             response.json().then((data) => {
                 if (data.status === 200) {
-                    setCompetitions(data);
+                    setCompetitions(data.body);
                 }
             });
         });
@@ -57,8 +57,6 @@ export default function CardContainer({
             memberOf ? setIsMemberOf(memberOf.teamName) : setIsMemberOf(null);
         }
     }, [competitions, competition]);
-
-
 
     return (
         <div className="grid my-5 justify-center sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8">
