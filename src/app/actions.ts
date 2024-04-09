@@ -29,6 +29,7 @@ export async function sendScore(token: string, formData: FormData) {
         teamName: formData.get("teamName")?.toString(),
         score: formData.get("score"),
         bullsEyeCount: formData.get("bullseyes"),
+        requestType: formData.get("requestType"),
       },
       {
         headers: {

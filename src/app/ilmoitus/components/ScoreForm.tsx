@@ -23,7 +23,7 @@ export default function ScoreCard({
 }) {
     const round = { bullseyes: 10, score: 10.9 };
     const total = { bullseyes: 60, score: 654 };
-    const scoreValue = scoreType === "round" ? round : total;
+    const scoreValue = scoreType === "update" ? round : total;
     const [message, setMessage] = React.useState<PostReturn | null>(null);
     const [teamName, setTeamName] = React.useState<string | null>(null);
     const competitionNames = competitions.map(
@@ -64,7 +64,7 @@ export default function ScoreCard({
                     // name: "",
                 }}
                 validationSchema={
-                    scoreType === "round"
+                    scoreType === "update"
                         ? roundValidationSchema
                         : fullCompValidationSchema
                 }
@@ -80,6 +80,7 @@ export default function ScoreCard({
                     });
 
                     formData.append("teamName", teamName!);
+                    formData.append("requestType", scoreType);
 
                         for (let index = 0; index < values.images.length; index++) {
                             
