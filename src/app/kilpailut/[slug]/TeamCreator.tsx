@@ -5,7 +5,7 @@ import Input from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { usePathname } from "next/navigation";
 import { CompetitionResponse } from "@/types/commonTypes";
-import useIsLoggedIn from "@/lib/is-logged-in";
+import useIsLoggedIn from "@/lib/hooks/is-logged-in";
 
 export default function TeamCreator({
     competition,

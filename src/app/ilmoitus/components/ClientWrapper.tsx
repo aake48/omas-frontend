@@ -4,7 +4,7 @@ import { ScoreType, UsersCompetition } from "@/types/commonTypes";
 import React, { useEffect, useState } from "react";
 import ScoreTypeSelectorContainer from "./ScoreTypeSelectorContainer";
 import ScoreCard from "./ScoreForm";
-import useLoggedIn from "@/lib/is-logged-in";
+import useLoggedIn from "@/lib/hooks/is-logged-in";
 
 async function getUserCompetitions() {
     const response = fetch("ilmoitus/api", {

@@ -1,23 +1,9 @@
 import * as Q from "@/lib/APIConstants";
 import fetchData from "@/api/get";
-import TeamCard from "./TeamCard";
 import TeamCreator from "./TeamCreator";
-import useIsLoggedIn from "@/lib/is-logged-in";
+import CardContainer from "./CardContainer";
 
-type TTeam = {
-    clubName: string;
-    competitionId: string;
-    teamName: string;
-    teamDisplayName: string;
-    teamMembers?: TTeamMember[];
-};
 
-type TTeamMember = {
-    userId: number;
-    competitionId: string;
-    teamName: string;
-    legalname: string;
-};
 
 export default async function CompetitionPage({
     params,
@@ -40,15 +26,7 @@ export default async function CompetitionPage({
                 <p>Päättyy: {competition.endDate}</p>
             </span>
             <TeamCreator competition={competition} />
-            <div className="grid my-5 justify-center sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8">
-                {teams.content.map((team: TTeam) => (
-                    <TeamCard
-                        key={team.teamName}
-                        team={team}
-                        competition={competition}
-                    />
-                ))}
-            </div>
+            <CardContainer slug={params.slug} teams={teams} competition={competition} />
         </div>
     );
 }
