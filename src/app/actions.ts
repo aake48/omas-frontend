@@ -1,6 +1,7 @@
 'use server'
 
 import axios from "axios";
+
 import {addScoreSum, addTeamMemberURL} from "@/lib/APIConstants";
 import * as https from 'https';
 import * as fs from 'fs';
@@ -45,11 +46,6 @@ export async function sendScore(token: string, formData: FormData) {
   }
 }
 
-
-
-
-
-
 // upload image
 // POST api/file/upload/
 // Authorization: required
@@ -82,6 +78,7 @@ export async function uploadImage(token: string, file: File, competitionId: stri
     console.log(error);
     return 500;
   }
+
 }
 
 export async function joinTeam(token: string, teamName: string, competitionName: string) {
