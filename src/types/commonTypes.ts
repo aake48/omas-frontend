@@ -209,6 +209,11 @@ export type Pageable = {
   pageSize: number; // current page size
 };
 
+export type ImageProof = {
+  fileName: string,
+  image: string
+}
+
 export enum AdminViewType {
   Users,
   CreateClub,
