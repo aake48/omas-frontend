@@ -5,13 +5,15 @@ import React, { useEffect, useState } from "react";
 import ScoreTypeSelectorContainer from "./ScoreTypeSelectorContainer";
 import ScoreCard from "./ScoreForm";
 import useLoggedIn from "@/lib/hooks/is-logged-in";
+import useUserInfo from "@/lib/hooks/get-user.info";
 
-async function getUserCompetitions() {
-    const response = fetch("ilmoitus/api", {
+async function getUserCompetitions(token: string) {
+
+    const response = await fetch("ilmoitus/api", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": "Bearer " + localStorage.getItem("token"),
+            "Authorization": "Bearer " + token,
         }
     })
     return response;
@@ -23,23 +25,35 @@ export default function NotificationClientWrapper() {
     const handleScoreTypeChange = (scoreType: ScoreType | null) => {
         setScoreType(scoreType as ScoreType);
     };
-    const [competitions, setCompetitions] = useState<UsersCompetition[]>([]);
+    const [competitions, setCompetitions] = useState<UsersCompetition[] | null>(null);
     const isLoggedin = useLoggedIn();
+    const { token } = useUserInfo();
 
     useEffect(() => {
-        getUserCompetitions().then((response) => {
-            if (response.ok) {
+        if (token == null) {
+            return;
+        }
+        
+        getUserCompetitions(token).then((response) => {
+                
+
                 response.json().then((data) => {
-                    setCompetitions(data);
-                    console.log(data[0]);
+                    if (data.status === 200) {
+                        setCompetitions(data);
+                    }
                 });
-            }
         });
-    }, []);
+    }, [token]);
+
+    if (!isLoggedin) {
+        return (
+            <h2>Kirjaudu sisään syöttääksesi tuloksia</h2>
+        )
+    }
 
     return (
         <>
-            {isLoggedin ? (
+            {competitions != null ? (
                 <>
                     <ScoreTypeSelectorContainer
                         onScoreTypeChange={handleScoreTypeChange}
@@ -47,7 +61,7 @@ export default function NotificationClientWrapper() {
                     {scoreType && <ScoreCard scoreType={scoreType} competitions={competitions} />}
                 </>
             ) : (
-                <h2>Kirjaudu sisään syöttääksesi tuloksia</h2>
+                <h2>Liity tiimiin syöttääksesi tuloksia.</h2>
             )}
         </>
     );

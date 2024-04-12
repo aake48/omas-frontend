@@ -19,6 +19,8 @@ export type ClubResponse = {
 export type PostCompetition = {
   competitionName: string; // name is the id
   competitionType: "rifle" | "pistol";
+  competitionStartDate?: string;
+  competitionEndDate?: string;
 };
 
 /**
@@ -103,7 +105,7 @@ export type competitionResults = {
   competitionId: string;
   displayName: string;
   creationDate: string;
-  type: 'rifle' | 'pistol';
+  type: "rifle" | "pistol";
   startDate: string;
   endDate: string;
   teams: competitionResultsTeam[] | null;
@@ -206,6 +208,11 @@ export type Pageable = {
   pageNumber: number; // current page
   pageSize: number; // current page size
 };
+
+export type ImageProof = {
+  fileName: string,
+  image: string
+}
 
 export enum AdminViewType {
   Users,

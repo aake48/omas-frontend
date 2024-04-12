@@ -22,7 +22,6 @@ export async function POST(request: NextRequest) {
     console.error("No auth header found in request.");
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
-
   try {
     const response = await axios.post(
       Q.addScoreSum,
@@ -54,7 +53,6 @@ export async function GET(request: NextRequest) {
     console.error("No auth header found in request.");
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
-  
   try {
     const response = await axios.get(Q.getUserCompetitions(), {
       headers: {
@@ -63,8 +61,9 @@ export async function GET(request: NextRequest) {
       },
       httpsAgent,
     });
-    return NextResponse.json(response.data);
+    return NextResponse.json({ body: response.data.json()}, {status: response.status });
   } catch (error: any) {
-      return NextResponse.json({ message: error.response!.data }, { status: error.status });
+    console.error(error.response.data);
+    return NextResponse.json({ body: error.response.data, status: error.response.status });
   }
 }
