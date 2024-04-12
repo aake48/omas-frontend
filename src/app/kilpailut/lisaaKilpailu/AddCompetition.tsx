@@ -42,8 +42,8 @@ export default function AddCompetition() {
               ? {
                   competitionName: values.competitionName,
                   competitionType: competitionTypes[values.competitionType],
-                  competitionStartDate: values.startDate,
-                  competitionEndDate: values.endDate,
+                  startDate: new Date(values.startDate).getTime(),
+                  endDate: new Date(values.endDate).getTime(),
                 }
               : {
                   competitionName: values.competitionName,
