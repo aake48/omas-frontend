@@ -1,4 +1,4 @@
-import { CompetitionResponse } from "@/types/commonTypes";
+import { CompetitionResponse, CompetitionType } from "@/types/commonTypes";
 
 export const contacts = [
   { phone: "123-456-7890", email: "toimisto@omas.fi", address: "Osoite 123" },
@@ -33,39 +33,35 @@ export const upcoming: CompetitionResponse[] = [
 
 export const testDataAdminViewUsers = [
   {
-      username: "user1",
-      legalName: "user1",
-      email: "user1@gmail",
-      userId: 1,
-      roles: [
-          "ADMIN",
-          "BLABLA"
-      ],
-      creationDate: "string",
-      club: null,
+    username: "user1",
+    legalName: "user1",
+    email: "user1@gmail",
+    userId: 1,
+    roles: ["ADMIN", "BLABLA"],
+    creationDate: "string",
+    club: null,
   },
   {
-      username: "user2",
-      legalName: "user2",
-      email: "user2@gmail",
-      userId: 2,
-      roles: [
-          "ADMIN",
-          "BLABLA"
-      ],
-      creationDate: "string",
-      club: null,
+    username: "user2",
+    legalName: "user2",
+    email: "user2@gmail",
+    userId: 2,
+    roles: ["ADMIN", "BLABLA"],
+    creationDate: "string",
+    club: null,
   },
   {
-      username: "user3",
-      legalName: "user3",
-      email: "user3@gmail",
-      userId: 3,
-      roles: [
-          "ADMIN",
-          "BLABLA"
-      ],
-      creationDate: "string",
-      club: null,
-  }
-]
+    username: "user3",
+    legalName: "user3",
+    email: "user3@gmail",
+    userId: 3,
+    roles: ["ADMIN", "BLABLA"],
+    creationDate: "string",
+    club: null,
+  },
+];
+
+export const competitionTypes: Record<CompetitionType, string> = {
+  rifle: "Ilmakivääri",
+  pistol: "Ilmapistooli",
+};

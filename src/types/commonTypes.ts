@@ -220,3 +220,5 @@ export enum AdminViewType {
   ImageViewer,
   Other,
 }
+
+export type CompetitionType = "rifle" | "pistol";
