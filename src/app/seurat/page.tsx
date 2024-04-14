@@ -1,19 +1,21 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import JoinClub from './JoinClub';
 import useIsLoggedIn from '@/lib/hooks/is-logged-in';
 import axios from 'axios';
 import { getClubQueryUrl } from '@/lib/APIConstants';
-import { QueryClub } from '@/types/commonTypes';
+import { ClubResponse, QueryClub, decodedToken } from '@/types/commonTypes';
 import Paginator from '../components/Paginator';
 import Input from '@/components/ui/Input';
 import Club from './Club';
+import { useRouter } from 'next/navigation';
 
 export default function page() {
 	const [data, setData] = useState<QueryClub>();
 	const [pageNumber, setPageNumber] = useState(0);
 	const [search, setSearch] = useState("");
 
+    const router = useRouter();
+	
 	let apiUrl = getClubQueryUrl(search, pageNumber, 10);
 
 	const fetchClubs = async () => {
@@ -24,7 +26,6 @@ export default function page() {
 					'Content-Type': 'application/json'
 				}
 			});
-			console.log(res.data);
 			setData(res.data);
 		} catch (e: any) {
 			console.error(e);
@@ -63,7 +64,7 @@ export default function page() {
 					onChange={(e) => setSearch(e.target.value)}
 					required={false}
 				/>
-				<p className='text-md'>Huomaa, että hakemisessa pitää käyttää oikeaa kirjain kokoa.</p>
+				<p className='text-md'>Huomaa, että hakemisessa pitää käyttää oikeaa kirjainkokoa.</p>
 				<Paginator
 					pageNumber={pageNumber}
 					totalPages={data.totalPages}
@@ -71,8 +72,9 @@ export default function page() {
 				/>
 			</div>
 			<div className='flex flex-col gap-2 w-full'>
-				{data.content && data.content.map(club => (
+				{data.content && data.content.map((club: ClubResponse, index: number) => (
 					<Club
+						key={index}
 						displayName={club.nameNonId}
 						id={club.name}
 						creationDate={club.creationDate}
