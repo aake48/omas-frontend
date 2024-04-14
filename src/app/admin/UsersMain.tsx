@@ -1,6 +1,6 @@
 'use client';
 import { getAdminUserQueryUrl } from "@/lib/APIConstants";
-import { AdminQueryUser, User as UserType } from '@/types/commonTypes';
+import { AdminQueryUser } from '@/types/commonTypes';
 import React, { useEffect, useState } from "react";
 import Paginator from "../components/Paginator";
 import Input from "@/components/ui/Input";
@@ -39,6 +39,10 @@ const UsersMain = () => {
         fetchUsers();
     }, [pageNumber, search]);
 
+    useEffect(() => {
+        setPageNumber(0);
+    }, [search]);
+
     if (!data) return (
         <main className="flex min-h-screen flex-col items-center p-4">
             <h1>Virhe käyttäjätietojen haussa</h1>
@@ -50,8 +54,7 @@ const UsersMain = () => {
             <div className="p-4">
                 <p className="text-md">Tällä sivulla voit hallinnoida käyttäjiä, voit muokata heidän rooleja sekä poistaa käyttäjiä</p>
                 <p className="text-md">Tiedot päivittyvät sivun päivittämisen jälkeen.</p>
-                <p className="text-md">Etsiminen tapahtuu koko nimen perusteella.</p>
-                <p className="text-md">Muista mennä ensimmäiselle sivulle, ennen kuin etsit.</p>
+                <p className="text-md">Etsiminen tapahtuu koko nimen (etunimi ja sukunimi) perusteella.</p>
             </div>
             <div className="flex min-h-screen w-full flex-col items-center p-4 gap-2">
                 <div className="flex flex-col items-center mb-4">

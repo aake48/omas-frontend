@@ -1,9 +1,8 @@
 import { Button } from "@/components/ui/Button";
-import Input from "@/components/ui/Input";
-import { getFileDownloadUrl, getFileUploadUrl } from "@/lib/APIConstants";
+import { getFileDownloadUrl } from "@/lib/APIConstants";
 import { ImageProof } from "@/types/commonTypes";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Images from "./Images";
 
 const ImageViewer = () => {
@@ -32,17 +31,6 @@ const ImageViewer = () => {
                     fileName: fileName
                 }
             });
-
-            console.log(res);
-            // const formData = await res.formData();
-            // const images: ImageProof[] = [];
-
-            // for (const entry of formData.entries()) {
-            //     images.push({
-            //         name: entry[0],
-            //         data: entry[1]
-            //     })
-            // }
 
             setMessage("");
             setData(res.data);

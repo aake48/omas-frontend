@@ -7,11 +7,7 @@ interface ImagesProps {
 
 const Images = ({ data }: ImagesProps) => {
 
-    if (!data) return (
-        <div>
-            <h1>virhe kuvien haussa</h1>
-        </div>
-    )
+    if (!data) return;
 
     return (
         <div className="flex flex-col sm:max-w-xl">
