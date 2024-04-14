@@ -89,19 +89,19 @@ export type loginResponse = {
 
 export type User = {
   username: string;
-  legalname: string;
+  legalName: string;
   email: string;
   id: number;
   roles: string[];
   creationDate: string;
-  partOfClub: string | null;
+  club: string | null;
 };
 /**
  * returned from ./competition/result/${competitionName} -endpoint
  */
 export type competitionResults = {
-  name: string;
-  NameNonId: string;
+  competitionId: string;
+  displayName: string;
   creationDate: string;
   type: 'rifle' | 'pistol';
   startDate: string;
@@ -121,6 +121,7 @@ export type competitionResultsUser = {
   userId: number;
   name: string; // name associated with the userId
   scorePerShot: string; // ScoreList.toString()
+  creationDate: string
 };
 
 /**
@@ -159,7 +160,7 @@ export type QueryCompetition = {
  * get competition data /api/admin/user/query?...
  */
 export type AdminQueryUser = {
-  content: User[] | null;
+  content: AdminUser[] | null;
   pageable: Pageable;
   last: boolean; // isLastPage
   totalElements: number; // how many element are there in the DB
@@ -171,13 +172,34 @@ export type AdminQueryUser = {
   empty: boolean;
 };
 
+export type AdminUser = {
+  username: string;
+  legalName: string;
+  email: string;
+  id: number;
+  roles: Role[];
+  creationDate: string;
+  partOfClub: string | null;
+};
+
+export type Role = {
+  userId: number,
+  role: string
+}
+
 export type Pageable = {
   pageNumber: number; // current page
   pageSize: number; // current page size
 };
 
+export type ImageProof = {
+  fileName: string,
+  image: string
+}
+
 export enum AdminViewType {
   Users,
   CreateClub,
+  ImageViewer,
   Other
 }

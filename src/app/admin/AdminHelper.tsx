@@ -1,9 +1,10 @@
 import { AdminViewType } from '@/types/commonTypes';
 import UsersMain from "./UsersMain";
 import CreateClub from './CreateClub';
+import ImageViewer from './ImageViewer';
 
 interface AdminHelperProps {
-    type: AdminViewType
+    type: AdminViewType,
 }
 
 const AdminHelper = ({ type }: AdminHelperProps) => {
@@ -18,6 +19,10 @@ const AdminHelper = ({ type }: AdminHelperProps) => {
         case AdminViewType.CreateClub:
             return (
                 <CreateClub />
+            )
+        case AdminViewType.ImageViewer:
+            return (
+                <ImageViewer />
             )
         default:
             return (

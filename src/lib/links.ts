@@ -18,11 +18,7 @@ export const headerLinks = [
     {
         href: '/yhteystiedot',
         text: "Yhteystiedot"
-    },
-    {
-        href: '/asetukset',
-        text: "Asetukset"
-    },
+    }
 ];
 
 export const footerLinks = [
@@ -47,4 +43,16 @@ export const footerLinks = [
         text: "Yhteystiedot"
     }
 
+];
+
+
+export const userLinks = [
+    {
+        text: "Asetukset",
+        href: "/asetukset"
+    },
+    {
+        text: "Kirjaudu ulos",
+        href: "/logout"
+    },
 ];

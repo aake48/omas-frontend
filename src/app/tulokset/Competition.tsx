@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { competitionResults } from "@/types/commonTypes";
 import Team from './Team';
 import { getCompetitionByNameUrl } from '../../lib/APIConstants';
-import fetchData from '../../lib/get';
+import axios from 'axios';
 
 interface CompetitionProps {
   name: string,
@@ -31,13 +31,21 @@ const Competition = ({ name, displayName, startDate, endDate, type }: Competitio
   }
 
   const fetchContent = async () => {
-    const data: competitionResults = await fetchData(apiUrl);
-    setCompetition(data)
+    try {
+      const res = await axios.get(apiUrl, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+      });
+        setCompetition(res.data);
+    } catch (e: any) {
+        console.error(e);
+    }
   };
 
   useEffect(() => {
     fetchContent();
-  }, [])
+  }, [apiUrl])
   
   const arrowUp = 
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -64,28 +72,24 @@ const Competition = ({ name, displayName, startDate, endDate, type }: Competitio
     hidden = "";
   }
 
-  if (
-    competition !== undefined &&
-    competition !== null &&
-    competition.teams !== null
-  ) {
+  if (competition) {
     return (
-      <div data-testid={`competition-${name}`}>
+      <div data-testid={`competition-${competition.displayName}`}>
         <div
-          className='flex items-center h-16 bg-slate-100 rounded-md mb-2 shadow-md ml-8 cursor-pointer'
+          className='flex items-center h-16 bg-slate-100 rounded-md mb-2 shadow-md ml-4 cursor-pointer'
           onClick={handleShowClubs}
           >
           <div className='ml-2'>
             {isHidden ? arrowDown : arrowUp}
           </div>
           <div className='block'>
-            <h1 className='ml-2'>{displayName}</h1>
+            <h1 className='ml-2'>{competition.displayName}</h1>
             <p className='ml-2 text-slate-700 text-sm'>{`${startDate} - ${endDate}`}</p>
             <p className='ml-2 text-sm text-slate-500'>{typeFinnish}</p>
           </div>
         </div>
-        <div className={`${hidden} h-full p-4 bg-slate-50 rounded-md mb-2 shadow-md ml-16`}>
-          {competition.teams.slice(0, 8).map((team, index) => (
+        <div className={`${hidden} h-full p-4 bg-slate-50 rounded-md mb-2 shadow-md ml-4`}>
+          {competition.teams && competition.teams.slice(0, 8).map((team, index) => (
             <div key={index} className='odd:bg-slate-200 even:bg-slate-100 p-2'>
               <Team
                 key={index}
