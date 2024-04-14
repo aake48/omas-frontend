@@ -32,6 +32,10 @@ const PastCompetitions = () => {
   useEffect(() => {
     fetchContent();
   }, [pageNumber, search])
+
+  useEffect(() => {
+    setPageNumber(0);
+  }, [search])
   
   if (
     content?.content !== undefined &&
@@ -68,7 +72,7 @@ const PastCompetitions = () => {
     return (
       <div className="p-4">
         <h1 className='text-3xl mb-4'>Viimeisimmät tulokset</h1>
-        <div className="flex flex-col items-center gap-4 mb-8">
+        <div className="flex flex-col items-center gap-2 mb-8">
             <Input
                 id="search"
                 placeholder="Hae kilpailua"
@@ -76,7 +80,6 @@ const PastCompetitions = () => {
                 onChange={(e) => setSearch(e.target.value)}
                 required={false}
             />
-            <p className="text-md">Muista mennä ensimmäiselle sivulle, ennen kuin etsit</p>
             <Paginator
               pageNumber={pageNumber}
               totalPages={content.totalPages}
