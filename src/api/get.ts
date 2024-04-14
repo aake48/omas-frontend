@@ -1,7 +1,6 @@
 import * as https from 'https';
 import axios from 'axios';
 import * as fs from 'fs';
-import { NextResponse } from 'next/server';
 
 const cert = fs.readFileSync('certificates/localhost.pem');
 

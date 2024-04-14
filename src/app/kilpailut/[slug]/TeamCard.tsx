@@ -1,66 +1,39 @@
 "use client";
 
 import { Button } from "@/components/ui/Button";
-import React, { Suspense, useEffect, useState } from "react";
-import useIsLoggedIn from "@/lib/is-logged-in";
-import { usePathname } from "next/navigation";
+import React, { Suspense, useEffect } from "react";
+import useIsLoggedIn from "@/lib/hooks/is-logged-in";
+import {TTeam,} from "@/types/commonTypes";
+import { joinTeam } from "@/app/actions";
+import useUserInfo from "@/lib/hooks/get-user.info";
 
-type TTeamMember = {
-    userId: number;
-    competitionId: string;
-    teamName: string;
-    legalname: string;
-};
-
-type TTeam = {
-    clubName: string;
-    competitionId: string;
-    teamName: string;
-    teamDisplayName: string;
-    teamMembers?: TTeamMember[];
-};
-
-export default function TeamCard({ team }: { competition: any; team: TTeam }) {
-    const pathName = usePathname();
+export default function TeamCard({ team, memberOf, setIsMember }: { team: TTeam , memberOf: string | null, setIsMember: (teamName: string) => void}) {
     const isLoggedIn = useIsLoggedIn();
-    const [isMember, setIsMember] = useState(false); // Initialize state
-
-    async function handleClick(teamName: string, competitionId: string) {
-        const response = await fetch(`${pathName}/api/join`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-            body: JSON.stringify({
-                teamName: teamName,
-                competitionName: competitionId,
-            }),
-        });
-        const data = await response.json();
-        data.status === 200 ? setIsMember(true) : null;
-    }
+    const [isFull , setIsFull] = React.useState<boolean>(false);
+    const { token } = useUserInfo();
 
     useEffect(() => {
-        if (isLoggedIn) {
-            const checkIfMember = async (userId: number) => {
-                const isMember =
-                    team.teamMembers?.some(
-                        (member) => member.userId === userId
-                    ) ?? false;
-                setIsMember(isMember); // Update state based on check
-            };
-
-            const userInfo = JSON.parse(localStorage.getItem("userInfo") ?? "");
-            const userId: number = userInfo.userId ?? -1;
-            checkIfMember(userId);
+        if (team.teamMembers && team.teamMembers.length === 5) {
+            setIsFull(true);
         }
-    }, [isLoggedIn, team]);
+    }, [team]);
+
+    useEffect(() => {
+        if (memberOf === team.teamName) {
+            setIsMember(memberOf);
+        }
+    }, [memberOf, team, setIsMember]);
+
+    async function handleClick(teamName: string, competitionId: string) {
+        const response = await joinTeam(token, teamName, competitionId);
+        response.status === 200 ? setIsMember(teamName) : null;
+    }
+
     return (
         <Suspense fallback={<div>Loading...</div>}>
             <div
                 className={`flex flex-col border-2 shadow-md p-5 gap-5 rounded-md ${
-                    isMember ? "bg-slate-200" : null
+                    memberOf === team.teamName ? "bg-slate-200" : null
                 }`}
             >
                 <div className="flex flex-col gap-2 justify-between md:flex-row items-center">
@@ -72,11 +45,11 @@ export default function TeamCard({ team }: { competition: any; team: TTeam }) {
                             onClick={() =>
                                 handleClick(team.teamName, team.competitionId)
                             }
-                            disabled={isMember}
+                            disabled={memberOf !== null || isFull}
                         >
-                            {isMember === false
-                                ? "Liity joukkueeseen"
-                                : "Olet joukkueessa"}
+                            {memberOf === team.teamName
+                                ? "Olet joukkueessa"
+                                : isFull ? "Joukkue on täynnä" : "Liity joukkueeseen"}
                         </Button>
                     )}
                 </div>
@@ -86,7 +59,7 @@ export default function TeamCard({ team }: { competition: any; team: TTeam }) {
                     {team.teamMembers && team.teamMembers.length > 0 ? (
                         <div className="grid border h-full border-slate-300 gap-x-4 bg-slate-100 p-2 shadow-md rounded-md grid-cols-2">
                             {team.teamMembers.map((member, index) => {
-                                return <p key={index}>{member.legalname}</p>;
+                                return <p key={index}>{member.legalName}</p>;
                             })}
                         </div>
                     ) : null}
