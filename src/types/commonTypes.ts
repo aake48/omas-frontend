@@ -233,3 +233,9 @@ export enum AdminViewType {
   ImageViewer,
   Other
 }
+
+export type captchaResponse = {
+  success: boolean,
+  challenge_ts: string,
+  hostname: string
+}

@@ -5,14 +5,19 @@ import { addClubURL, joinClubURL, loginURL } from "../../lib/APIConstants";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { createRef, useState } from "react";
 import { Form, Formik } from "formik";
 import validationSchema from "./validation";
 
 import CustomInput from "@/components/ui/CustomInput";
 import JoinClub from "../kilpailut/liitySeuraan/JoinClub";
+import ReCAPTCHA from "react-google-recaptcha";
+import { captchaResponse } from "@/types/commonTypes";
 
 export default function RegisterForm() {
+  const [message, setMessage] = useState("");
+  const reCaptchaRef = createRef<ReCAPTCHA>();
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const initialValues = {
     username: "",
     name: "",
@@ -31,96 +36,123 @@ export default function RegisterForm() {
     setErrorMessage("");
     const payload = values;
     try {
-      const response = await fetch(`${url + endpoint}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-      const data = await response.json();
-      console.log(data);
-      if (response.ok) {
-        console.log(response.status);
-        try {
-          const response = await axios.post(loginURL, {
-            username: values.username,
-            password: values.password,
-          });
+      const captchaRes: captchaResponse = await handleReCaptchaSubmit(captchaToken);
 
-          console.log("login success");
-          console.log(response.data.user);
-
-          let token = response.data.token;
-          let userInfo = response.data.user;
-
-          localStorage.setItem("token", token);
-          localStorage.setItem("userInfo", JSON.stringify(userInfo));
-
-          // This is for demo purposes to allow creating teams
-          const addClub = async () => {
-            const response = await axios.post(
-              addClubURL,
-              {
-                clubName: "Feikki_seura",
-              },
-              {
-                headers: {
-                  Authorization: `Bearer ${localStorage.getItem("token")}`,
-                  "Content-Type": "application/json",
-                },
-              }
-            );
-            console.log(response.data);
-          };
-
-          const joinClub = async () => {
-            const response2 = await axios.post(
-              joinClubURL,
-              {
-                clubName: "Feikki_seura",
-              },
-              {
-                headers: {
-                  Authorization: `Bearer ${localStorage.getItem("token")}`,
-                  "Content-Type": "application/json",
-                },
-              }
-            );
-            console.log(response2.data);
-            const userInfoFromLocalStorage = localStorage.getItem("userInfo");
-            if (userInfoFromLocalStorage) {
-              const userInfo = JSON.parse(userInfoFromLocalStorage);
-              userInfo.club = "Feikki_seura";
-              localStorage.setItem("userInfo", JSON.stringify(userInfo));
+      if (captchaRes.success) {
+        const response = await fetch(`${url + endpoint}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+        const data = await response.json();
+        console.log(data);
+        if (response.ok) {
+          console.log(response.status);
+          try {
+            const response = await axios.post(loginURL, {
+              username: values.username,
+              password: values.password,
+            });
+  
+            console.log("login success");
+            console.log(response.data.user);
+  
+            let token = response.data.token;
+            let userInfo = response.data.user;
+  
+            localStorage.setItem("token", token);
+            localStorage.setItem("userInfo", JSON.stringify(userInfo));
+  
+            // This is for demo purposes to allow creating teams
+            // const addClub = async () => {
+            //   const response = await axios.post(
+            //     addClubURL,
+            //     {
+            //       clubName: "Feikki_seura",
+            //     },
+            //     {
+            //       headers: {
+            //         Authorization: `Bearer ${localStorage.getItem("token")}`,
+            //         "Content-Type": "application/json",
+            //       },
+            //     }
+            //   );
+            //   console.log(response.data);
+            // };
+  
+            // const joinClub = async () => {
+            //   const response2 = await axios.post(
+            //     joinClubURL,
+            //     {
+            //       clubName: "Feikki_seura",
+            //     },
+            //     {
+            //       headers: {
+            //         Authorization: `Bearer ${localStorage.getItem("token")}`,
+            //         "Content-Type": "application/json",
+            //       },
+            //     }
+            //   );
+            //   console.log(response2.data);
+            //   const userInfoFromLocalStorage = localStorage.getItem("userInfo");
+            //   if (userInfoFromLocalStorage) {
+            //     const userInfo = JSON.parse(userInfoFromLocalStorage);
+            //     userInfo.club = "Feikki_seura";
+            //     localStorage.setItem("userInfo", JSON.stringify(userInfo));
+            //   }
+            // };
+  
+            // if (userInfo.club === null) {
+            //   try {
+            //     addClub().then(() => {
+            //       joinClub();
+            //     });
+            //   } catch (error) {
+            //     console.log(error);
+            //   }
+            // }
+            // For demo purposes ends here
+            window.dispatchEvent(new Event("localStorageChange"));
+            router.push("/kilpailut");
+          } catch (error: any) {
+            if (error.response.data) {
+              console.log(error.response.data);
             }
-          };
-
-          if (userInfo.club === null) {
-            try {
-              addClub().then(() => {
-                joinClub();
-              });
-            } catch (error) {
-              console.log(error);
-            }
+          } finally {
+            reCaptchaRef?.current?.reset();
           }
-          // For demo purposes ends here
-          window.dispatchEvent(new Event("localStorageChange"));
-          router.push("/kilpailut");
-        } catch (error: any) {
-          if (error.response.data) {
-            console.log(error.response.data);
-          }
+        } else {
+          setMessage("Rekisteröinti ei onnistunut. Tarkista, että syöttämäsi tiedot ovat oikein.");
+          setErrorMessage(data.message);
+          router.push("/kirjaudu");
         }
       } else {
-        setErrorMessage(data.message);
-        router.push("/kirjaudu");
+        setMessage("Muista reCAPTCHA.");
       }
     } catch (error) {
       console.log(error);
     }
   };
+
+  const onReCAPTCHAChange = async (captchaToken: string | null) => {
+    setCaptchaToken(captchaToken);
+  }
+
+  const handleReCaptchaSubmit = async (captchaToken: string | null) => {
+    const resCaptcha = await axios({
+      method: 'POST',
+      url: 'rekisteroidy/api',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      data: {
+        captchaToken: captchaToken
+      }
+    })
+    return resCaptcha.data.body;
+  }
 
   return (
     <Formik
@@ -144,6 +176,7 @@ export default function RegisterForm() {
           <div className="text-center pb-0">
             <h1 className="text-3xl my-2 font-bold">Rekisteröidy</h1>
             <p>Syötä vaadittavat tiedot</p>
+            <p>{message}</p>
           </div>
           <div className="grid gap-6 p-6">
             <CustomInput
@@ -175,6 +208,10 @@ export default function RegisterForm() {
               name="passrepeat"
               type="password"
               placeholder="Salasana uudelleen"
+            />
+            <ReCAPTCHA
+              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
+              onChange={onReCAPTCHAChange}
             />
             <Button
               variant={"outline"}
