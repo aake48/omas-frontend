@@ -173,6 +173,19 @@ export type QueryCompetition = {
   empty: boolean;
 };
 
+export type QueryClub = {
+  content: ClubResponse[] | null;
+  pageable: Pageable;
+  last: boolean; // isLastPage
+  totalElements: number; // how many element are there in the DB
+  totalPages: number; // how many pages are there wi
+  size: number;
+  first: true;
+  number: number;
+  numberOfElements: number; //in this page
+  empty: boolean;
+};
+
 /**
  * get competition data /api/admin/user/query?...
  */
