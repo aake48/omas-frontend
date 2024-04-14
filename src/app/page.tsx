@@ -10,14 +10,22 @@ import {
 import fetchData from "@/lib/get";
 import LatestResults from "./components/LatestResults";
 import UpcomingCompetitions from "./components/UpcomingCompetitions";
+import useIsLoggedIn from "@/lib/hooks/is-logged-in";
+import CurrentCompetitions from "./components/CurrentCompetitions";
 
 export type competitionListProps = {
   competitions: CompetitionResponse[];
 };
 
+// TODO ohjeistus esim liity seuraan, jos ei ole vielä
+
 export default async function Home() {
   let futureCompetitions: CompetitionResponse[] = [];
-  let pastCompetitions: CompetitionResponse[] = [];
+  let pastOwnCompetitions: CompetitionResponse[] = [];
+  let currentOwnCompetitions: CompetitionResponse[] = [];
+
+  // const isLoggedIn = useIsLoggedIn();
+  const currentDate = new Date();
 
   const headers = typeof window
     ? {
@@ -42,46 +50,44 @@ export default async function Home() {
   } catch (error) {
     console.log(error);
   }
-  // const currentDate = new Date();
 
-  // const headers = typeof window
-  //   ?? {
-  //       Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //       "Content-Type": "application/json",
-  //     }
+  try {
+    const ownCompetitionsUrl = getUserCompetitions();
 
-  // const futureCompetitionsUrl = getUpcomingCompetitions(1, 10);
-  // const ownCompetitionsUrl = getUserCompetitions();
+    const ownCompetitionsData: QueryCompetition = await fetchData(
+      ownCompetitionsUrl
+    );
 
-  // const futureCompetitionsData: QueryCompetition = await fetchData(
-  //   futureCompetitionsUrl,
-  //   undefined,
-  //   headers
-  // );
-  // const ownCompetitionsData: QueryCompetition = await fetchData(
-  //   ownCompetitionsUrl
-  // );
+    if (ownCompetitionsData.content !== null) {
+      ownCompetitionsData.content.forEach((competition) => {
+        const competitionStartDate = new Date(competition.startDate);
+        const competitionEndDate = new Date(competition.endDate);
 
-  // const futureCompetitions: CompetitionResponse[] = [];
-  // const currentOwnCompetitions: CompetitionResponse[] = [];
-  // const pastOwnCompetitions: CompetitionResponse[] = [];
+        switch (true) {
+          case competitionStartDate < currentDate &&
+            competitionEndDate > currentDate:
+            currentOwnCompetitions.push(competition);
+            break;
+          case competitionEndDate < currentDate:
+            pastOwnCompetitions.push(competition);
+            break;
+          default:
+            break;
+        }
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
 
-  // ownCompetitionsData.content.forEach((competition) => {
-  //   const competitionStartDate = new Date(competition.startDate);
-  //   const competitionEndDate = new Date(competition.endDate);
-
-  //   if (competitionStartDate > currentDate) {
-  //     pastCompetitions.push(competition);
-  //   } else {
-  //     futureCompetitions.push(competition);
-  //   }
-  // });
-
-  // TODO laita kirjautuminen ehdoksi sille mihin tarvii
+  // TODO tee refaktorointi client-server ja vapauta kirjautumisen tarkistusjutut kommenteista
   return (
     <main className="min-h-screen p-8">
       <UpcomingCompetitions competitions={futureCompetitions} />
-      {/* <LatestResults competitions={pastCompetitions} /> */}
+      {/* {isLoggedIn && <CurrentCompetitions competitions={currentOwnCompetitions} />} */}
+      <CurrentCompetitions competitions={currentOwnCompetitions} />
+      {/* {isLoggedIn && <LatestResults competitions={pastCompetitions} />} */}
+      <LatestResults competitions={pastOwnCompetitions} />
     </main>
   );
 }
