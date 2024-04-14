@@ -52,28 +52,6 @@ const ImageViewer = () => {
         }
     }
 
-    const handleUploadImage = async (form: FormData) => {
-        const compId = "kesan_ampujaiset";
-        const formData = form;
-
-        formData.append("competitionId", compId);
-
-        try {
-            const res = await axios({
-                method: "post",
-                url: getFileUploadUrl(),
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem("token")}`,
-                    'Content-Type': 'multipart/form-data'
-                },
-                data: formData
-            });
-            console.log(res);
-        } catch (e: any) {
-            console.error(e);
-        }
-    }
-
     return (
         <div>
             <div className="p-4">
@@ -119,25 +97,6 @@ const ImageViewer = () => {
                     </Button>
                 </form>
                 <p>{message}</p>
-                <form
-                    action={handleUploadImage}
-                    className='flex flex-row gap-2'
-                >
-                    <input
-                        className='border rounded-lg p-2'
-                        type="file"
-                        name="file"
-                        placeholder="kuva"
-                    />
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        className="hover:bg-slate-100"
-                        type="submit"
-                    >
-                        Lähetä
-                    </Button>
-                </form>
                 <Images data={data} />
             </div>
         </div>
