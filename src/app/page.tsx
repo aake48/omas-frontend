@@ -1,35 +1,87 @@
-import React from "react";
+"use server";
+
+import React, { useState } from "react";
 import { CompetitionResponse, QueryCompetition } from "@/types/commonTypes";
-import { getCompetitionsQueryUrl } from "@/lib/APIConstants";
+import {
+  getCompetitionsQueryUrl,
+  getUpcomingCompetitions,
+  getUserCompetitions,
+} from "@/lib/APIConstants";
 import fetchData from "@/lib/get";
-import SeasonComponent from "./components/SeasonComponent";
 import LatestResults from "./components/LatestResults";
 import UpcomingCompetitions from "./components/UpcomingCompetitions";
 
+export type competitionListProps = {
+  competitions: CompetitionResponse[];
+};
+
 export default async function Home() {
-  const apiUrl = getCompetitionsQueryUrl("", 0, 10);
-  const currentDate = new Date();
+  let futureCompetitions: CompetitionResponse[] = [];
+  let pastCompetitions: CompetitionResponse[] = [];
 
-  const data: QueryCompetition = await fetchData(apiUrl);
-  const competitions = data.content;
+  const headers = typeof window
+    ? {
+        // Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      }
+    : {};
 
-  const pastCompetitions: CompetitionResponse[] = [];
-  const futureCompetitions: CompetitionResponse[] = [];
+  try {
+    const futureCompetitionsUrl = getUpcomingCompetitions(0, 10);
 
-  competitions!.forEach((competition) => {
-    const competitionDate = new Date(competition.startDate);
+    const futureCompetitionsData: QueryCompetition = await fetchData(
+      futureCompetitionsUrl,
+      headers
+    );
 
-    if (competitionDate < currentDate) {
-      pastCompetitions.push(competition);
-    } else {
-      futureCompetitions.push(competition);
+    if (futureCompetitionsData.content !== null) {
+      const futureCompetitionsAscending =
+        futureCompetitionsData.content.reverse();
+      futureCompetitions = futureCompetitionsAscending;
     }
-  });
+  } catch (error) {
+    console.log(error);
+  }
+  // const currentDate = new Date();
 
+  // const headers = typeof window
+  //   ?? {
+  //       Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //       "Content-Type": "application/json",
+  //     }
+
+  // const futureCompetitionsUrl = getUpcomingCompetitions(1, 10);
+  // const ownCompetitionsUrl = getUserCompetitions();
+
+  // const futureCompetitionsData: QueryCompetition = await fetchData(
+  //   futureCompetitionsUrl,
+  //   undefined,
+  //   headers
+  // );
+  // const ownCompetitionsData: QueryCompetition = await fetchData(
+  //   ownCompetitionsUrl
+  // );
+
+  // const futureCompetitions: CompetitionResponse[] = [];
+  // const currentOwnCompetitions: CompetitionResponse[] = [];
+  // const pastOwnCompetitions: CompetitionResponse[] = [];
+
+  // ownCompetitionsData.content.forEach((competition) => {
+  //   const competitionStartDate = new Date(competition.startDate);
+  //   const competitionEndDate = new Date(competition.endDate);
+
+  //   if (competitionStartDate > currentDate) {
+  //     pastCompetitions.push(competition);
+  //   } else {
+  //     futureCompetitions.push(competition);
+  //   }
+  // });
+
+  // TODO laita kirjautuminen ehdoksi sille mihin tarvii
   return (
     <main className="min-h-screen p-8">
-      <UpcomingCompetitions futureCompetitions={futureCompetitions} />
-      <LatestResults pastCompetitions={pastCompetitions} />
+      <UpcomingCompetitions competitions={futureCompetitions} />
+      {/* <LatestResults competitions={pastCompetitions} /> */}
     </main>
   );
 }
