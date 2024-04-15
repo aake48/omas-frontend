@@ -1,17 +1,15 @@
 import { FunctionComponent, useEffect, useRef } from "react";
-import { FormikErrors } from "formik";
+import { FormikErrors, useField } from "formik";
 
 interface IUploadFile {
-    data: { image?: File };
+    data: { images?: FileList };
     setFieldValue: (
         field: string,
         value: any,
         shouldValidate?: boolean | undefined,
-    ) => Promise<FormikErrors<{ image?: File }>> | Promise<void>;
-    errors: FormikErrors<{ image?: File }>;
-    resetForm?: () => void;
+    ) => Promise<FormikErrors<{ images?: FileList }>> | Promise<void>;
+    errors: FormikErrors<{ images?: FileList }>;
 }
-
 
 const UploadFile: FunctionComponent<IUploadFile> = ({
   data,
@@ -19,10 +17,12 @@ const UploadFile: FunctionComponent<IUploadFile> = ({
     errors,
   }) => {
     const fileref = useRef<HTMLInputElement>(null);
+    const MAX_IMAGES = 10
 
     useEffect(() => {
       if (data === null || data === undefined) {
         fileref.current!.value = "";
+
       }
     }, [data]);
 
@@ -33,19 +33,24 @@ const UploadFile: FunctionComponent<IUploadFile> = ({
                 <input
                     ref={fileref}
                     type="file"
-                    name="image"
+                    name="images"
+                    multiple
                     accept="image/png, image/jpg, image/jpeg, image/webp"
                     onChange={(e) => {
-                        // Object is possibly null error w/o check
                         if (e.currentTarget.files) {
-                            setFieldValue("image", e.currentTarget.files.item(0));
+                            if (e.currentTarget.files.length > MAX_IMAGES) {
+                                alert(`Voit lähettää maksimissaan ${MAX_IMAGES} kuvaa.`);
+                                fileref.current!.value = "";
+                            } else {
+                                setFieldValue("images", e.currentTarget.files);
+                            }
                         }
                     }}
                 />
-                {data && errors.image && (
+                {data && errors.images && (
                     <>
                         <br />
-                        <span className="bg-red-100 text-red-700 p-2 rounded-lg absolute left-1/2 -translate-x-1/2" id="error">{errors.image}</span>
+                        <span className="bg-red-100 text-red-700 p-2 rounded-lg absolute left-1/2 -translate-x-1/2" id="error">{errors.images}</span>
                         <br />
                     </>
                 )}

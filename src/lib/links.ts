@@ -12,8 +12,8 @@ export const headerLinks = [
         text: "Ilmoitus"
     },
     {
-        href: "/joukkueet",
-        text: "Joukkueet"
+        href: "/seurat",
+        text: "Seurat"
     },
     {
         href: '/yhteystiedot',
@@ -35,8 +35,8 @@ export const footerLinks = [
         text: "Ilmoitus"
     },
     {
-        href: "/joukkueet",
-        text: "Joukkueet"
+        href: "/seurat",
+        text: "Seurat"
     },
     {
         href: '/yhteystiedot',
@@ -44,7 +44,6 @@ export const footerLinks = [
     }
 
 ];
-
 
 export const userLinks = [
     {

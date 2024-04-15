@@ -2,51 +2,76 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { loginURL } from "../../lib/APIConstants";
 import { useRouter } from "next/navigation";
 import { Form, Formik } from "formik";
 import Custominput from "@/components/ui/CustomInput";
 import validation from "./validation";
-import { useState } from "react";
+import { createRef, useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
+import { captchaResponse } from "@/types/commonTypes";
 
 export default function Login() {
   const [message, setMessage] = useState("");
   const router = useRouter();
+  const reCaptchaRef = createRef<ReCAPTCHA>();
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
 
   const handleSubmit = async (values: {
     username: string;
     password: string;
   }) => {
     try {
-      await fetch("kirjaudu/api", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      }).then((res) =>
-        res.json().then((data) => {
-          if (data.status === 200) {
-            console.log("login success");
-            console.log("data.user", data.body.user);
-
-            const token = data.body.token;
-            const userInfo = data.body.user;
-
-            localStorage.setItem("token", token);
-            localStorage.setItem("userInfo", JSON.stringify(userInfo));
-            window.dispatchEvent(new Event("localStorageChange"));
-            router.push("/kilpailut");
-          }
-        })
+      const captchaRes: captchaResponse = await handleReCaptchaSubmit(
+        captchaToken
       );
+
+      if (captchaRes.success) {
+        const response = await axios.post(loginURL, {
+          username: values.username,
+          password: values.password,
+        });
+
+        console.log("login success");
+        console.log(response.data.user);
+
+        const token = response.data.token;
+        const userInfo = response.data.user;
+
+        localStorage.setItem("token", token);
+        localStorage.setItem("userInfo", JSON.stringify(userInfo));
+        window.dispatchEvent(new Event("localStorageChange"));
+        router.push("/kilpailut");
+      } else {
+        setMessage("Muista reCAPTCHA.");
+      }
     } catch (error) {
       setMessage(
         "Kirjautuminen ei onnistunut. Tarkista, että syöttämäsi tiedot ovat oikein."
       );
       console.log(error);
+    } finally {
+      reCaptchaRef?.current?.reset();
     }
+  };
+
+  const onReCAPTCHAChange = async (captchaToken: string | null) => {
+    setCaptchaToken(captchaToken);
+  };
+
+  const handleReCaptchaSubmit = async (captchaToken: string | null) => {
+    const resCaptcha = await axios({
+      method: "POST",
+      url: "kirjaudu/api",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: {
+        captchaToken: captchaToken,
+      },
+    });
+    return resCaptcha.data.body;
   };
 
   return (
@@ -77,6 +102,10 @@ export default function Login() {
                 name="password"
                 type="password"
                 placeholder="Salasana"
+              />
+              <ReCAPTCHA
+                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
+                onChange={onReCAPTCHAChange}
               />
               <Button
                 variant={"outline"}

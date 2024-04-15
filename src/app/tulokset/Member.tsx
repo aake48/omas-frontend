@@ -9,7 +9,7 @@ const Member = ({ name, score }: MemberProps) => {
   return (
     <div className='flex gap-4 px-4'>
       <h1>{name}</h1>
-      <p>{`${score}p`}</p>
+      <p>{`${score.toFixed(2)}p`}</p>
     </div>
   )
 }

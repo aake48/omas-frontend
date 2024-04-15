@@ -69,7 +69,7 @@ export type PostScore = {
   ScoreList: number[]; // values may range from 0 - 10.9, otherwise they are not accepted
 };
 
-export type ScoreType = "round" | "total";
+export type ScoreType = "update" | "set";
 /**
  * received after posting a score to backend
  */
@@ -173,6 +173,19 @@ export type QueryCompetition = {
   empty: boolean;
 };
 
+export type QueryClub = {
+  content: ClubResponse[] | null;
+  pageable: Pageable;
+  last: boolean; // isLastPage
+  totalElements: number; // how many element are there in the DB
+  totalPages: number; // how many pages are there wi
+  size: number;
+  first: true;
+  number: number;
+  numberOfElements: number; //in this page
+  empty: boolean;
+};
+
 /**
  * get competition data /api/admin/user/query?...
  */
@@ -222,3 +235,9 @@ export enum AdminViewType {
 }
 
 export type CompetitionType = "rifle" | "pistol";
+
+export type captchaResponse = {
+  success: boolean;
+  challenge_ts: string;
+  hostname: string;
+};

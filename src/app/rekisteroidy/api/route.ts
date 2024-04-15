@@ -1,28 +1,23 @@
-import { NextResponse } from 'next/server';
-import * as https from 'https';
-import * as fs from 'fs';
 import axios from 'axios';
+import { NextRequest, NextResponse } from 'next/server';
 
-const url = process.env.NEXT_PUBLIC_API_URL;
+interface CaptchaPostBody {
+    captchaToken: string
+}
 
-const httpsAgent = new https.Agent({
-    rejectUnauthorized: false,
-    key: fs.readFileSync('certificates/localhost-key.pem'),
-    cert: fs.readFileSync('certificates/localhost.pem')
-  });
-
-export async function POST(request: Request) {
+export async function POST(req: NextRequest) {
+    const requestBody: CaptchaPostBody = await req.json();
     try {
-        const response = await axios.post(`${url + "api"}`, {
-            httpsAgent,
+        const res = await axios({
+            method: 'POST',
+            url: `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${requestBody.captchaToken}`,
             headers: {
                 "Content-Type": "application/json",
             },
-            data: JSON.stringify(request),
         });
-        const data = await response.data;
-        return NextResponse.json(data);
-    } catch (error) {
-        return NextResponse.error();
+        return NextResponse.json({ body: res.data, status: res.status });
+    } catch (error: any) {
+        console.error(error.response!.data);
+        return NextResponse.json({ message: error.response!.data }, { status: error.status });
     }
-}
+  }

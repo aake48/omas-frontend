@@ -11,7 +11,16 @@ recommended tool for generating a certificate: [mkcert](https://github.com/FiloS
 ### 3. Create .env or .env.local file in the project root with the following content:
 ```
 NEXT_PUBLIC_API_URL=https://localhost:8080/
+NEXT_PUBLIC_RECAPTCHA_SITE_KEY=
+RECAPTCHA_SECRET_KEY=
 ```
+
+#### TO ENABLE reCAPTCHA, SEE BELOW:
+Go to this [website](https://www.google.com/recaptcha/admin/create) and create a new reCAPTCHA project.
+1. Label can be anything.
+2. In the type section, select *Challenge (v2)* and then select *"I'm not a robot" Checkbox*.
+3. In the domains section: For development, type in localhost (without port). For production, type in the actual domain name.
+4. At last, click *Submit* and the next page should show you two keys. Copy and place these keys in their corresponding spots in the .env file.
 
 ### 4. Using a NodeJS package manager (e.g., npm) , install dependencies with the command:
 ```bash

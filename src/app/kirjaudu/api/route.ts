@@ -1,32 +1,21 @@
-import { useHTTPSAgent } from "@/lib/hooks/get-https-agent";
-import * as Q from "../../../lib/APIConstants";
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
-interface LoginRequestBody {
-  username: string;
-  password: string;
+interface CaptchaPostBody {
+  captchaToken: string;
 }
 
-export async function POST(request: NextRequest) {
-  const requestBody: LoginRequestBody = await request.json();
-  const httpsAgent = useHTTPSAgent();
-
+export async function POST(req: NextRequest) {
+  const requestBody: CaptchaPostBody = await req.json();
   try {
-    const response = await axios.post(
-      Q.loginURL,
-      {
-        username: requestBody.username,
-        password: requestBody.password,
+    const res = await axios({
+      method: "POST",
+      url: `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${requestBody.captchaToken}`,
+      headers: {
+        "Content-Type": "application/json",
       },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        httpsAgent,
-      }
-    );
-    return NextResponse.json({ body: response.data, status: response.status });
+    });
+    return NextResponse.json({ body: res.data, status: res.status });
   } catch (error: any) {
     console.error(error.response!.data);
     return NextResponse.json(
