@@ -31,6 +31,33 @@ export const upcoming: CompetitionResponse[] = [
   },
 ];
 
+export const oldCompetitions: CompetitionResponse[] = [
+  {
+    competitionId: "Mennyt_kilpailu_1",
+    displayName: "Mennyt kilpailu 1",
+    type: "rifle",
+    creationDate: "01.01.2024",
+    startDate: "02.03.2024",
+    endDate: "05.03.2024",
+  },
+  {
+    competitionId: "Mennyt_kilpailu_2",
+    displayName: "Mennyt kilpailu 2",
+    type: "rifle",
+    creationDate: "01.01.2024",
+    startDate: "01.01.2024",
+    endDate: "07.01.2024",
+  },
+  {
+    competitionId: "kesan_yo_-kilpailu",
+    displayName: "kesän yö -kilpailu",
+    type: "pistol",
+    creationDate: "01.01.2024",
+    startDate: "01.01.2024",
+    endDate: "01.03.2024",
+  },
+];
+
 export const testDataAdminViewUsers = [
   {
     username: "user1",
