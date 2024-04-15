@@ -55,7 +55,6 @@ export default function HomePageWrapper(props: HomePageWrapperProps) {
             ownCompetitionsData.forEach((competition: CompetitionResponse) => {
               ownCompetitionIds.push(competition.competitionId);
             });
-            console.log("ownCompetitionIds", ownCompetitionIds);
           }
         }
 

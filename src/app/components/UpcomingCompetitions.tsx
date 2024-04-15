@@ -22,7 +22,7 @@ export default function UpcomingCompetitions(props: competitionListProps) {
       </div>
       <div>
         {props.competitions !== undefined &&
-          props.competitions.slice(0, 3).map((comp, index) => (
+          props.competitions.slice(0, 5).map((comp, index) => (
             <div
               key={index}
               className="mx-4 border-b-2 last:border-b-0 cursor-pointer hover:bg-slate-100"
