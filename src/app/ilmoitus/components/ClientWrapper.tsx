@@ -6,16 +6,19 @@ import ScoreTypeSelectorContainer from "./ScoreTypeSelectorContainer";
 import ScoreCard from "./ScoreForm";
 import useLoggedIn from "@/lib/hooks/is-logged-in";
 import useUserInfo from "@/lib/hooks/get-user.info";
+import { getUserCompetitions } from "@/lib/APIConstants"
 
-async function getUserCompetitions(token: string) {
-
-    const response = await fetch("ilmoitus/api", {
+async function getCompetitions(token: string) {
+    const response = await fetch(getUserCompetitions(), {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
             "Authorization": "Bearer " + token,
         }
     })
+    if (response.status !== 200) {
+        return null;
+    }
     return response;
 }
 
@@ -34,13 +37,9 @@ export default function NotificationClientWrapper() {
             return;
         }
         
-        getUserCompetitions(token).then((response) => {
-                
-
-                response.json().then((data) => {
-                    if (data.status === 200) {
+        getCompetitions(token).then((response) => {
+                response?.json().then((data) => {
                         setCompetitions(data);
-                    }
                 });
         });
     }, [token]);

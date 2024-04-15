@@ -1,14 +1,28 @@
 import * as Yup from 'yup';
 
 const MAX_FILE_SIZE = 6291456; // 6MB
+const validFileExtensions = { images: ['jpg', 'png', 'jpeg', 'webp'] };
 
-const validFileExtensions = { image: ['jpg', 'png', 'jpeg', 'webp'] };
-type ValidFileExtensions = typeof validFileExtensions;
-type FileType = keyof ValidFileExtensions;
-
-function isValidFileType(fileName: any, fileType: FileType) {
-    return !!fileName && validFileExtensions[fileType].indexOf(fileName.split('.').pop()) > -1;
+function isValidFileType(fileName: any, fileType: keyof typeof validFileExtensions) {
+    return !!fileName && validFileExtensions[fileType].some(extension => fileName.split('.').pop() === extension);
 }
+
+// Function to test each file for type and size
+const testFiles = (files: FileList | null, testType: 'type' | 'size') => {
+    if (!files || files.length === 0) return true; // Pass validation if no files
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        if (testType === 'type' && !isValidFileType(file.name.toLowerCase(), 'images')) return false;
+        if (testType === 'size' && file.size > MAX_FILE_SIZE) return false;
+    }
+    return true;
+};
+
+const fileValidationTests = [
+    Yup.mixed()
+        .test("is-valid-type", "Väärä tiedostomuoto", (files: any) => testFiles(files, 'type'))
+        .test("is-valid-size", "Suurin sallittu tiedosto on 6MB", (files: any) => testFiles(files, 'size')),
+];
 
 
 export const roundValidationSchema = Yup.object().shape({
@@ -28,12 +42,7 @@ export const roundValidationSchema = Yup.object().shape({
         .min(0, 'Napakymppi ei voi olla negatiivinen')
         .max(10, 'Napakymppi ei voi olla yli 10')
         .required('Napakymppi on pakollinen'),
-    image: Yup.mixed()
-        .optional()
-        .test("is-valid-type", "Väärä tiedostomuoto",
-            value => !value || (value instanceof File && isValidFileType(value && value.name.toLowerCase(), "image")))
-        .test("is-valid-size", "Suurin sallittu tiedosto on 6MB",
-            value => !value || (value instanceof File && value.size <= MAX_FILE_SIZE))
+        // images: Yup.array().of(fileValidationTests[0]),
 });
 
 export const fullCompValidationSchema = Yup.object().shape({
@@ -47,16 +56,11 @@ export const fullCompValidationSchema = Yup.object().shape({
     //     .required('Nimi on pakollinen'),
     score: Yup.number()
         .min(0, 'Tulos ei voi olla negatiivinen')
-        .max(520, 'Tulos ei voi olla yli 520')
+        .max(654, 'Tulos ei voi olla yli 654')
         .required('Tulos on pakollinen'),
     bullseyes: Yup.number()
         .min(0, 'Napakymppi ei voi olla negatiivinen')
         .max(60, 'Napakymppi ei voi olla yli 60')
         .required('Napakymppi on pakollinen'),
-    image: Yup.mixed()
-        .optional()
-        .test("is-valid-type", "Väärä tiedostomuoto",
-            value => !value || (value instanceof File && isValidFileType(value && value.name.toLowerCase(), "image")))
-        .test("is-valid-size", "Suurin sallittu tiedosto on 6MB",
-            value => !value || (value instanceof File && value.size <= MAX_FILE_SIZE))
+        // images: Yup.array().of(fileValidationTests[0]),
 });

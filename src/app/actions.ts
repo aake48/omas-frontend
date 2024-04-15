@@ -1,7 +1,8 @@
 'use server'
 
 import axios from "axios";
-import {addScoreSum, addTeamMemberURL} from "@/lib/APIConstants";
+
+import { addScoreSum, addTeamMemberURL, getFileUploadUrl } from "@/lib/APIConstants";
 import * as https from 'https';
 import * as fs from 'fs';
 
@@ -11,8 +12,10 @@ const httpsAgent = new https.Agent({
   rejectUnauthorized: false,
   ca: cert,
 });
+
+
 export async function sendScore(token: string, formData: FormData) {
-    console.log("server: ",formData);
+  const images = formData.getAll("image");
 
   if (token == null) {
     console.error("No auth header found in request.");
@@ -26,17 +29,21 @@ export async function sendScore(token: string, formData: FormData) {
         teamName: formData.get("teamName")?.toString(),
         score: formData.get("score"),
         bullsEyeCount: formData.get("bullseyes"),
+        requestType: formData.get("requestType"),
       },
       {
         headers: {
-          Authorization:"Bearer " + token,
+          Authorization: "Bearer " + token,
           "Content-Type": "application/json",
         },
         httpsAgent
       }
     );
 
-    // uploadImage(token, formData.get("image") as File, formData.get("competitionName")?.toString() as string);
+    images.forEach((image) => {
+      uploadImage(token, image, formData.get("competitionName")?.toString()!);
+    }
+    );
 
     return 200;
   } catch (error: any) {
@@ -45,43 +52,39 @@ export async function sendScore(token: string, formData: FormData) {
   }
 }
 
-
-
-
-
-
 // upload image
 // POST api/file/upload/
 // Authorization: required
 // Content-Type: multipart/form-data
 // Requires competitionId field and file field for the image. Currently only accepts one image at a time.
 
-export async function uploadImage(token: string, file: File, competitionId: string) {
+export async function uploadImage(token: string, file: FormDataEntryValue, competitionId: string) {
   if (token == null) {
     console.error("No auth header found in request.");
-    // return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    return 400;
   }
+  const formData = new FormData();
+  formData.append('competitionId', competitionId);
+  formData.append('file', file);
+
   try {
     const response = await axios.post(
-      "https://localhost:8080/api/file/upload/",
-      {
-        competitionId: competitionId,
-        file: file,
-      },
+      getFileUploadUrl(),
+      formData,
       {
         headers: {
-          Authorization:"Bearer " + token,
+          Authorization: "Bearer " + token,
           "Content-Type": "multipart/form-data",
         },
         httpsAgent
       }
     );
-
     return 200;
   } catch (error: any) {
-    console.log(error);
+    console.log("Error:",error);
     return 500;
   }
+
 }
 
 export async function joinTeam(token: string, teamName: string, competitionName: string) {
@@ -92,21 +95,21 @@ export async function joinTeam(token: string, teamName: string, competitionName:
     return { message: "Virheellinen käyttäjä", status: 400 }
   }
   try {
-      const response = await axios.post(
-        addTeamMemberURL,
-        { teamName: trimmedTeamName, competitionName: competitionName },
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-            "Content-Type": "application/json",
-          },
-          httpsAgent,
-        }
-      );
-      return {body: "Joukkueesen liittyminen onnistui", status: 200 };
-      
+    const response = await axios.post(
+      addTeamMemberURL,
+      { teamName: trimmedTeamName, competitionName: competitionName },
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+          "Content-Type": "application/json",
+        },
+        httpsAgent,
+      }
+    );
+    return { body: "Joukkueesen liittyminen onnistui", status: 200 };
+
   } catch (error: any) {
-      console.error(error);
-      return { message: "Virhe joukkueeseen liittymisessä", status: 500 }
+    console.error(error);
+    return { message: "Virhe joukkueeseen liittymisessä", status: 500 }
   }
 }
