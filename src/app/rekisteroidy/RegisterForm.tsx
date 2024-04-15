@@ -66,56 +66,6 @@ export default function RegisterForm() {
 
             localStorage.setItem("token", token);
             localStorage.setItem("userInfo", JSON.stringify(userInfo));
-
-            // This is for demo purposes to allow creating teams
-            // const addClub = async () => {
-            //   const response = await axios.post(
-            //     addClubURL,
-            //     {
-            //       clubName: "Feikki_seura",
-            //     },
-            //     {
-            //       headers: {
-            //         Authorization: `Bearer ${localStorage.getItem("token")}`,
-            //         "Content-Type": "application/json",
-            //       },
-            //     }
-            //   );
-            //   console.log(response.data);
-            // };
-
-            // const joinClub = async () => {
-            //   const response2 = await axios.post(
-            //     joinClubURL,
-            //     {
-            //       clubName: "Feikki_seura",
-            //     },
-            //     {
-            //       headers: {
-            //         Authorization: `Bearer ${localStorage.getItem("token")}`,
-            //         "Content-Type": "application/json",
-            //       },
-            //     }
-            //   );
-            //   console.log(response2.data);
-            //   const userInfoFromLocalStorage = localStorage.getItem("userInfo");
-            //   if (userInfoFromLocalStorage) {
-            //     const userInfo = JSON.parse(userInfoFromLocalStorage);
-            //     userInfo.club = "Feikki_seura";
-            //     localStorage.setItem("userInfo", JSON.stringify(userInfo));
-            //   }
-            // };
-
-            // if (userInfo.club === null) {
-            //   try {
-            //     addClub().then(() => {
-            //       joinClub();
-            //     });
-            //   } catch (error) {
-            //     console.log(error);
-            //   }
-            // }
-            // For demo purposes ends here
             window.dispatchEvent(new Event("localStorageChange"));
             router.push("/");
           } catch (error: any) {
