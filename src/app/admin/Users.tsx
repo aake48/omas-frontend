@@ -1,4 +1,4 @@
-import { AdminQueryUser, User as UserType } from '@/types/commonTypes';
+import { AdminQueryUser, AdminUser } from '@/types/commonTypes';
 import User from './User';
 
 interface UsersProps {
@@ -12,7 +12,7 @@ const Users = ({ data }: UsersProps) => {
     return (
         <div className='flex flex-col gap-4 w-full'>
             <h1 className='text-2xl'>Käyttäjätiedot:</h1>
-            {content && content.map((user: UserType, index: number) => (
+            {content && content.map((user: AdminUser, index: number) => (
                 <User user={user} key={index} />
             ))}
         </div>
