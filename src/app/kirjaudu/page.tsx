@@ -42,7 +42,7 @@ export default function Login() {
         localStorage.setItem("token", token);
         localStorage.setItem("userInfo", JSON.stringify(userInfo));
         window.dispatchEvent(new Event("localStorageChange"));
-        router.push("/kilpailut");
+        router.push("/");
       } else {
         setMessage("Muista reCAPTCHA.");
       }
