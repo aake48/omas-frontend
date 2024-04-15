@@ -11,6 +11,8 @@ import useIsLoggedIn from "@/lib/hooks/is-logged-in";
 export default function CurrentCompetitions(props: competitionListProps) {
   const router = useRouter();
   const isLoggedIn = useIsLoggedIn();
+  const userHasCompetitions =
+    props.competitions !== undefined && props.competitions.length > 0;
 
   return (
     isLoggedIn && (
@@ -25,28 +27,41 @@ export default function CurrentCompetitions(props: competitionListProps) {
           </Link>
         </div>
         <div>
-          {props.competitions !== undefined &&
+          {userHasCompetitions ? (
             props.competitions.map((comp, index) => (
               <div
                 key={index}
-                className="mx-4 border-b-2 last:border-b-0 cursor-pointer hover:bg-slate-100"
+                className="flex mx-4 border-b-2 last:border-b-0 cursor-pointer hover:bg-slate-100"
                 onClick={() => router.push("/kilpailut/" + comp.competitionId)}
               >
-                <p className="p-2">
-                  {comp.displayName} - {competitionTypes[comp.type]}
-                </p>
-                <p className="pb-2 px-2 text-sm text-slate-700">
-                  {comp.startDate} - {comp.endDate}
-                </p>
+                <div>
+                  <p className="p-2">
+                    {comp.displayName} - {competitionTypes[comp.type]}
+                  </p>
+                  <p className="pb-2 px-2 text-sm text-slate-700">
+                    {comp.startDate} - {comp.endDate}
+                  </p>
+                </div>
                 <Button
                   variant="outline"
-                  className="hover:bg-slate-100"
-                  onClick={() => router.push("/ilmoitus")}
+                  className="mx-4 my-2 hover:bg-slate-100"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    router.push("/ilmoitus");
+                  }}
                 >
                   Ilmoita tuloksesi
                 </Button>
               </div>
-            ))}
+            ))
+          ) : (
+            <div className="mx-4">
+              <p className="p-2">
+                Et ole ilmottautunut yhteenkään käynnissä olevaan kilpailuun.
+                Voit etsiä kilpailuja yläpalkin Kilpailut-välilehdeltä.
+              </p>
+            </div>
+          )}
         </div>
       </div>
     )
