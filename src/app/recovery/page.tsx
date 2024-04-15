@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
-import { postData } from "@/api/get";
 import { getForgotPasswordUrl, getResetPasswordUrl } from "@/lib/APIConstants";
 import axios from "axios";
 import { useSearchParams } from 'next/navigation'
