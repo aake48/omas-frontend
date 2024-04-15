@@ -15,7 +15,7 @@ export default function CustomInput({ label, ...props }: CustomInputProps) {
       {meta.touched && meta.error && (
         <span
           className={` absolute
-          ${props.type !== "date" ? "-bottom-5" : "-bottom-10"}
+          ${props.type !== "date" ? "-bottom-5" : "-bottom-[60px]"}
             left-1 text-sm bg-red-100 rounded-b-md p-1 text-red-700`}
         >
           {meta.error}
