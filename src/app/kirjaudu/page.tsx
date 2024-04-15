@@ -19,21 +19,28 @@ export default function Login() {
     password: string;
   }) => {
     try {
-      const response = await axios.post(loginURL, {
-        username: values.username,
-        password: values.password,
-      });
+      await fetch("kirjaudu/api", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      }).then((res) =>
+        res.json().then((data) => {
+          if (data.status === 200) {
+            console.log("login success");
+            console.log("data.user", data.body.user);
 
-      console.log("login success");
-      console.log(response.data.user);
+            const token = data.body.token;
+            const userInfo = data.body.user;
 
-      const token = response.data.token;
-      const userInfo = response.data.user;
-
-      localStorage.setItem("token", token);
-      localStorage.setItem("userInfo", JSON.stringify(userInfo));
-      window.dispatchEvent(new Event("localStorageChange"));
-      router.push("/kilpailut");
+            localStorage.setItem("token", token);
+            localStorage.setItem("userInfo", JSON.stringify(userInfo));
+            window.dispatchEvent(new Event("localStorageChange"));
+            router.push("/kilpailut");
+          }
+        })
+      );
     } catch (error) {
       setMessage(
         "Kirjautuminen ei onnistunut. Tarkista, että syöttämäsi tiedot ovat oikein."
