@@ -33,7 +33,6 @@ export default function Home() {
       const response = await get(getUpcomingCompetitions(0, 5));
       if (response.content) {
         setFutureCompetitions(response.content);
-      } else {
       }
     } catch (error) {
       console.log(error);
@@ -44,7 +43,6 @@ export default function Home() {
     try {
       const response = await get(getActiveCompetitions(0, 5), tokenString);
       if (response.content) {
-        console.log(response.content);
         const ownCompetitionsData = response.content;
         let currentCompetitions: CompetitionResponse[] = [];
         let ownCompetitionIds: string[] = [];
@@ -78,8 +76,6 @@ export default function Home() {
           return new Date(a.endDate).getTime() - new Date(b.endDate).getTime();
         });
         setCurrentOwnCompetitions(currentCompetitions);
-      } else {
-        console.log(response.message);
       }
     } catch (error) {
       console.log(error);
