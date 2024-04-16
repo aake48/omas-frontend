@@ -41,15 +41,15 @@ export default function Home() {
 
   async function getOwnCompetitions() {
     try {
-      const response = await get(getActiveCompetitions(0, 5), tokenString);
+      const response = await get(getActiveCompetitions(0, 50), tokenString);
       if (response.content) {
         const ownCompetitionsData = response.content;
         let currentCompetitions: CompetitionResponse[] = [];
         let ownCompetitionIds: string[] = [];
 
         const response2 = await get(getUserCompetitions(), tokenString);
-        if (response2.content) {
-          const ownCompetitionsData = response2.content;
+        if (response2) {
+          const ownCompetitionsData = response2;
           if (ownCompetitionsData) {
             ownCompetitionsData.forEach((competition: CompetitionResponse) => {
               ownCompetitionIds.push(competition.competitionId);
