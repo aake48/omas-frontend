@@ -17,8 +17,8 @@ export default function JoinClubTip() {
         <div className="mx-4 border-b-2 last:border-b-0 cursor-pointer hover:bg-slate-100">
           <p className="p-2">
             Liittymällä seuraan voit osallistua joukkueisiin ja ilmoittaa
-            tuloksiasi järjestelmään. Liittyä voit oikean yläkulman valikosta
-            löytyvistä asetuksista.
+            tuloksiasi järjestelmään. Liittyä voit yläpalkin
+            Seurat-välilehdeltä.
           </p>
         </div>
       </div>
