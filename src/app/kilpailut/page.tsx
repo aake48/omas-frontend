@@ -8,15 +8,6 @@ import { CompetitionResponse } from "@/types/commonTypes";
 
 
 export default function LisääKilpailu() {
-  const [competitions, setCompetitions] = useState<CompetitionResponse[]>([]);
-
-  useEffect(() => {
-    fetch("https://localhost:8080/api/competition/result/kesan_ampujaiset", { cache: 'default' })
-      .then((res) => res.json())
-      .then((json) => {
-        setCompetitions([...competitions, json])
-      })
-  }, [competitions]);
 
   return (
     <main className="flex flex-col min-h-screen items-center justify-between p-8 sm:p-24">

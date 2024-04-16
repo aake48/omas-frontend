@@ -3,15 +3,6 @@
 import axios from "axios";
 
 import { addScoreSum, addTeamMemberURL, getFileUploadUrl } from "@/lib/APIConstants";
-import * as https from 'https';
-import * as fs from 'fs';
-
-const cert = fs.readFileSync('certificates/localhost.pem');
-
-const httpsAgent = new https.Agent({
-  rejectUnauthorized: false,
-  ca: cert,
-});
 
 
 export async function sendScore(token: string, formData: FormData) {
@@ -36,7 +27,6 @@ export async function sendScore(token: string, formData: FormData) {
           Authorization: "Bearer " + token,
           "Content-Type": "application/json",
         },
-        httpsAgent
       }
     );
 
@@ -76,7 +66,6 @@ export async function uploadImage(token: string, file: FormDataEntryValue, compe
           Authorization: "Bearer " + token,
           "Content-Type": "multipart/form-data",
         },
-        httpsAgent
       }
     );
     return 200;
@@ -102,8 +91,7 @@ export async function joinTeam(token: string, teamName: string, competitionName:
         headers: {
           Authorization: "Bearer " + token,
           "Content-Type": "application/json",
-        },
-        httpsAgent,
+        }
       }
     );
     return { body: "Joukkueesen liittyminen onnistui", status: 200 };
