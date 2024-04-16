@@ -3,13 +3,13 @@ import React, { useEffect, useState } from 'react';
 import useIsLoggedIn from '@/lib/hooks/is-logged-in';
 import axios from 'axios';
 import { getClubQueryUrl } from '@/lib/APIConstants';
-import { ClubResponse, QueryClub, decodedToken } from '@/types/commonTypes';
+import { ClubResponse, QueryClub } from '@/types/commonTypes';
 import Paginator from '../components/Paginator';
 import Input from '@/components/ui/Input';
 import Club from './Club';
 import { useRouter } from 'next/navigation';
 
-export default function page() {
+export default function Clubs() {
 	const [data, setData] = useState<QueryClub>();
 	const [pageNumber, setPageNumber] = useState(0);
 	const [search, setSearch] = useState("");
