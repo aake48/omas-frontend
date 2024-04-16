@@ -23,7 +23,7 @@ const adminFeatures = [
     }
 ];
 
-export default function page() {
+export default function Admin() {
     const [type, setType] = useState(AdminViewType.Other);
     const [adminLogin, setAdminLogin] = useState(false);
     const [token, setToken] = useState("");

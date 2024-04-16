@@ -50,6 +50,7 @@ const Score = ({ year, competitions }: ScoreProps) => {
       <div className={hidden}>
         {competitions?.map(competition => (
           <Competition
+            key={competition.name}
             name={competition.name}
             creationDate={competition.creationDate}
             teams={competition.teams}
