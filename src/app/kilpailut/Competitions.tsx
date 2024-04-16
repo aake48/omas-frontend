@@ -7,6 +7,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { formatDate } from "@/lib/utils";
 
 export default function Competitions() {
   const [competitions, setCompetitions] = useState<CompetitionResponse[]>([]);
@@ -44,7 +45,9 @@ export default function Competitions() {
           >
             <p>{competition.displayName}</p>
             <p className="sm:ml-auto sm:mr-5 text-slate-700">
-              {competition.startDate + " - " + competition.endDate}
+              {formatDate(competition.startDate) +
+                " - " +
+                formatDate(competition.endDate)}
             </p>
           </Link>
         ))}
