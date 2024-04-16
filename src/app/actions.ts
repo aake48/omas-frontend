@@ -5,10 +5,7 @@ import axios from "axios";
 import {
   addScoreSum,
   addTeamMemberURL,
-  getActiveCompetitions,
   getFileUploadUrl,
-  getUpcomingCompetitions,
-  getUserCompetitions,
 } from "@/lib/APIConstants";
 import * as https from "https";
 import * as fs from "fs";
@@ -117,52 +114,5 @@ export async function joinTeam(
   } catch (error: any) {
     console.error(error);
     return { message: "Virhe joukkueeseen liittymisessä", status: 500 };
-  }
-}
-
-export async function getNextUpcomingCompetitions() {
-  try {
-    const response = await axios.get(getUpcomingCompetitions(0, 5), {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      httpsAgent,
-    });
-    return { body: response.data, status: response.status };
-  } catch (error: any) {
-    console.error(error);
-    return { message: "Virhe kilpailujen hakemisessa", status: 500 };
-  }
-}
-
-export async function getAllActiveCompetitions(token: string) {
-  try {
-    const response = await axios.get(getActiveCompetitions(0, 5), {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-      httpsAgent,
-    });
-    return { body: response.data, status: response.status };
-  } catch (error: any) {
-    console.error(error);
-    return { message: "Virhe kilpailujen hakemisessa", status: 500 };
-  }
-}
-
-export async function getAllOwnCompetitions(token: string) {
-  try {
-    const response = await axios.get(getUserCompetitions(), {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-      httpsAgent,
-    });
-    return { body: response.data, status: response.status };
-  } catch (error: any) {
-    console.error(error);
-    return { message: "Virhe kilpailujen hakemisessa", status: 500 };
   }
 }
