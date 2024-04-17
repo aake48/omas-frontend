@@ -1,27 +1,7 @@
 'use client';
-import { AdminViewType, User } from "@/types/commonTypes";
-import AdminHelper from "./AdminHelper";
-import { Button } from "@/components/ui/Button";
 import { useEffect, useState } from "react";
-
-const adminFeatures = [
-    {
-        text: "Käyttäjät",
-        type: AdminViewType.Users
-    },
-    {
-        text: "Luo seura",
-        type: AdminViewType.CreateClub
-    },
-    {
-        text: "Tarkastele kuvia",
-        type: AdminViewType.ImageViewer
-    },
-    {
-        text: "Muut",
-        type: AdminViewType.Other
-    }
-];
+import AdminView from "./AdminView";
+import { AdminViewType, User } from "@/types/commonTypes";
 
 export default function Admin() {
     const [type, setType] = useState(AdminViewType.Other);
@@ -53,25 +33,7 @@ export default function Admin() {
         </main>
     )
     
-    const handleFeatureClick = (type: AdminViewType) => {
-        setType(type);
-    }
-
     return (
-        <main className="min-h-screen w-full p-4 gap-2">
-            <div className="flex flex-row gap-2">
-                {adminFeatures.map((feature: any, index: number) => (
-                    <Button
-                        onClick={() => handleFeatureClick(feature.type)}
-                        variant="outline"
-                        className="hover:bg-slate-100"
-                        key={index}
-                    >
-                        {feature.text}
-                    </Button>
-                ))}
-            </div>
-            <AdminHelper type={type} />
-        </main>
+        <AdminView />
     )
 }
