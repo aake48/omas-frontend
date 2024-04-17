@@ -16,6 +16,7 @@ const ImageViewer = () => {
 
     const apiUrl = getCompetitionsQueryUrl(searchQuery, pageNumber, 5)
 
+    console.log(apiUrl);
     const fetchCompetitions = async () => {
 		try {
 			const res = await axios.get(apiUrl, {
@@ -23,6 +24,7 @@ const ImageViewer = () => {
 					'Content-Type': 'application/json'
 				}
 			});
+            console.log(res);
 			setData(res.data);
 		} catch (e: any) {
 			console.error(e);
@@ -37,7 +39,7 @@ const ImageViewer = () => {
 		setPageNumber(0);
 	}, [searchQuery])
 
-    if (!data) return <h1>Kilpailuja ei löytynyt</h1>;
+    if (!data) return <h1>Virhe tietojen haussa.</h1>;
 
 	let competitions = data.content;
 

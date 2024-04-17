@@ -47,7 +47,7 @@ const Competition = ({ comp }: CompetitionProps) => {
     }, [pageNumber])
 
 
-    if (!data) return <h1>Kilpailuja ei löytynyt</h1>;
+    if (!data) return;
 
 	let teams = data.content;
 
