@@ -48,7 +48,7 @@ const Score = ({ year, competitions }: ScoreProps) => {
         <h1 className='ml-2'>{`Tulokset ${year}`}</h1>
       </div>
       <div className={hidden}>
-        {competitions?.map(competition => (
+        {competitions?.map((competition, index: number) => (
           <Competition
             key={competition.name}
             name={competition.name}

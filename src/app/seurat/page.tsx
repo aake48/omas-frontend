@@ -53,35 +53,4 @@ export default function Seurat() {
 			<p className='text-md'>Kirjaudu sisään tarkastellaksesi ja liittyäksesi seuraan.</p>
 		</main>
 	)
-
-	return (
-		<main className="flex min-h-screen flex-col items-center p-4 gap-10">
-			<h1 className='text-4xl'>Seurat</h1>
-			<div className="flex flex-col items-center gap-2">
-				<Input
-					id="search"
-					placeholder="Hae seuraa"
-					type="text"
-					onChange={(e) => setSearch(e.target.value)}
-					required={false}
-				/>
-				<p className='text-md'>Huomaa, että hakemisessa pitää käyttää oikeaa kirjainkokoa.</p>
-				<Paginator
-					pageNumber={pageNumber}
-					totalPages={data.totalPages}
-					handlePageNumberChange={handlePageNumberChange}				
-				/>
-			</div>
-			<div className='flex flex-col gap-2 w-full'>
-				{data.content && data.content.map((club: ClubResponse, index: number) => (
-					<Club
-						key={index}
-						displayName={club.nameNonId}
-						id={club.name}
-						creationDate={club.creationDate}
-					/>
-				))}
-			</div>
-		</main>
-	)
 }
