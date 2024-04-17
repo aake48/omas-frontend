@@ -1,9 +1,9 @@
 'use client';
 import { Button } from "@/components/ui/Button";
 import { changeClubKeyURL } from "@/lib/APIConstants";
-import { User } from "@/types/commonTypes";
+import useUserInfo from "@/lib/hooks/get-user.info";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 
 interface ChangeClubKeyProps {
     clubName: string
@@ -12,6 +12,7 @@ interface ChangeClubKeyProps {
 const ChangeClubKey = ({ clubName }: ChangeClubKeyProps) => {
     const [message, setMessage] = useState("");
     const [messageStyle, setMessageStyle] = useState("text-black");
+    const { token } = useUserInfo();
 
     const handleSubmit = async (data: FormData) => {
         const pass = data.get("pass") || null;
@@ -20,7 +21,7 @@ const ChangeClubKey = ({ clubName }: ChangeClubKeyProps) => {
                 method: 'post',
                 url: changeClubKeyURL,
                 headers: {
-                    'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 },
                 data: {

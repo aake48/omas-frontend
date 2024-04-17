@@ -10,10 +10,12 @@ import CustomDropdown from "@/components/ui/CustomDropdown";
 import { useRouter } from "next/navigation";
 import { PostCompetition } from "@/types/commonTypes";
 import { useState } from "react";
+import useUserInfo from "@/lib/hooks/get-user.info";
 
 export default function AddCompetition() {
   const [message, setMessage] = useState("");
   const router = useRouter();
+  const { token } = useUserInfo();
 
   type CompetitionType = "rifle" | "pistol";
 
@@ -49,7 +51,7 @@ export default function AddCompetition() {
           method: "post",
           url: addCompetitionURL,
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
           data: competitonInfo,

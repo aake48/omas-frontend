@@ -6,11 +6,13 @@ import Paginator from "../components/Paginator";
 import Input from "@/components/ui/Input";
 import axios from "axios";
 import Users from "./Users";
+import useUserInfo from "@/lib/hooks/get-user.info";
 
 const UsersMain = () => {
     const [data, setData] = useState<AdminQueryUser>();
     const [pageNumber, setPageNumber] = useState(0);
     const [search, setSearch] = useState("");
+    const { token } = useUserInfo();
 
     let apiUrl = getAdminUserQueryUrl(search, pageNumber, 10);
 
@@ -18,12 +20,10 @@ const UsersMain = () => {
         try {
             const res = await axios.get(apiUrl, {
                 headers: {
-                    'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                    'Authorization': `Bearer ${ token }`,
                     'Content-Type': 'application/json'
                 }
             });
-            console.log(localStorage.getItem("token"));
-            console.log(res);
             setData(res.data);
         } catch (e: any) {
             console.error(e);

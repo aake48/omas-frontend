@@ -1,20 +1,23 @@
 import { Button } from "@/components/ui/Button";
 import { addClubURL } from "@/lib/APIConstants";
+import useUserInfo from "@/lib/hooks/get-user.info";
 import axios from "axios";
 import { useState } from "react";
 
 const CreateClub = () => {
     const [message, setMessage] = useState("");
     const [messageStyle, setMessageStyle] = useState("text-black");
+    const { token } = useUserInfo();
 
     const handleSubmit = async (data: FormData) => {
         const clubName = data.get("club");
+        
         try {
             const res = await axios({
                 method: 'post',
                 url: addClubURL,
                 headers: {
-                    'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 },
                 data: {
