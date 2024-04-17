@@ -84,13 +84,6 @@ export async function uploadImage(
         },
       }
     );
-    const response = await axios.post(getFileUploadUrl(), formData, {
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-Type": "multipart/form-data",
-      },
-      httpsAgent,
-    });
     return 200;
   } catch (error: any) {
     console.log("Error:", error);
