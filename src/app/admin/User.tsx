@@ -13,28 +13,10 @@ const User = ({ user }: UserProps) => {
   const [message, setMessage] = useState("");
   const [messageStyle, setMessageStyle] = useState("text-black");
 
-    const roles: string[] = [];
-    user.roles.map(role => {
-        roles.push(role.role);
-    })
-    
-    const handleSubmit = async (data: FormData) => {
-        const role = data.get("role");
-        if (data.get("promote")) {
-            try {
-                const res = await axios({
-                    method: 'post',
-                    url: getAdminPromoteUserUrl(),
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem("token")}`,
-                        'Content-Type': 'application/json'
-                    },
-                    data: {
-                        userId: user.id,
-                        role: role,
-                    }
-                });
-                console.log(res);
+  const roles: string[] = [];
+  user.roles.map(role => {
+    roles.push(role.role);
+  })
 
   const handleSubmit = async (data: FormData) => {
     const role = data.get("role");
@@ -98,133 +80,97 @@ const User = ({ user }: UserProps) => {
     }
   };
 
-  const handleDeleteUser = async () => {
-    try {
-      const res = await axios({
-        method: "delete",
-        url: getAdminDeleteUserUrl(),
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Content-Type": "application/json",
-        },
-        data: {
-          userId: user.id,
-        },
-      });
+    const handleDeleteUser = async () => {
+      try {
+        const res = await axios({
+          method: "delete",
+          url: getAdminDeleteUserUrl(),
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+          data: {
+            userId: user.id,
+          },
+        });
 
-      if (res.status === 200) {
-        setMessage("Käyttäjän poistaminen onnistui");
-        setMessageStyle("text-black");
-      } else {
+        if (res.status === 200) {
+          setMessage("Käyttäjän poistaminen onnistui");
+          setMessageStyle("text-black");
+        } else {
+          setMessage("Käyttäjän poistaminen epäonnistui");
+          setMessageStyle("text-red-500");
+        }
+      } catch (error) {
+        console.log(error);
         setMessage("Käyttäjän poistaminen epäonnistui");
         setMessageStyle("text-red-500");
       }
-    } catch (error) {
-      console.log(error);
-      setMessage("Käyttäjän poistaminen epäonnistui");
-      setMessageStyle("text-red-500");
-    }
-  };
+    };
 
     return (
-        <div className="items-center gap-2 p-2 w-full border-solid border border-slate-300 rounded-lg shadow-md">
+      <div className="items-center gap-2 p-2 w-full border-solid border border-slate-300 rounded-lg shadow-md">
+        <Button
+          variant="outline"
+          size="sm"
+          className="hover:bg-slate-100"
+          onClick={handleDeleteUser}
+        >
+          Poista käyttäjä
+        </Button>
+        <div className='px-4 p-2 block rounded-lg'>
+          <h1>{`id: ${user.id}`}</h1>
+          <h1>{`käyttäjänimi: ${user.username}`}</h1>
+          <h1>{`nimi: ${user.legalName}`}</h1>
+          <h1>{`sähköposti: ${user.email}`}</h1>
+          <h1>{`luontipäivä: ${formatDate(user.creationDate)}`}</h1>
+          <h1>{`seura: ${user.partOfClub}`}</h1>
+          <div className='flex flex-row gap-2'>
+            <h1>roolit:</h1>
+            {roles.length !== 0 ? roles.map((role: string, index: number) => (
+              <p key={index}>{role}</p>
+            )) : (
+              <p>ei rooleja</p>
+            )}
+          </div>
+        </div>
+        <div className='px-4 p-2'>
+          <h1>poista tai lisää rooli</h1>
+          <form
+            action={handleSubmit}
+            className='flex flex-row gap-2'
+          >
+            <input
+              className='border rounded-lg p-2'
+              type="text"
+              name="role"
+              placeholder="rooli"
+            />
             <Button
-                variant="outline"
-                size="sm"
-                className="hover:bg-slate-100"
-                onClick={handleDeleteUser}
+              variant="outline"
+              size="sm"
+              value="promote"
+              name="promote"
+              className="hover:bg-slate-100"
+              type="submit"
             >
-                Poista käyttäjä
+              Lisää
             </Button>
-            <div className='px-4 p-2 block rounded-lg'>
-                <h1>{`id: ${user.id}`}</h1>
-                <h1>{`käyttäjänimi: ${user.username}`}</h1>
-                <h1>{`nimi: ${user.legalName}`}</h1>
-                <h1>{`sähköposti: ${user.email}`}</h1>
-                <h1>{`luontipäivä: ${formatDate(user.creationDate)}`}</h1>
-                <h1>{`seura: ${user.partOfClub}`}</h1>
-                <div className='flex flex-row gap-2'>
-                    <h1>roolit:</h1>
-                    {roles.length !== 0 ? roles.map((role: string, index: number) => (
-                        <p key={index}>{role}</p>
-                    )) : (
-                        <p>ei rooleja</p>
-                    )}
-                </div>
-            </div>
-            <div className='px-4 p-2'>
-                <h1>poista tai lisää rooli</h1>
-                <form
-                    action={handleSubmit}
-                    className='flex flex-row gap-2'
-                >
-                    <input
-                        className='border rounded-lg p-2'
-                        type="text"
-                        name="role"
-                        placeholder="rooli"
-                    />
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        value="promote"
-                        name="promote"
-                        className="hover:bg-slate-100"
-                        type="submit"
-                    >
-                        Lisää
-                    </Button>
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        value="demote"
-                        name="demote"
-                        className="hover:bg-slate-100"
-                        type="submit"
-                    >
-                        Poista
-                    </Button>
-                </form>
-                <p className={`${messageStyle} mt-3`}>{message}</p>
-                {/* <AreYouSure hidden={true} prompt={`Haluatko varmasti poistaa käyttäjän ${user.username}?`} onClickYes={1+1} /> */}
-            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              value="demote"
+              name="demote"
+              className="hover:bg-slate-100"
+              type="submit"
+            >
+              Poista
+            </Button>
+          </form>
+          <p className={`${messageStyle} mt-3`}>{message}</p>
         </div>
       </div>
-      <div className="px-4 p-2">
-        <h1>poista tai lisää rooli</h1>
-        <form action={handleSubmit} className="flex flex-row gap-2">
-          <input
-            className="border rounded-lg p-2"
-            type="text"
-            name="role"
-            placeholder="rooli"
-          />
-          <Button
-            variant="outline"
-            size="sm"
-            value="promote"
-            name="promote"
-            className="hover:bg-slate-100"
-            type="submit"
-          >
-            Lisää
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            value="demote"
-            name="demote"
-            className="hover:bg-slate-100"
-            type="submit"
-          >
-            Poista
-          </Button>
-        </form>
-        <p className={`${messageStyle} mt-3`}>{message}</p>
-        {/* <AreYouSure hidden={true} prompt={`Haluatko varmasti poistaa käyttäjän ${user.username}?`} onClickYes={1+1} /> */}
-      </div>
-    </div>
-  );
-};
+    )
+  };
 
 export default User;

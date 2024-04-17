@@ -65,6 +65,7 @@ const ClubsView = () => {
 					required={false}
 				/>
 				<p className='text-md'>Huomaa, että hakemisessa pitää käyttää oikeaa kirjainkokoa.</p>
+				<p className='text-md'>Jos olet seuran pääkäyttäjä, voit vaihtaa seuran salasanaa sen kohdalta.</p>
 				<Paginator
 					pageNumber={pageNumber}
 					totalPages={data.totalPages}
