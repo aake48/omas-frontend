@@ -33,7 +33,6 @@ export type CompetitionResponse = {
   startDate: string;
   endDate: string;
   creationDate: string;
-  active: boolean;
 };
 
 /**
