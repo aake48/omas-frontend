@@ -3,13 +3,27 @@ import React, { useEffect, useState } from 'react';
 import useIsLoggedIn from '@/lib/hooks/is-logged-in';
 import axios from 'axios';
 import { getClubQueryUrl } from '@/lib/APIConstants';
-import { ClubResponse, QueryClub, decodedToken } from '@/types/commonTypes';
+import { ClubResponse, QueryClub } from '@/types/commonTypes';
 import Paginator from '../components/Paginator';
 import Input from '@/components/ui/Input';
 import Club from './Club';
 import { useRouter } from 'next/navigation';
 
-export default function page() {
+const fetchClubs = async (apiUrl: string, setData: (data: QueryClub) => void) => {
+	try {
+		const res = await axios.get(apiUrl, {
+			headers: {
+				'Authorization': `Bearer ${localStorage.getItem("token")}`,
+				'Content-Type': 'application/json'
+			}
+		});
+		setData(res.data);
+	} catch (e: any) {
+		console.error(e);
+	}
+}
+
+export default function Seurat() {
 	const [data, setData] = useState<QueryClub>();
 	const [pageNumber, setPageNumber] = useState(0);
 	const [search, setSearch] = useState("");
@@ -18,19 +32,6 @@ export default function page() {
 	
 	let apiUrl = getClubQueryUrl(search, pageNumber, 10);
 
-	const fetchClubs = async () => {
-		try {
-			const res = await axios.get(apiUrl, {
-				headers: {
-					'Authorization': `Bearer ${localStorage.getItem("token")}`,
-					'Content-Type': 'application/json'
-				}
-			});
-			setData(res.data);
-		} catch (e: any) {
-			console.error(e);
-		}
-	}
 
 	const handlePageNumberChange = (page: number) => {
 		if (!data) return;
@@ -39,8 +40,8 @@ export default function page() {
 	}
 
 	useEffect(() => {
-		fetchClubs();
-	}, [pageNumber, search]);
+		fetchClubs(apiUrl, setData);
+	}, [pageNumber, search, apiUrl]);
 
 	useEffect(() => {
 		setPageNumber(0);
