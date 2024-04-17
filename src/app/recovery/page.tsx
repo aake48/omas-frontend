@@ -10,7 +10,7 @@ import CustomInput from "@/components/ui/CustomInput";
 import validationSchema from "./validation";
 import { useRouter } from "next/navigation";
 
-export default function page() {
+export default function Recovery() {
     const [email, setEmail] = useState("");
     const [infoMessage, setInfoMessage] = useState("");
     const [infoMessageStyle, setInfoMessageStyle] = useState("text-red-600");
