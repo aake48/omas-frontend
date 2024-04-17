@@ -9,23 +9,26 @@ import validationSchema from "./validation";
 import CustomInput from "@/components/ui/CustomInput";
 import CustomDropdown from "@/components/ui/CustomDropdown";
 import { useRouter } from "next/navigation";
-import { PostCompetition } from "@/types/commonTypes";
+import { CompetitionType, PostCompetition } from "@/types/commonTypes";
+import { competitionTypes } from "@/lib/constants";
 
 export default function AddCompetition() {
   const router = useRouter();
 
-  type CompetitionType = "rifle" | "pistol";
+  const competitionTypeOptions = Object.values(competitionTypes);
 
-  const competitionTypes: Record<string, CompetitionType> = {
-    Ilmakivääri: "rifle",
-    Ilmapistooli: "pistol",
-  };
-
-  const competitionTypeOptions = Object.keys(competitionTypes);
+  function getKeyByValue(value: string): CompetitionType {
+    for (const [key, val] of Object.entries(competitionTypes)) {
+      if (val === value) {
+        return key as CompetitionType;
+      }
+    }
+    return "rifle";
+  }
 
   const initialValues = {
     competitionName: "",
-    competitionType: "Ilmakivääri",
+    competitionType: "rifle",
     startDate: "",
     endDate: "",
   };
@@ -41,13 +44,13 @@ export default function AddCompetition() {
             values.startDate || values.endDate
               ? {
                   competitionName: values.competitionName,
-                  competitionType: competitionTypes[values.competitionType],
-                  competitionStartDate: values.startDate,
-                  competitionEndDate: values.endDate,
+                  competitionType: getKeyByValue(values.competitionType),
+                  startDate: new Date(values.startDate).getTime(),
+                  endDate: new Date(values.endDate).getTime(),
                 }
               : {
                   competitionName: values.competitionName,
-                  competitionType: competitionTypes[values.competitionType],
+                  competitionType: getKeyByValue(values.competitionType),
                 };
           axios({
             method: "post",
