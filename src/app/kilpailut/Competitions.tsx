@@ -39,7 +39,7 @@ export default function Competitions() {
         competitions.map((competition, index) => (
           <Link
             key={index}
-            className="flex cursor-pointer sm:flex-row flex-col items-baseline border my-1 p-2 sm:pl-10"
+            className="flex cursor-pointer sm:flex-row flex-col items-baseline border my-1 p-2 sm:pl-10 hover:bg-slate-100"
             href={"/kilpailut/" + competition.competitionId}
           >
             <p>{competition.displayName}</p>
