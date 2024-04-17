@@ -74,13 +74,16 @@ export async function uploadImage(
   formData.append("file", file);
 
   try {
-    const response = await axios.post(getFileUploadUrl(), formData, {
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-Type": "multipart/form-data",
-      },
-      httpsAgent,
-    });
+    const response = await axios.post(
+      getFileUploadUrl(),
+      formData,
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
     return 200;
   } catch (error: any) {
     console.log("Error:", error);
@@ -106,8 +109,7 @@ export async function joinTeam(
         headers: {
           Authorization: "Bearer " + token,
           "Content-Type": "application/json",
-        },
-        httpsAgent,
+        }
       }
     );
     return { body: "Joukkueesen liittyminen onnistui", status: 200 };
