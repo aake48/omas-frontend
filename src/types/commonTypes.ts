@@ -210,6 +210,7 @@ export type AdminUser = {
   roles: Role[];
   creationDate: string;
   partOfClub: string | null;
+  lastLogin: string;
 };
 
 export type Role = {
