@@ -1,7 +1,5 @@
 "use server";
 
-import axios from "axios";
-
 import {
   addScoreSum,
   addTeamMemberURL,
@@ -17,22 +15,24 @@ export async function sendScore(token: string, formData: FormData) {
     return 500;
   }
   try {
-    const response = await axios.post(
-      addScoreSum,
-      {
+    const response = await fetch(addScoreSum, {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
         competitionName: formData.get("competitionName")?.toString(),
         teamName: formData.get("teamName")?.toString(),
         score: formData.get("score"),
         bullsEyeCount: formData.get("bullseyes"),
         requestType: formData.get("requestType"),
-      },
-      {
-        headers: {
-          Authorization: "Bearer " + token,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
 
     images.forEach((image) => {
       uploadImage(token, image, formData.get("competitionName")?.toString()!);
@@ -65,16 +65,18 @@ export async function uploadImage(
   formData.append("file", file);
 
   try {
-    const response = await axios.post(
-      getFileUploadUrl(),
-      formData,
-      {
-        headers: {
-          Authorization: "Bearer " + token,
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+    const response = await fetch(getFileUploadUrl(), {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + token,
+      },
+      body: formData
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
     return 200;
   } catch (error: any) {
     console.log("Error:", error);
@@ -93,17 +95,20 @@ export async function joinTeam(
     return { message: "Virheellinen käyttäjä", status: 400 };
   }
   try {
-    const response = await axios.post(
-      addTeamMemberURL,
-      { teamName: trimmedTeamName, competitionName: competitionName },
-      {
-        headers: {
-          Authorization: "Bearer " + token,
-          "Content-Type": "application/json",
-        }
-      }
-    );
-    return { body: "Joukkueesen liittyminen onnistui", status: 200 };
+    const response = await fetch(addTeamMemberURL, {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ teamName: trimmedTeamName, competitionName: competitionName })
+    });
+    const body = response.statusText;
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return { body: "Joukkueesen liittyminen onnistui", status: response.status };
   } catch (error: any) {
     console.error(error);
     return { message: "Virhe joukkueeseen liittymisessä", status: 500 };
