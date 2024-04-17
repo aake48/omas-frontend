@@ -227,17 +227,47 @@ export type ImageProof = {
   image: string;
 };
 
+
 export enum AdminViewType {
-  Users,
-  CreateClub,
-  ImageViewer,
-  Other,
+    Users,
+    CreateClub,
+    ImageViewer,
+    CreateCompetition,
+    Other
 }
 
 export type CompetitionType = "rifle" | "pistol";
 
 export type captchaResponse = {
-  success: boolean;
-  challenge_ts: string;
-  hostname: string;
+  success: boolean,
+  challenge_ts: string,
+  hostname: string
+}
+
+export type CompetitionTeamsResponse = {
+  content: CompetitionTeam[] | null;
+  pageable: Pageable;
+  last: boolean; // isLastPage
+  totalElements: number; // how many element are there in the DB
+  totalPages: number; // how many pages are there wi
+  size: number;
+  first: true;
+  number: number;
+  numberOfElements: number; //in this page
+  empty: boolean;
 };
+
+export type CompetitionTeam = {
+  competitionId: string,
+  teamName: string,
+  clubName: string,
+  teamDisplayName: string,
+  teamMembers: TeamMember[]
+}
+
+export type TeamMember = {
+  userId: 2,
+  competitionId: string,
+  teamName: string,
+  legalName: string
+}

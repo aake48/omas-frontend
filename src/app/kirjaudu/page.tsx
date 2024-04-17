@@ -39,22 +39,21 @@ export default function Login() {
         const token = response.data.token;
         const userInfo = response.data.user;
 
-        localStorage.setItem("token", token);
-        localStorage.setItem("userInfo", JSON.stringify(userInfo));
-        window.dispatchEvent(new Event("localStorageChange"));
-        router.push("/");
-      } else {
-        setMessage("Muista reCAPTCHA.");
-      }
-    } catch (error) {
-      setMessage(
-        "Kirjautuminen ei onnistunut. Tarkista, että syöttämäsi tiedot ovat oikein."
-      );
-      console.log(error);
-    } finally {
-      reCaptchaRef?.current?.reset();
-    }
-  };
+              localStorage.setItem("token", token);
+              localStorage.setItem("userInfo", JSON.stringify(userInfo));
+              window.dispatchEvent(new Event("localStorageChange"));
+              router.push("/kilpailut");
+            } else {
+              setMessage("Muista reCAPTCHA.");
+              reCaptchaRef?.current?.reset();
+            }
+        } catch (error) {
+          setMessage("Kirjautuminen ei onnistunut. Tarkista, että syöttämäsi tiedot ovat oikein.");
+          console.log(error);
+        } finally {
+          reCaptchaRef?.current?.reset();
+        }
+    };
 
   const onReCAPTCHAChange = async (captchaToken: string | null) => {
     setCaptchaToken(captchaToken);

@@ -25,7 +25,6 @@ const adminFeatures = [
 
 
 const AdminView = () => {
-
     const [type, setType] = useState(AdminViewType.Other);
     const [adminLogin, setAdminLogin] = useState(false);
     const [token, setToken] = useState("");
