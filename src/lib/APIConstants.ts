@@ -21,11 +21,12 @@ export const getCompetitionsQueryUrl = (
 };
 
 export const getCompetitionsByYearQueryUrl = (
+  search: string = "",
   year: number,
   page: number,
   size: number = 10
 ): string => {
-  return `${baseURL}${compQuery}?year=${year}&page=${page}&size=${size}`;
+  return `${baseURL}${compQuery}?search=${search}&year=${year}&page=${page}&size=${size}`;
 };
 
 export const getCompetitionByNameUrl = (name: string) => {

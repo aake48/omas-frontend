@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react'
-import { CompetitionResponse, QueryCompetition } from '@/types/commonTypes';
+import { QueryCompetition } from '@/types/commonTypes';
 import Score from './Score';
 import Paginator from '../components/Paginator';
 import { getCompetitionsByYearQueryUrl } from '@/lib/APIConstants';
@@ -8,14 +8,17 @@ import axios from 'axios';
 import Input from '@/components/ui/Input';
 import { Form, Formik } from 'formik';
 import CustomDropdown from '@/components/ui/CustomDropdown';
+import { stringToId } from '@/lib/functions';
 
 const PastCompetitions = () => {
 	const [content, setContent] = useState<QueryCompetition>();
 	const [pageNumber, setPageNumber] = useState(0);
 	const [searchYear, setSearchYear] = useState(new Date().getFullYear().valueOf());
+	const [searchQuery, setSearchQuery] = useState("");
 
 	let currentYear = new Date().getFullYear().valueOf();
-	let apiUrl = getCompetitionsByYearQueryUrl(searchYear, pageNumber, 5);
+	let apiUrl = getCompetitionsByYearQueryUrl(searchQuery, searchYear, pageNumber, 5);
+	console.log(apiUrl);
 
 	const initialValues = {
 		year: `${currentYear}`
@@ -45,12 +48,12 @@ const PastCompetitions = () => {
 	}
 
 	useEffect(() => {
-	fetchContent();
-	}, [pageNumber, searchYear])
+		fetchContent();
+	}, [pageNumber, searchYear, searchQuery])
 
 	useEffect(() => {
-	setPageNumber(0);
-	}, [searchYear])
+		setPageNumber(0);
+	}, [searchQuery])
 
 	console.log(content);
 
@@ -71,7 +74,7 @@ const PastCompetitions = () => {
 					id="search"
 					placeholder="Hae kilpailua"
 					type="text"
-					onChange={(e) => setSearchYear(parseInt(e.target.value))}
+					onChange={(e) => setSearchQuery(stringToId(e.target.value))}
 					required={false}
 				/>
 				<Formik
@@ -97,7 +100,7 @@ const PastCompetitions = () => {
 				</Formik>
 			</div>
 			{ 
-				!(content.totalPages < 2) ?
+				!(content.totalPages < 1) ?
 					<Paginator
 						pageNumber={pageNumber}
 						totalPages={content.totalPages}
