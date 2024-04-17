@@ -10,7 +10,6 @@ import { Form, Formik } from "formik";
 import validationSchema from "./validation";
 
 import CustomInput from "@/components/ui/CustomInput";
-import JoinClub from "../kilpailut/liitySeuraan/JoinClub";
 import ReCAPTCHA from "react-google-recaptcha";
 import { captchaResponse } from "@/types/commonTypes";
 
