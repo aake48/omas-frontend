@@ -1,3 +1,4 @@
+import Image from "next/image";
 
 interface ImageProps {
     src: string
@@ -5,7 +6,7 @@ interface ImageProps {
 
 const ImageProof = ({ src }: ImageProps) => {
     return (
-        <img className="max-w-1/5" src={getImageSource(src)} />
+        <Image alt="" className="max-w-1/5" src={getImageSource(src)} />
     )
 }
 
