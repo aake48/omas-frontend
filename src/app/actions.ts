@@ -7,15 +7,7 @@ import {
   addTeamMemberURL,
   getFileUploadUrl,
 } from "@/lib/APIConstants";
-import * as https from "https";
-import * as fs from "fs";
 
-const cert = fs.readFileSync("certificates/localhost.pem");
-
-const httpsAgent = new https.Agent({
-  rejectUnauthorized: false,
-  ca: cert,
-});
 
 export async function sendScore(token: string, formData: FormData) {
   const images = formData.getAll("image");
@@ -39,7 +31,6 @@ export async function sendScore(token: string, formData: FormData) {
           Authorization: "Bearer " + token,
           "Content-Type": "application/json",
         },
-        httpsAgent,
       }
     );
 
