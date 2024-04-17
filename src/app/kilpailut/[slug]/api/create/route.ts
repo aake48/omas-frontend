@@ -1,12 +1,10 @@
 import { addTeamToCompetitionURL } from "@/lib/APIConstants";
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
-import { useHTTPSAgent } from "@/lib/hooks/get-https-agent";
 
 export async function POST(request: NextRequest) {
     const requestBody = await request.json();
     const trimmedTeamName = requestBody.teamName.trim();
-    const httpsAgent = useHTTPSAgent();
     if (trimmedTeamName === "") {
       return NextResponse.json({ message: "Joukkueen nimi ei voi olla tyhjä" }, { status: 400 });
     }
@@ -25,7 +23,6 @@ export async function POST(request: NextRequest) {
               Authorization: authHeader,
               "Content-Type": "application/json",
             },
-            httpsAgent,
           }
         );
         return NextResponse.json({body: response.data, status: response.status });
