@@ -2,11 +2,12 @@ import JoinClub from "./JoinClub";
 import ChangeClubKey from "./ChangeClubKey";
 import { useEffect, useState } from "react";
 import { User } from "@/types/commonTypes";
+import { formatDate } from "@/lib/utils";
 
 interface ClubProps {
-    displayName: string,
-    id: string,
-    creationDate: string
+  displayName: string;
+  id: string;
+  creationDate: string;
 }
 
 const Club = ({displayName, id, creationDate}: ClubProps) => {
@@ -35,7 +36,7 @@ const Club = ({displayName, id, creationDate}: ClubProps) => {
         <div className="shadow p-2">
             <div>
                 <p className="text-xl">{displayName}</p>
-                <p className="text-slate-700">Seura luotu: {creationDate}</p>
+                <p className="text-slate-700">Seura luotu: {formatDate(creationDate)}</p>
             </div>
             <div>
 			    <JoinClub clubName={id} />
@@ -45,5 +46,5 @@ const Club = ({displayName, id, creationDate}: ClubProps) => {
         </div>
     )
 }
-
+  
 export default Club;

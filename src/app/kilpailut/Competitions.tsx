@@ -7,6 +7,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { formatDate } from "@/lib/utils";
 
 export default function Competitions() {
   const [competitions, setCompetitions] = useState<CompetitionResponse[]>([]);
@@ -39,12 +40,14 @@ export default function Competitions() {
         competitions.map((competition, index) => (
           <Link
             key={index}
-            className="flex cursor-pointer sm:flex-row flex-col items-baseline border my-1 p-2 sm:pl-10"
+            className="flex cursor-pointer sm:flex-row flex-col items-baseline border my-1 p-2 sm:pl-10 hover:bg-slate-100"
             href={"/kilpailut/" + competition.competitionId}
           >
             <p>{competition.displayName}</p>
             <p className="sm:ml-auto sm:mr-5 text-slate-700">
-              {competition.startDate + " - " + competition.endDate}
+              {formatDate(competition.startDate) +
+                " - " +
+                formatDate(competition.endDate)}
             </p>
           </Link>
         ))}
