@@ -9,47 +9,17 @@ interface ScoreProps {
 }
 
 const Score = ({ year, competitionResults }: ScoreProps) => {
-  const [isHidden, setIsHidden] = useState(true);
-  
-  const arrowUp = 
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-      <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
-    </svg>;
-  const arrowDown =
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-      <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-    </svg>;
 
-  let hidden = "";
+  if (!competitionResults || competitionResults.length === 0) return (
+    <div>
+      <h1 className='text-2xl'>Tuloksia ei löytynyt vuodelta {year}</h1>
+    </div>
+  )
 
-  const handleShowDivisions = () => {
-    if (isHidden) {
-      setIsHidden(false);
-    } else {
-      setIsHidden(true);
-    }
-  }
-
-  if (isHidden) {
-    hidden = "hidden";
-  } else {
-    hidden = "";
-  }
-
-  if (competitionResults !== null && competitionResults !== undefined) {
     return (
-      <div data-testid={`score-${year}`}>
-        <div
-          className={`flex items-center h-16 w-full bg-slate-200 rounded-lg shadow-md mb-2 cursor-pointer`}
-          onClick={handleShowDivisions}
-        >
-          <div className='ml-2'>
-            {isHidden ? arrowDown : arrowUp}
-          </div>
-          <h1 className='ml-2'>{year}</h1>
-        </div>
-        <div data-testid={`score-child-2-${year}`} className={hidden}>
-          {competitionResults.map((competition, index) => (
+      <div>
+        <h1 className='text-3xl mb-4'>Tulokset vuodelta {year}</h1>
+        {competitionResults.map((competition, index) => (
             <Competition
               key={index}
               name={competition.competitionId}
@@ -59,27 +29,8 @@ const Score = ({ year, competitionResults }: ScoreProps) => {
               type={competition.type}
             />
           ))}
-        </div>
       </div>
     )
-  } else {
-    return (
-      <div>
-        <div
-          className={`flex items-center h-16 w-full bg-slate-200 rounded-lg shadow-md mb-2 cursor-pointer`}
-          onClick={handleShowDivisions}
-        >
-          <div className='ml-2'>
-            {isHidden ? arrowDown : arrowUp}
-          </div>
-          <h1 className='ml-2'>{year}</h1>
-        </div>
-        <div className={hidden}>
-          <h1>{`Tuloksia ei löytynyt vuodelle ${2024}`}</h1>
-        </div>
-      </div>
-    )
-  }
 }
 
 export default Score;

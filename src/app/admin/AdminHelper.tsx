@@ -2,6 +2,7 @@ import { AdminViewType } from '@/types/commonTypes';
 import UsersMain from "./UsersMain";
 import CreateClub from './CreateClub';
 import ImageViewer from './ImageViewer';
+import AddCompetition from './AddCompetition';
 
 interface AdminHelperProps {
     type: AdminViewType,
@@ -23,6 +24,10 @@ const AdminHelper = ({ type }: AdminHelperProps) => {
         case AdminViewType.ImageViewer:
             return (
                 <ImageViewer />
+            )
+        case AdminViewType.CreateCompetition:
+            return (
+                <AddCompetition />
             )
         default:
             return (

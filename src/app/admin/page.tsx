@@ -14,6 +14,10 @@ const adminFeatures = [
         type: AdminViewType.CreateClub
     },
     {
+        text: "Luo kilpailu",
+        type: AdminViewType.CreateCompetition
+    },
+    {
         text: "Tarkastele kuvia",
         type: AdminViewType.ImageViewer
     },

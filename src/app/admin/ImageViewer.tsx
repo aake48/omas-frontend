@@ -1,15 +1,33 @@
 import { Button } from "@/components/ui/Button";
-import { getFileDownloadUrl } from "@/lib/APIConstants";
-import { ImageProof } from "@/types/commonTypes";
+import { getCompetitionsQueryUrl, getFileDownloadUrl } from "@/lib/APIConstants";
+import { CompetitionResponse, ImageProof, QueryCompetition } from "@/types/commonTypes";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Images from "./Images";
+import Paginator from "../components/Paginator";
+import Competition from "./Competition";
 
 const ImageViewer = () => {
-    const [data, setData] = useState<ImageProof[]>();
+    const [data, setData] = useState<QueryCompetition>();
+    // const [data, setData] = useState<ImageProof[]>();
     const [message, setMessage] = useState("");
+	const [pageNumber, setPageNumber] = useState(0);
 
-    const apiUrl = getFileDownloadUrl();
+    // const apiUrl = getFileDownloadUrl();
+    const apiUrl = getCompetitionsQueryUrl("", pageNumber, 5)
+
+    const fetchCompetitions = async () => {
+		try {
+			const res = await axios.get(apiUrl, {
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
+			setData(res.data);
+		} catch (e: any) {
+			console.error(e);
+		}
+	}
 
     const fetchImages = async (form: FormData) => {
         try {
@@ -39,6 +57,19 @@ const ImageViewer = () => {
             console.error(e);
         }
     }
+    
+    useEffect(() => {
+        fetchCompetitions();
+    }, [pageNumber])
+
+    if (!data) return <h1>Kilpailuja ei löytynyt</h1>;
+
+	let competitions = data.content;
+
+    const handlePageNumberChange = (page: number) => {
+		if (page < 0 || page > data.totalPages - 1) return;
+		setPageNumber(page);
+	}
 
     return (
         <div>
@@ -85,7 +116,25 @@ const ImageViewer = () => {
                     </Button>
                 </form>
                 <p>{message}</p>
-                <Images data={data} />
+                {/* <Images data={data} /> */}
+            </div>
+            <div className="flex flex-col gap-4">
+                { 
+                    !(data.totalPages < 2) ?
+                        <Paginator
+                            pageNumber={pageNumber}
+                            totalPages={data.totalPages}
+                            handlePageNumberChange={handlePageNumberChange}
+                        />
+                    : <div></div>
+                }
+                {
+                    (competitions || competitions!.length !== 0) ?
+                        competitions && competitions?.map(comp => (
+                            <Competition comp={comp} />
+                        ))
+                    : <h1>Kilpailuja ei löytynyt</h1>
+                }
             </div>
         </div>
     )

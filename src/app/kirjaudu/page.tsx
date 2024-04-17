@@ -43,6 +43,7 @@ export default function Login() {
               router.push("/kilpailut");
             } else {
               setMessage("Muista reCAPTCHA.");
+              reCaptchaRef?.current?.reset();
             }
         } catch (error) {
           setMessage("Kirjautuminen ei onnistunut. Tarkista, että syöttämäsi tiedot ovat oikein.");
