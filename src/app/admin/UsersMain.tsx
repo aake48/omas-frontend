@@ -22,7 +22,8 @@ const UsersMain = () => {
                     'Content-Type': 'application/json'
                 }
             });
-            console.log(res.data);
+            console.log(localStorage.getItem("token"));
+            console.log(res);
             setData(res.data);
         } catch (e: any) {
             console.error(e);
@@ -43,12 +44,6 @@ const UsersMain = () => {
         setPageNumber(0);
     }, [search]);
 
-    if (!data) return (
-        <main className="flex min-h-screen flex-col items-center p-4">
-            <h1>Virhe käyttäjätietojen haussa</h1>
-        </main>
-    )
-
     return (
         <div>
             <div className="p-4">
@@ -66,12 +61,18 @@ const UsersMain = () => {
                         required={false}
                     />
                 </div>
-                <Paginator
-                    pageNumber={pageNumber}
-                    totalPages={data.totalPages}
-                    handlePageNumberChange={handlePageNumberChange}
-                />
-                <Users data={data} />
+                {
+                    (data) ?
+                    <div className="w-full">
+                        <Paginator
+                            pageNumber={pageNumber}
+                            totalPages={data.totalPages}
+                            handlePageNumberChange={handlePageNumberChange}
+                        />
+                        <Users data={data} />
+                    </div>
+                    : <h1>Käyttäjätietoja ei löytynyt.</h1>
+                }
             </div>
         </div>
     )

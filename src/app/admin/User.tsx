@@ -125,6 +125,7 @@ const User = ({ user }: UserProps) => {
           <h1>{`sähköposti: ${user.email}`}</h1>
           <h1>{`luontipäivä: ${formatDate(user.creationDate)}`}</h1>
           <h1>{`seura: ${user.partOfClub}`}</h1>
+          <h1>{`Viimeisin kirjautuminen: ${formatDate(user.lastLogin)}`}</h1>
           <div className='flex flex-row gap-2'>
             <h1>roolit:</h1>
             {roles.length !== 0 ? roles.map((role: string, index: number) => (

@@ -37,6 +37,7 @@ const PastCompetitions = () => {
 					'Content-Type': 'application/json'
 				}
 			});
+			console.log(res);
 			setContent(res.data);
 		} catch (e: any) {
 			console.error(e);
@@ -53,7 +54,7 @@ const PastCompetitions = () => {
 
 	useEffect(() => {
 		setPageNumber(0);
-	}, [searchQuery])
+	}, [searchQuery, searchYear])
 
 	console.log(content);
 

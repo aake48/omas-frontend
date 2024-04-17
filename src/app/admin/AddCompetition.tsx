@@ -38,8 +38,8 @@ export default function AddCompetition() {
           ? {
               competitionName: values.competitionName,
               competitionType: competitionTypes[values.competitionType],
-              startDate: values.startDate,
-              endDate: values.endDate,
+              startDate: Date.parse(values.startDate),
+              endDate: Date.parse(values.endDate),
             }
           : {
               competitionName: values.competitionName,
