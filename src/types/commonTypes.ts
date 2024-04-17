@@ -19,8 +19,8 @@ export type ClubResponse = {
 export type PostCompetition = {
   competitionName: string; // name is the id
   competitionType: "rifle" | "pistol";
-  competitionStartDate?: string;
-  competitionEndDate?: string;
+  startDate?: number;
+  endDate?: number;
 };
 
 /**
@@ -123,7 +123,7 @@ export type competitionResultsUser = {
   userId: number;
   name: string; // name associated with the userId
   scorePerShot: string; // ScoreList.toString()
-  creationDate: string
+  creationDate: string;
 };
 
 export type TTeam = {
@@ -213,9 +213,9 @@ export type AdminUser = {
 };
 
 export type Role = {
-  userId: number,
-  role: string
-}
+  userId: number;
+  role: string;
+};
 
 export type Pageable = {
   pageNumber: number; // current page
@@ -223,19 +223,21 @@ export type Pageable = {
 };
 
 export type ImageProof = {
-  fileName: string,
-  image: string
-}
+  fileName: string;
+  image: string;
+};
 
 export enum AdminViewType {
   Users,
   CreateClub,
   ImageViewer,
-  Other
+  Other,
 }
 
+export type CompetitionType = "rifle" | "pistol";
+
 export type captchaResponse = {
-  success: boolean,
-  challenge_ts: string,
-  hostname: string
-}
+  success: boolean;
+  challenge_ts: string;
+  hostname: string;
+};

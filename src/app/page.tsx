@@ -1,38 +1,99 @@
-import React from "react";
-import { CompetitionResponse, QueryCompetition } from "@/types/commonTypes";
-import { getCompetitionsQueryUrl } from "@/lib/APIConstants";
-import fetchData from "@/lib/get";
-import SeasonComponent from "./components/SeasonComponent";
-import LatestResults from "./components/LatestResults";
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { CompetitionResponse } from "@/types/commonTypes";
+import useUserInfo from "@/lib/hooks/get-user.info";
+import {
+  getActiveCompetitions,
+  getUpcomingCompetitions,
+  getUserCompetitions,
+} from "@/lib/APIConstants";
+import get from "@/api/get";
+import JoinClubTip from "./components/JoinClubTip";
 import UpcomingCompetitions from "./components/UpcomingCompetitions";
+import CurrentCompetitions from "./components/CurrentCompetitions";
 
-export default async function Home() {
+export type competitionListProps = {
+  competitions: CompetitionResponse[];
+};
 
-    const apiUrl = getCompetitionsQueryUrl("", 0, 10);
-    const currentDate = new Date();
-    
-    const data: QueryCompetition = await fetchData(apiUrl);
-    const competitions = data.content;
-    
-    const pastCompetitions: CompetitionResponse[] = [];
-    const futureCompetitions: CompetitionResponse[] = [];
-    
-    competitions!.forEach((competition) => {
-      const competitionDate = new Date(competition.startDate);
-    
-      if (competitionDate < currentDate) {
-        pastCompetitions.push(competition);
-      } else {
-        futureCompetitions.push(competition);
+export default function Home() {
+  const { token } = useUserInfo();
+  const tokenString = token ? token : "";
+
+  const [futureCompetitions, setFutureCompetitions] = useState<
+    CompetitionResponse[]
+  >([]);
+  const [currentOwnCompetitions, setCurrentOwnCompetitions] = useState<
+    CompetitionResponse[]
+  >([]);
+
+  async function getUpcoming() {
+    try {
+      const response = await get(getUpcomingCompetitions(0, 5));
+      if (response.content) {
+        setFutureCompetitions(response.content);
       }
-    });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
+  async function getOwnCompetitions() {
+    try {
+      const response = await get(getActiveCompetitions(0, 50), tokenString);
+      if (response.content) {
+        const ownCompetitionsData = response.content;
+        let currentCompetitions: CompetitionResponse[] = [];
+        let ownCompetitionIds: string[] = [];
 
-        return (
-            <main className="min-h-screen p-8">
-                <SeasonComponent />
-                <UpcomingCompetitions futureCompetitions={futureCompetitions} />
-                <LatestResults pastCompetitions={pastCompetitions} />
-            </main>
-        );
-    } 
+        const response2 = await get(getUserCompetitions(), tokenString);
+        if (response2) {
+          const ownCompetitionsData = response2;
+          if (ownCompetitionsData) {
+            ownCompetitionsData.forEach((competition: CompetitionResponse) => {
+              ownCompetitionIds.push(competition.competitionId);
+            });
+          }
+        }
+
+        if (ownCompetitionsData) {
+          ownCompetitionsData.forEach((competition: CompetitionResponse) => {
+            if (!ownCompetitionIds.includes(competition.competitionId)) return;
+            const competitionStartDate = new Date(competition.startDate);
+            const competitionEndDate = new Date(competition.endDate);
+            const currentDate = new Date();
+
+            if (
+              competitionStartDate < currentDate &&
+              competitionEndDate > currentDate
+            ) {
+              currentCompetitions.push(competition);
+            }
+          });
+        }
+        currentCompetitions.sort((a, b) => {
+          return new Date(a.endDate).getTime() - new Date(b.endDate).getTime();
+        });
+        setCurrentOwnCompetitions(currentCompetitions);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getUpcoming();
+    if (token) {
+      getOwnCompetitions();
+    }
+  }, [token]);
+
+  return (
+    <main className="min-h-screen p-8">
+      <JoinClubTip />
+      <UpcomingCompetitions competitions={futureCompetitions} />
+      <CurrentCompetitions competitions={currentOwnCompetitions} />
+    </main>
+  );
+}
