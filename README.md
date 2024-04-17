@@ -2,13 +2,7 @@
 
 ### 1. Install [NodeJS](https://nodejs.org)
 
-### 2. Create a certificate for HTTPS
-
-In the root folder of the project, create a "certificates" folder and generate a self-signed certificate of name: localhost.pem and localhost-key.pem
-
-recommended tool for generating a certificate: [mkcert](https://github.com/FiloSottile/mkcert)
-
-### 3. Create .env or .env.local file in the project root with the following content:
+### 2. Create .env or .env.local file in the project root with the following content:
 ```
 NEXT_PUBLIC_API_URL=https://localhost:8080/
 NEXT_PUBLIC_RECAPTCHA_SITE_KEY=
@@ -27,27 +21,15 @@ Go to this [website](https://www.google.com/recaptcha/admin/create) and create a
 npm install
 ```
 
-### 5. Start the application
-```bash
-npm run dev
-```
 
-
-## Getting Started
+### 5. Run the development server:
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-run the development server:
-
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
+
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
