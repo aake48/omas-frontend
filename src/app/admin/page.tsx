@@ -1,5 +1,7 @@
 'use client';
+import { useEffect, useState } from "react";
 import AdminView from "./AdminView";
+import { AdminViewType, User } from "@/types/commonTypes";
 
 export default function Admin() {
     const [type, setType] = useState(AdminViewType.Other);
@@ -31,10 +33,6 @@ export default function Admin() {
         </main>
     )
     
-    const handleFeatureClick = (type: AdminViewType) => {
-        setType(type);
-    }
-
     return (
         <AdminView />
     )

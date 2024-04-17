@@ -53,3 +53,4 @@ export default function Seurat() {
 			<p className='text-md'>Kirjaudu sisään tarkastellaksesi ja liittyäksesi seuraan.</p>
 		</main>
 	)
+}
