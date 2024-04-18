@@ -38,7 +38,7 @@ const UsersMain = () => {
     }
 
     useEffect(() => {
-        fetchUsers();
+        if (token) fetchUsers();
     }, [pageNumber, search, token]);
 
     useEffect(() => {
