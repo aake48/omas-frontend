@@ -23,7 +23,6 @@ export async function sendLogin(username: string, password: string) {
         password: password,
       }),
     });
-
     return response;
   } catch (error: any) {
     console.error(error);
@@ -53,11 +52,9 @@ export default function Login() {
             }
             const response = await sendLogin(values.username, values.password);
             const body = await response.json();
-            console.log(body);
-            console.log(response.status);
             if (response.status === 200) {
-              const token = response.data.token;
-              const userInfo = response.data.user;
+              const token = body.token;
+              const userInfo = body.user;
   
               localStorage.setItem("token", token);
               localStorage.setItem("userInfo", JSON.stringify(userInfo));

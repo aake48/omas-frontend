@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/Button";
-import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createRef, useState } from "react";
@@ -11,6 +10,7 @@ import CustomInput from "@/components/ui/CustomInput";
 import ReCAPTCHA from "react-google-recaptcha";
 import { captchaValidation } from "../actions";
 import { registrationURL } from "@/lib/APIConstants";
+import { sendLogin } from "../kirjaudu/page";
 
 export async function sendRegister(values: any) {
   try {
@@ -59,18 +59,24 @@ export default function RegisterForm() {
       }
 
       const response  = await sendRegister(values);
-      console.log(response);
+      const body = await response.json();
 
         if (response.status === 200) {
-            let token = response.data.token;
-            let userInfo = response.data.user;
-            localStorage.setItem("token", token);
-            localStorage.setItem("userInfo", JSON.stringify(userInfo));
-            window.dispatchEvent(new Event("localStorageChange"));
-            router.push("/");
             setMessage("Rekisteröityminen onnistui.")
+
+            const response = await sendLogin(values.username, values.password);
+            const body = await response.json();
+            if (response.status === 200) {
+              const token = body.token;
+              const userInfo = body.user;
+  
+              localStorage.setItem("token", token);
+              localStorage.setItem("userInfo", JSON.stringify(userInfo));
+              window.dispatchEvent(new Event("localStorageChange"));
+              router.push("/");
+            }
           } else {
-            setErrorMessage("Rekisteröityminen epäonnistui. Tarkista syöttämäsi tiedot.");
+            setErrorMessage(`Rekisteröityminen epäonnistui: ${body.message}`);
           }
     } catch (error) {
       console.error(error);
@@ -81,20 +87,6 @@ export default function RegisterForm() {
 
   const onReCAPTCHAChange = async (captchaToken: string | null) => {
     setCaptchaToken(captchaToken);
-  };
-
-  const handleReCaptchaSubmit = async (captchaToken: string | null) => {
-    const resCaptcha = await axios({
-      method: "POST",
-      url: "rekisteroidy/api",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: {
-        captchaToken: captchaToken,
-      },
-    });
-    return resCaptcha.data.body;
   };
 
   return (
@@ -153,6 +145,7 @@ export default function RegisterForm() {
               placeholder="Salasana uudelleen"
             />
             <ReCAPTCHA
+              ref={reCaptchaRef}
               sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
               onChange={onReCAPTCHAChange}
             />
