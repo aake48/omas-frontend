@@ -1,10 +1,11 @@
 "use client";
 import AdminNavbar from "./AdminNavbar";
 import OnlyAdminPermission from "./OnlyAdminPermission";
-import adminLoggedIn from "./admin-logged-in";
+import useAdminLoggedIn from "@/lib/hooks/admin-is-logged-in";
+
 
 const AdminView = () => {
-    if (!adminLoggedIn()) return (
+    if (!useAdminLoggedIn) return (
         <OnlyAdminPermission />
     )
     

@@ -1,11 +1,11 @@
 'use client';
 
 import OnlyAdminPermission from "../OnlyAdminPermission";
-import adminLoggedIn from "../admin-logged-in";
+import useAdminLoggedIn from "@/lib/hooks/admin-is-logged-in";
 import UsersMain from "./UsersMain";
 
 export default function ManageUsers() {
-    return (adminLoggedIn()) ?
+    return (useAdminLoggedIn()) ?
         (
             <UsersMain />
         ) :

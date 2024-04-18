@@ -1,12 +1,12 @@
 'use client';
 
 import CreateClub from "./CreateClub";
-import adminLoggedIn from '../admin-logged-in';
 import OnlyAdminPermission from "../OnlyAdminPermission";
+import useAdminLoggedIn from "@/lib/hooks/admin-is-logged-in";
 
 export default function ClubCreate() {
 
-    return (adminLoggedIn()) ?
+    return (useAdminLoggedIn()) ?
         (
             <CreateClub />
         ) :

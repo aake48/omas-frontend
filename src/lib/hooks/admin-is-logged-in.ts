@@ -1,8 +1,11 @@
+
+"use client"
+
 import { User } from "@/types/commonTypes";
 import { useEffect, useState } from "react";
 
-const adminLoggedIn = () => {
-    const [adminLogin, setAdminLogin] = useState(false);
+const useAdminLoggedIn = () => {
+const [adminLogin, setAdminLogin] = useState(false);
 
     const checkAdminLogin = async () => {
         try {
@@ -25,4 +28,4 @@ const adminLoggedIn = () => {
     return adminLogin;
 }
 
-export default adminLoggedIn;
+export default useAdminLoggedIn;
