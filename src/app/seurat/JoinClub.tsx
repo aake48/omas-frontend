@@ -1,9 +1,8 @@
 import { Button } from "@/components/ui/Button"
 import { joinClubURL } from "@/lib/APIConstants";
-import useUserInfo from "@/lib/hooks/get-user.info";
 import { User } from "@/types/commonTypes";
-import { useState } from "react";
-import { joinClub } from "../actions";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 interface JoinClubProps {
     id: string
@@ -12,7 +11,9 @@ interface JoinClubProps {
 const JoinClub = ({ id }: JoinClubProps) => {
     const [message, setMessage] = useState("");
     const [messageStyle, setMessageStyle] = useState("text-black");
-    const { token } = useUserInfo();
+    const [user, setUser] = useState<User>();
+
+    const token = localStorage.getItem("token");
 
     const handleProfileUpdate = (club: string) => {
         const newUser: User = {
@@ -23,26 +24,41 @@ const JoinClub = ({ id }: JoinClubProps) => {
     }
 
     const handleSubmit = async (data: FormData) => {
-        const pass = data.get("pass")?.valueOf().toString() || null;
+        const pass = data.get("pass") || null;
         try {
-          const response = await joinClub( token, id, pass);
-          if (response.status === 200) {
-            try {
-              handleProfileUpdate(id);
-              setMessage(`Seuraan ${id} liittyminen onnistui.`);
-              setMessageStyle("text-black");
-            } catch (e: any) {
-              throw new Error(`Virhe seuraan ${id} liittymisessä: ${e}`);
+            const res = await axios({
+                method: 'post',
+                url: joinClubURL,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                data: {
+                    clubName: id,
+                    passkey: pass
+                }
+            });
+
+            console.log(res);
+
+            if (res.status === 200) {
+                try {
+                    handleProfileUpdate(id);
+                    setMessage(`Seuraan ${id} liittyminen onnistui.`);
+                    setMessageStyle("text-black");
+                } catch (e: any) {
+                    console.log(e);
+                }
+            } else {
+                setMessage(`Seuraan ${id} liittyminen epäonnistui. Tarkista, että seuran nimi sekä salasana ovat oikein ja yritä uudelleen. Salasanaa ei tarvitse syöttää, jos seura ei sitä vaadi.`);
+                setMessageStyle("text-red-500");
             }
-          } else {
-            throw new Error(`Virhe seuraan ${id} liittymisessä: ${response.message}`);
-          }
         } catch (error) {
-          console.log(error);
-          setMessage(`Seuraan ${id} liittyminen epäonnistui. Tarkista, että seuran salasana on oikein ja yritä uudelleen. Salasanaa ei tarvitse syöttää, jos seura ei sitä vaadi.`);
-          setMessageStyle("text-red-500");
+            console.log(error);
+            setMessage(`Seuraan ${id} liittyminen epäonnistui. Tarkista, että seuran nimi sekä salasana ovat oikein ja yritä uudelleen. Salasanaa ei tarvitse syöttää, jos seura ei sitä vaadi.`);
+            setMessageStyle("text-red-500");
         }
-      }
+    }
 
     return (
         <div>
