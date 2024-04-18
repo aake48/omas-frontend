@@ -1,7 +1,6 @@
 import JoinClub from "./JoinClub";
 import ChangeClubKey from "./ChangeClubKey";
-import { useEffect, useState } from "react";
-import { ClubResponse, User } from "@/types/commonTypes";
+import { ClubResponse } from "@/types/commonTypes";
 import { formatDate } from "@/lib/utils";
 import useUserInfo from "@/lib/hooks/get-user.info";
 
@@ -11,30 +10,7 @@ interface ClubProps {
 }
 
 const Club = ({ club, clubAdminRoles }: ClubProps) => {
-    // const [clubAdmin, setClubAdmin] = useState<User | null>(null);
-    // const [user, setUser] = useState<User>();
     const { token } = useUserInfo();
-
-    // const getUser = () => {
-    //     try {
-    //         const user: User = JSON.parse(localStorage.getItem("userInfo")!);
-    //         setUser(user);
-    //         if (user.roles.includes(`${club.nameNonId}/admin`)) setClubAdmin(user);
-    //     } catch (e: any) {
-    //         console.log(e);
-    //     }
-    // }
-
-    // useEffect(() => {
-    //     getUser();
-    // }, [club])
-
-    // console.log(user, clubAdmin);
-
-    if (clubAdminRoles) {
-        console.log(clubAdminRoles);
-        console.log(club.name, clubAdminRoles.includes(club.name));
-    }
 
     return (
         <div className="shadow p-2">

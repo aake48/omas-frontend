@@ -4,10 +4,8 @@ import {
   addScoreSum,
   addTeamMemberURL,
   getFileUploadUrl,
-  loginURL,
-  registrationURL,
+  joinClubURL,
 } from "@/lib/APIConstants";
-import { CaptchaPostBody } from "@/types/commonTypes";
 
 
 export async function sendScore(token: string, formData: FormData) {
@@ -112,6 +110,41 @@ export async function joinTeam(
     }
 
     return { body: "Joukkueesen liittyminen onnistui", status: response.status };
+  } catch (error: any) {
+    console.error(error);
+    return { message: "Virhe joukkueeseen liittymisessä: ", status: 500 };
+  }
+}
+
+export async function joinClub(
+  token: string,
+  ClubName: string,
+  passkey: string | null
+) {
+  console.log(passkey, ClubName, token);
+
+  if (token == null) {
+    return { message: "Virheellinen käyttäjä", status: 400 };
+  }
+  try {
+    const response = await fetch(joinClubURL, {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ ClubName: ClubName, passKey: passkey})
+    });
+
+    console.log(response);
+
+    
+    if (!response.ok) {
+      return { message: "Virhe joukkueeseen liittymisessä", status: response.status };
+    }
+
+    
+    return { message: "Joukkueesen liittyminen onnistui", status: response.status };
   } catch (error: any) {
     console.error(error);
     return { message: "Virhe joukkueeseen liittymisessä: ", status: 500 };
