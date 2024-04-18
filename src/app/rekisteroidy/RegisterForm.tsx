@@ -59,7 +59,6 @@ export default function RegisterForm() {
       }
 
       const response  = await sendRegister(values);
-      const body = await response.json();
 
         if (response.status === 200) {
             setMessage("Rekisteröityminen onnistui.")
@@ -76,7 +75,7 @@ export default function RegisterForm() {
               router.push("/");
             }
           } else {
-            setErrorMessage(`Rekisteröityminen epäonnistui: ${body.message}`);
+            setErrorMessage(`Rekisteröityminen epäonnistui.`);
           }
     } catch (error) {
       console.error(error);

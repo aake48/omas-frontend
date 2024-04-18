@@ -27,6 +27,7 @@ export async function sendLogin(username: string, password: string) {
         password: password,
       }),
     });
+    console.log(response);
     return response;
   } catch (error: any) {
     console.error(error);
