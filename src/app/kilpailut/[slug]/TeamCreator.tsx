@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/Button";
 import { usePathname } from "next/navigation";
 import { CompetitionResponse } from "@/types/commonTypes";
 import useIsLoggedIn from "@/lib/hooks/is-logged-in";
+import useUserInfo from "@/lib/hooks/get-user.info";
 
 export default function TeamCreator({
   competition,
@@ -17,6 +18,8 @@ export default function TeamCreator({
   const [isMember, setIsMember] = useState("");
   const pathName = usePathname();
   const isLoggedIn = useIsLoggedIn();
+  const user = useUserInfo();
+  const isPartOfClub = user.club != null;
 
   async function handleSubmit(teamName: string) {
     const response = await fetch(`${pathName}/api/create`, {
@@ -35,7 +38,7 @@ export default function TeamCreator({
   }
 
   {
-    return isLoggedIn ? (
+    return (isLoggedIn && isPartOfClub) ? (
       <>
         <Input
           id={"newTeamName"}

@@ -32,10 +32,12 @@ export default function CardContainer({
     const [competitions, setCompetitions] = useState<UsersCompetition[]>();
     const { token } = useUserInfo();
     const [memberOf, setIsMemberOf] = useState<string | null>(null);
+    const user = useUserInfo();
+    const isPartOfClub = user.club != null;
 
     // Fetch user's competitions
     useEffect(() => {
-        if (token == null) {
+        if (token == null || !isPartOfClub) {
             return;
         }
 
@@ -46,7 +48,7 @@ export default function CardContainer({
                 }
             });
         });
-    }, [token, slug]);
+    }, [token, slug, isPartOfClub]);
     // Check if user is member of any team
 
     useEffect(() => {
@@ -61,7 +63,7 @@ export default function CardContainer({
     return (
         <div className="grid my-5 justify-center sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8">
             {teams.content.map((team: TTeam) => (
-                <TeamCard setIsMember={setIsMemberOf} key={team.teamName} team={team} memberOf={memberOf} />
+                <TeamCard setIsMember={setIsMemberOf} key={team.teamName} team={team} memberOf={memberOf} isPartOfClub={isPartOfClub} />
             ))}
         </div>
     );

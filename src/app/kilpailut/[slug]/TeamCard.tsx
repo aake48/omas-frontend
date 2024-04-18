@@ -7,8 +7,9 @@ import {TTeam,} from "@/types/commonTypes";
 import { joinTeam } from "@/app/actions";
 import useUserInfo from "@/lib/hooks/get-user.info";
 
-export default function TeamCard({ team, memberOf, setIsMember }: { team: TTeam , memberOf: string | null, setIsMember: (teamName: string) => void}) {
+export default function TeamCard({ team, memberOf, setIsMember, isPartOfClub }: { team: TTeam , memberOf: string | null, setIsMember: (teamName: string) => void, isPartOfClub: boolean} ) {
     const isLoggedIn = useIsLoggedIn();
+
     const [isFull , setIsFull] = React.useState<boolean>(false);
     const { token } = useUserInfo();
 
@@ -45,11 +46,10 @@ export default function TeamCard({ team, memberOf, setIsMember }: { team: TTeam 
                             onClick={() =>
                                 handleClick(team.teamName, team.competitionId)
                             }
-                            disabled={memberOf !== null || isFull}
+                            disabled={memberOf !== null || isFull || !isPartOfClub}
                         >
                             {memberOf === team.teamName
-                                ? "Olet joukkueessa"
-                                : isFull ? "Joukkue on täynnä" : "Liity joukkueeseen"}
+                                ? "Olet joukkueessa" : !isPartOfClub ? "Liity seuraan": isFull ? "Joukkue on täynnä" : "Liity joukkueeseen"}
                         </Button>
                     )}
                 </div>

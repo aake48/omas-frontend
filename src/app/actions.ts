@@ -106,15 +106,15 @@ export async function joinTeam(
       },
       body: JSON.stringify({ teamName: trimmedTeamName, competitionName: competitionName })
     });
-    const body = response.statusText;
+
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      return { message: "Virhe joukkueeseen liittymisessä", status: response.status };
     }
 
     return { body: "Joukkueesen liittyminen onnistui", status: response.status };
   } catch (error: any) {
     console.error(error);
-    return { message: "Virhe joukkueeseen liittymisessä", status: 500 };
+    return { message: "Virhe joukkueeseen liittymisessä: ", status: 500 };
   }
 }
 
