@@ -8,7 +8,28 @@ import Custominput from "@/components/ui/CustomInput";
 import validation from "./validation";
 import { createRef, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
-import { captchaValidation, sendLogin } from "../actions";
+import { captchaValidation } from "../actions";
+import { loginURL } from "@/lib/APIConstants";
+
+export async function sendLogin(username: string, password: string) {
+  try {
+    const response = await fetch(loginURL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password,
+      }),
+    });
+
+    return response;
+  } catch (error: any) {
+    console.error(error);
+    return error;
+  }
+}
 
 
 export default function Login() {
@@ -31,13 +52,23 @@ export default function Login() {
                 return;
             }
             const response = await sendLogin(values.username, values.password);
-            const token = response.data.token;
-            const userInfo = response.data.user;
+            const body = await response.json();
+            console.log(body);
+            console.log(response.status);
+            if (response.status === 200) {
+              const token = response.data.token;
+              const userInfo = response.data.user;
+  
+              localStorage.setItem("token", token);
+              localStorage.setItem("userInfo", JSON.stringify(userInfo));
+              window.dispatchEvent(new Event("localStorageChange"));
+              router.push("/");
+            } else {
+              setMessage(
+                "Kirjautuminen ei onnistunut. Tarkista, että syöttämäsi tiedot ovat oikein."
+              );
+            }
 
-            localStorage.setItem("token", token);
-            localStorage.setItem("userInfo", JSON.stringify(userInfo));
-            window.dispatchEvent(new Event("localStorageChange"));
-            router.push("/");
         } catch (error) {
             setMessage(
                 "Kirjautuminen ei onnistunut. Tarkista, että syöttämäsi tiedot ovat oikein."

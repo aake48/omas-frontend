@@ -5,6 +5,7 @@ import {
   addTeamMemberURL,
   getFileUploadUrl,
   loginURL,
+  registrationURL,
 } from "@/lib/APIConstants";
 import { CaptchaPostBody } from "@/types/commonTypes";
 
@@ -117,29 +118,9 @@ export async function joinTeam(
   }
 }
 
-export async function sendLogin(username: string, password: string) {
-  try {
-    const response = await fetch(loginURL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username: username,
-        password: password,
-      }),
-    });
 
 
 
-    const body = await response.json();
-    console.log(body);
-    return body;
-  } catch (error: any) {
-    console.error(error);
-    return new Error('Kirjautuminen epäonnistui', error);
-  }
-}
 
 export async function captchaValidation(captchaToken: string | null) {
   try {
