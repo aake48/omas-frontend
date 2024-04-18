@@ -4,7 +4,10 @@ import {
   addScoreSum,
   addTeamMemberURL,
   getFileUploadUrl,
+  loginURL,
+  registrationURL,
 } from "@/lib/APIConstants";
+import { CaptchaPostBody } from "@/types/commonTypes";
 
 
 export async function sendScore(token: string, formData: FormData) {
@@ -112,5 +115,30 @@ export async function joinTeam(
   } catch (error: any) {
     console.error(error);
     return { message: "Virhe joukkueeseen liittymisessä", status: 500 };
+  }
+}
+
+
+
+
+
+export async function captchaValidation(captchaToken: string | null) {
+  try {
+    const response = await fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${captchaToken}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const body = await response.json();
+    return { body: body, status: response.status };
+  } catch (error: any) {
+    console.error(error);
+    throw new Error('Captchan todennus epäonnistui', error);
   }
 }
