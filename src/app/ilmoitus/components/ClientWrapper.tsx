@@ -51,17 +51,15 @@ export default function NotificationClientWrapper() {
     }
 
     return (
-        <>
-            {competitions != null ? (
+        
+
                 <>
                     <ScoreTypeSelectorContainer
                         onScoreTypeChange={handleScoreTypeChange}
                     />
                     {scoreType && <ScoreCard scoreType={scoreType} competitions={competitions} />}
                 </>
-            ) : (
-                <h2>Liity tiimiin syöttääksesi tuloksia.</h2>
-            )}
-        </>
+           
+        
     );
 }
