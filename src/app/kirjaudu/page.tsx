@@ -9,27 +9,7 @@ import validation from "./validation";
 import { createRef, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { captchaValidation } from "../actions";
-import { loginURL } from "@/lib/APIConstants";
-
-export async function sendLogin(username: string, password: string) {
-  try {
-    const response = await fetch(loginURL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username: username,
-        password: password,
-      }),
-    });
-    return response;
-  } catch (error: any) {
-    console.error(error);
-    return error;
-  }
-}
-
+import { sendLogin } from "@/lib/utils";
 
 export default function Login() {
     const [message, setMessage] = useState("");

@@ -10,7 +10,7 @@ import CustomInput from "@/components/ui/CustomInput";
 import ReCAPTCHA from "react-google-recaptcha";
 import { captchaValidation } from "../actions";
 import { registrationURL } from "@/lib/APIConstants";
-import { sendLogin } from "../kirjaudu/page";
+import { sendLogin } from "@/lib/utils";
 
 export async function sendRegister(values: any) {
   try {
