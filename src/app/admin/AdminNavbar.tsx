@@ -4,18 +4,18 @@ import Link from "next/link";
 const adminFeatures = [
     {
         text: "Käyttäjät",
-        href: "/admin/kayttajien_hallinta"
+        href: "/admin/kayttajien-hallinta"
     },
     {
         text: "Luo seura",
-        href: "/admin/luo_seura"
+        href: "/admin/luo-seura"
     },{
         text: "Luo kilpailu",
-        href: "/admin/luo_kilpailu"
+        href: "/admin/luo-kilpailu"
     },
     {
         text: "Tarkastele kuvia",
-        href: "/admin/tarkastele_kuvia"
+        href: "/admin/tarkastele-kuvia"
     }
 ];
 
