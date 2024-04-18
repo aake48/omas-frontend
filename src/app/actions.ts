@@ -4,7 +4,9 @@ import {
   addScoreSum,
   addTeamMemberURL,
   getFileUploadUrl,
+  loginURL,
 } from "@/lib/APIConstants";
+import { CaptchaPostBody } from "@/types/commonTypes";
 
 
 export async function sendScore(token: string, formData: FormData) {
@@ -112,5 +114,50 @@ export async function joinTeam(
   } catch (error: any) {
     console.error(error);
     return { message: "Virhe joukkueeseen liittymisessä", status: 500 };
+  }
+}
+
+export async function sendLogin(username: string, password: string) {
+  try {
+    const response = await fetch(loginURL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password,
+      }),
+    });
+
+
+
+    const body = await response.json();
+    console.log(body);
+    return body;
+  } catch (error: any) {
+    console.error(error);
+    return new Error('Kirjautuminen epäonnistui', error);
+  }
+}
+
+export async function captchaValidation(captchaToken: string | null) {
+  try {
+    const response = await fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${captchaToken}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const body = await response.json();
+    return { body: body, status: response.status };
+  } catch (error: any) {
+    console.error(error);
+    throw new Error('Captchan todennus epäonnistui', error);
   }
 }
