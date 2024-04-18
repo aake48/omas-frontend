@@ -33,7 +33,13 @@ export default function CardContainer({
     const { token } = useUserInfo();
     const [memberOf, setIsMemberOf] = useState<string | null>(null);
     const user = useUserInfo();
-    const isPartOfClub = user.club != null;
+    const [isPartOfClub, setIsPartOfClub] = useState(false);
+    
+    useEffect(() => {
+        if (user.userInfo != null) {
+            setIsPartOfClub(user.userInfo.club != null);
+        }
+    }, [user]);
 
     // Fetch user's competitions
     useEffect(() => {

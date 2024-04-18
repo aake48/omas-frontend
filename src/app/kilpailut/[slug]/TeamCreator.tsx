@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import Input from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { usePathname } from "next/navigation";
@@ -19,7 +19,13 @@ export default function TeamCreator({
   const pathName = usePathname();
   const isLoggedIn = useIsLoggedIn();
   const user = useUserInfo();
-  const isPartOfClub = user.club != null;
+  const [isPartOfClub, setIsPartOfClub] = useState(false);
+    
+  useEffect(() => {
+      if (user.userInfo != null) {
+          setIsPartOfClub(user.userInfo.club != null);
+      }
+  }, [user]);
 
   async function handleSubmit(teamName: string) {
     const response = await fetch(`${pathName}/api/create`, {
