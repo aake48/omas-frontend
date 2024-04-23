@@ -4,10 +4,14 @@ import {
   addScoreSum,
   addTeamMemberURL,
   getFileUploadUrl,
-  loginURL,
-  registrationURL,
 } from "@/lib/APIConstants";
-import { CaptchaPostBody } from "@/types/commonTypes";
+
+/**
+ * Send users score to the server
+ * @param token 
+ * @param formData 
+ * @returns returns status code 200 if successful, 400 if no auth header found, 500 if error
+ */
 
 
 export async function sendScore(token: string, formData: FormData) {
@@ -48,11 +52,18 @@ export async function sendScore(token: string, formData: FormData) {
   }
 }
 
-// upload image
-// POST api/file/upload/
-// Authorization: required
-// Content-Type: multipart/form-data
-// Requires competitionId field and file field for the image. Currently only accepts one image at a time.
+/**
+* upload image
+* POST api/file/upload/
+* Authorization: required
+* Content-Type: multipart/form-data
+* Requires competitionId field and file field for the image. Currently only accepts one image at a time.
+ * @param token 
+ * @param file 
+ * @param competitionId 
+ * @returns status code 200 if successful, 400 if no auth header found, 500 if error
+ */
+
 
 export async function uploadImage(
   token: string,
@@ -86,6 +97,14 @@ export async function uploadImage(
     return 500;
   }
 }
+
+/**
+ * Send request to server to join team
+ * @param token 
+ * @param teamName 
+ * @param competitionName 
+ * @returns returns status code 200 if successful, 400 if no auth header found, 500 if error
+ */
 
 export async function joinTeam(
   token: string,
@@ -121,6 +140,12 @@ export async function joinTeam(
 
 
 
+
+/**
+ * Checks if the captcha token is valid
+ * @param captchaToken 
+ * @returns 
+ */
 
 export async function captchaValidation(captchaToken: string | null) {
   try {

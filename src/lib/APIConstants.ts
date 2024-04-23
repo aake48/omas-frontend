@@ -145,7 +145,10 @@ export const getUpdateEmailUrl = () => {
   return `${baseURL}api/updateEmail`;
 };
 
-//Get all users competitions and teams
+/**
+ * Gets users teams
+ * @returns 
+ */
 
 export const getUserCompetitions = () => {
   return `${baseURL}api/user/teams`;

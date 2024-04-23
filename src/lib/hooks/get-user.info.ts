@@ -2,6 +2,11 @@
 
 import { useEffect, useState } from "react";
 
+/**
+ * Hook to get user info from local storage
+ * @returns Record<string, any>
+ */
+
 const useUserInfo = () => {
     const [storage, setStorage] = useState<Record<string, any>>({});
     

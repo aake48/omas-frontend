@@ -1,8 +1,12 @@
-
 "use client"
 
 import { User } from "@/types/commonTypes";
 import { useEffect, useState } from "react";
+
+/**
+ * Hook to check if user is logged in as admin
+ * @returns boolean
+ */
 
 const useAdminLoggedIn = () => {
 const [adminLogin, setAdminLogin] = useState(false);
