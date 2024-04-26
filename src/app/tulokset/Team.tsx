@@ -10,11 +10,10 @@ interface TeamProps {
 
 const Team = ({ teamDisplayName, position, scores }: TeamProps) => {
     if (scores !== null) {
-      console.log(scores);
         const totalScores = scores.reduce(
             (acc, member) => acc + member.sum,
             0
-        );
+        ).toFixed(1);
 
         return (
             <div data-testid={`team-${position}`}>
