@@ -11,25 +11,9 @@ interface ClubProps {
 }
 
 const Club = ({ club, clubAdminRoles }: ClubProps) => {
-    // const [clubAdmin, setClubAdmin] = useState<User | null>(null);
-    // const [user, setUser] = useState<User>();
     const { token } = useUserInfo();
 
-    // const getUser = () => {
-    //     try {
-    //         const user: User = JSON.parse(localStorage.getItem("userInfo")!);
-    //         setUser(user);
-    //         if (user.roles.includes(`${club.nameNonId}/admin`)) setClubAdmin(user);
-    //     } catch (e: any) {
-    //         console.log(e);
-    //     }
-    // }
 
-    // useEffect(() => {
-    //     getUser();
-    // }, [club])
-
-    // console.log(user, clubAdmin);
 
     if (clubAdminRoles) {
         console.log(clubAdminRoles);

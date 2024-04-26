@@ -7,18 +7,13 @@ import { ClubResponse, QueryClub, User } from '@/types/commonTypes';
 import Paginator from '../components/Paginator';
 import Input from '@/components/ui/Input';
 import Club from './Club';
-import { useRouter } from 'next/navigation';
-import useUserInfo from '@/lib/hooks/get-user.info';
 
 const ClubsView = () => {
 	const [data, setData] = useState<QueryClub>();
 	const [pageNumber, setPageNumber] = useState(0);
 	const [search, setSearch] = useState("");
     const [clubAdminRoles, setClubAdminRoles] = useState<string[]>([]);
-	const { token } = useUserInfo();
 
-    const router = useRouter();
-	
 	let apiUrl = getClubQueryUrl(search, pageNumber, 10);
 
 	const fetchClubs = async () => {
@@ -51,6 +46,10 @@ const ClubsView = () => {
 
 	useEffect(() => {
 		try {
+
+			if (localStorage.getItem("userInfo") === null) {
+				return
+			}
 			const user: any = JSON.parse(localStorage.getItem("userInfo")!);
 			const roles = user.roles.replace(/\[|\]/g,'').split(',');
 			let clubAdminRoles: string[] = [];
@@ -60,15 +59,11 @@ const ClubsView = () => {
 					clubAdminRoles.push(role.replace("/admin", "").replace(" ", ""));
 				}
 			})
-			// console.log(clubAdminRoles);
 			setClubAdminRoles(clubAdminRoles);
 		} catch (e: any) {
 			console.log(e);
 		}
 	}, [])
-
-	console.log(useIsLoggedIn());
-	console.log(data);
 	
 	if (!useIsLoggedIn()) return (
 		<main className="flex min-h-screen flex-col sm:items-center p-4 gap-2">
