@@ -4,7 +4,7 @@
 
 ### 2. Create .env or .env.local file in the project root with the following content:
 ```
-NEXT_PUBLIC_API_URL=https://localhost:8080/ //the backend url
+NEXT_PUBLIC_API_URL=https://localhost:8080/ #the backend url
 NEXT_PUBLIC_RECAPTCHA_SITE_KEY=
 RECAPTCHA_SECRET_KEY=
 ```
