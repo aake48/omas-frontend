@@ -5,13 +5,14 @@ import { CompetitionResponse } from "@/types/commonTypes";
 import useUserInfo from "@/lib/hooks/get-user.info";
 import {
   getActiveCompetitions,
-  getActiveTeams,
   getUpcomingCompetitions,
+  getUserCompetitions,
 } from "@/lib/APIConstants";
 import get from "@/api/get";
 import JoinClubTip from "./components/JoinClubTip";
 import UpcomingCompetitions from "./components/UpcomingCompetitions";
 import CurrentCompetitions from "./components/CurrentCompetitions";
+import getWithAuth from "@/api/getWithAuth";
 
 export type competitionListProps = {
   competitions: CompetitionResponse[];
@@ -47,9 +48,9 @@ export default function Home() {
         let currentCompetitions: CompetitionResponse[] = [];
         let ownCompetitionIds: string[] = [];
 
-        const response2 = await get(getActiveTeams());
-        if (response2.content) {
-          const ownCompetitionIdsData = response2.content;
+        const response2 = await getWithAuth(getUserCompetitions(), tokenString);
+        if (response2) {
+          const ownCompetitionIdsData = response2;
           if (ownCompetitionIdsData) {
             ownCompetitionIdsData.forEach(
               (competition: CompetitionResponse) => {
