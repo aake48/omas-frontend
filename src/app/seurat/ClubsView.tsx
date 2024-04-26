@@ -25,11 +25,10 @@ const ClubsView = () => {
 		try {
 			const res = await axios.get(apiUrl, {
 				headers: {
-					'Authorization': `Bearer ${token}`,
 					'Content-Type': 'application/json'
 				}
 			});
-			// console.log(res);
+			console.log(res);
 			setData(res.data);
 		} catch (e: any) {
 			console.error(e);
