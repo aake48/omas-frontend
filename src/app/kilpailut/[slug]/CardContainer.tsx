@@ -25,7 +25,7 @@ async function getUserCompetitions(token: any) {
       }
   
       const data = await response.json();
-      console.log(data);
+      console.log("jee: ",data);
       return data;
     } catch (error: any) {
       console.error(error);
@@ -48,7 +48,6 @@ export default function CardContainer({
     const [memberOf, setIsMemberOf] = useState<string | null>(null);
     const user = useUserInfo();
     const [isPartOfClub, setIsPartOfClub] = useState(false);
-    
     useEffect(() => {
         if (user.userInfo != null) {
             setIsPartOfClub(user.userInfo.club != null);
@@ -63,8 +62,10 @@ export default function CardContainer({
       }
 
       const data = await getUserCompetitions(token);
-      if (data && data.status === 200) {
-        setCompetitions(data.body);
+      console.log("data", data);
+      if (data) {
+        setCompetitions(data);
+
       }
     };
 
@@ -80,6 +81,7 @@ export default function CardContainer({
             );
             memberOf ? setIsMemberOf(memberOf.teamName) : setIsMemberOf(null);
         }
+        console.log("comp ",competitions);
     }, [competitions, competition]);
 
     return (
