@@ -8,12 +8,14 @@ import Paginator from '../components/Paginator';
 import Input from '@/components/ui/Input';
 import Club from './Club';
 import { useRouter } from 'next/navigation';
+import useUserInfo from '@/lib/hooks/get-user.info';
 
 const ClubsView = () => {
 	const [data, setData] = useState<QueryClub>();
 	const [pageNumber, setPageNumber] = useState(0);
 	const [search, setSearch] = useState("");
     const [clubAdminRoles, setClubAdminRoles] = useState<string[]>([]);
+	const { token } = useUserInfo();
 
     const router = useRouter();
 	
@@ -23,7 +25,7 @@ const ClubsView = () => {
 		try {
 			const res = await axios.get(apiUrl, {
 				headers: {
-					'Authorization': `Bearer ${localStorage.getItem("token")}`,
+					'Authorization': `Bearer ${token}`,
 					'Content-Type': 'application/json'
 				}
 			});
