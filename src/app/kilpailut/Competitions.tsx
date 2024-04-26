@@ -3,41 +3,34 @@
 import Input from "@/components/ui/Input";
 import { getCompetitionsQueryUrl } from "../../lib/APIConstants";
 import { CompetitionResponse } from "@/types/commonTypes";
-import axios from "axios";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { formatDate } from "@/lib/utils";
 import Paginator from "../components/Paginator";
+import fetchData from "@/api/get";
+
 
 export default function Competitions() {
   const [competitions, setCompetitions] = useState<CompetitionResponse[]>([]);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPage] = useState(0);
-
-  const router = useRouter();
-
-  async function fetchData() {
-    const competitions = await axios.get(
-      getCompetitionsQueryUrl(search, page),
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    setCompetitions(competitions.data.content);
-    setTotalPage(competitions.data.totalPages);
+  
+  
+  async function getCompetitions() {
+    const competitions = await fetchData(getCompetitionsQueryUrl(search, page));
+    console.log(competitions);
+    setCompetitions(competitions.content);
+    setTotalPage(competitions.totalPages);
   }
-
+  
   useEffect(() => {
-    fetchData();
+    getCompetitions();
   }, [page]);
 
   useEffect(() => {
     setPage(0);
-    fetchData();
+    getCompetitions();
   }, [search]);
 
   const handlePageNumberChange = (page: number) => {
@@ -58,7 +51,7 @@ export default function Competitions() {
         competitions.map((competition, index) => (
           <Link
             key={index}
-            className="flex cursor-pointer sm:flex-row flex-col items-baseline border my-1 p-2 sm:pl-10 hover:bg-slate-100"
+            className={`flex rounded-md cursor-pointer sm:flex-row flex-col items-baseline border my-1 p-2 sm:pl-10 hover:bg-slate-100 ${(Date.now() > new Date(competition.startDate).getTime() && Date.now() < new Date(competition.endDate).getTime()) ? "bg-slate-200" : ""}`}
             href={"/kilpailut/" + competition.competitionId}
           >
             <p>{competition.displayName}</p>
