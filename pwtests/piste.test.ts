@@ -36,7 +36,7 @@ async function delay(ms: number) {
   await page.click('text=Pisteiden Ilmoitus');
   await page.click('button:has-text("Kierros")');
   await page.waitForSelector('#competitionDropdown', { state: 'attached' });
-  await page.selectOption('select#competitionDropdown', { label: 'kivaarikilpailujen_huipennus' });
+  await page.selectOption('select#competitionDropdown', { index: 0 });
   await page.fill('input[name="score"]', '9');
   await page.fill('input[name="bullseyes"]', '10');
   await page.waitForTimeout(2000); // Wait for 2 seconds
