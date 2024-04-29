@@ -11,7 +11,7 @@ import { chromium } from 'playwright';
   const page = await context.newPage();
 
   // Navigate to the login page
-  await page.goto('https://omas-frontend.vercel.app/rekisteroidy');
+  await page.goto('http://localhost:3000/rekisteroidy');
 
   // Fill out the username and password fields
   const startTime: number = Date.now();  // Start timer
@@ -34,7 +34,7 @@ import { chromium } from 'playwright';
   await page.waitForLoadState();
   // Assert whether the browser is on the correct webpage
   const currentURL = page.url();
-  const expectedURL = 'https://omas-frontend.vercel.app/'; // Replace with the expected URL
+  const expectedURL = 'http://localhost:3000/'; // Replace with the expected URL
   if (currentURL === expectedURL) {
     console.log('Test Passed: Browser is on the correct webpage.');
   } else {

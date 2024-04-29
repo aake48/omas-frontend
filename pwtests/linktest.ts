@@ -11,7 +11,7 @@ import { chromium } from 'playwright';
   const page = await context.newPage();
   const startTime: number = Date.now();  // Start timer
   // Navigate to the webpage containing the link
-  await page.goto('https://omas-frontend.vercel.app/');
+  await page.goto('http://localhost:3000/');
   const endTime: number = Date.now();  // End timer
   const loadTime: number = endTime - startTime;
 

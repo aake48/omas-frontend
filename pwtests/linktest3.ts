@@ -12,7 +12,7 @@ import { chromium } from 'playwright';
 
   // Navigate to the webpage
   const startTime: number = Date.now();  // Start timer
-  await page.goto('https://omas-frontend.vercel.app/rekisteroidy');
+  await page.goto('http://localhost:3000/rekisteroidy');
   const endTime: number = Date.now();  // End timer
   const loadTime: number = endTime - startTime;
 
