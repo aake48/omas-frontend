@@ -22,7 +22,7 @@ function delay(ms) {
     // Create a new page
     const page = yield context.newPage();
     // Navigate to the login page
-    yield page.goto('https://omas-frontend.vercel.app/kirjaudu');
+    yield page.goto('http://localhost:3000/kirjaudu');
     const startTime = Date.now(); // Start timer
     // Fill out the username and password fields
     yield page.fill('input[name="username"]', 'ginyu95');
@@ -37,7 +37,7 @@ function delay(ms) {
     yield page.waitForTimeout(30000); // Wait for 30 seconds
     // Assert whether the browser is on the correct webpage
     const currentURL = page.url();
-    const expectedURL = 'https://omas-frontend.vercel.app/'; // the expected URL
+    const expectedURL = 'http://localhost:3000/'; // the expected URL
     if (currentURL === expectedURL) {
         console.log('Test Passed: Browser is on the correct webpage.');
     }
@@ -46,6 +46,12 @@ function delay(ms) {
     }
     //  await page.click('text=Pisteiden Ilmoitus');
     yield page.screenshot({ path: 'example.png' });
+    yield page.waitForTimeout(5000); // Wait for 5 seconds
+    yield page.click('text=ginyu95');
+    yield page.waitForTimeout(2000); // Wait for 2 seconds
+    yield page.click('text=Kirjaudu ulos');
+    console.log('Logout successful');
+    yield page.waitForTimeout(2000); // Wait for 2 seconds
     //  console.log(await page.title());
     // Close the browser
     yield browser.close();

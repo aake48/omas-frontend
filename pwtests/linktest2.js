@@ -19,7 +19,7 @@ const playwright_1 = require("playwright");
     const page = yield context.newPage();
     // Navigate to the webpage
     const startTime = Date.now(); // Start timer
-    yield page.goto('https://omas-frontend.vercel.app/kirjaudu');
+    yield page.goto('http://localhost:3000/kirjaudu');
     const endTime = Date.now(); // End timer
     const loadTime = endTime - startTime;
     console.log(`The load time for the login page was ${loadTime} milliseconds.`);

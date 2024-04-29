@@ -43,7 +43,7 @@ async function delay(ms: number) {
   await page.waitForTimeout(5000); // Wait for 5 seconds
   await page.click('text=Kilpailut');
   const startTime = Date.now(); // Start timer
-  await page.click('p:text("Talvi Pistooli")');
+  await page.click('p:text("Kiväärikilpailujen huipennus")');
   await page.click('button:has-text("Liity joukkueeseen")');
   console.log('Competition and team have been has been joined!');
   const endTime: number = Date.now();  // End timer

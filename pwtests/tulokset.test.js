@@ -19,7 +19,7 @@ const playwright_1 = require("playwright");
     const page = yield context.newPage();
     // Navigate to the webpage
     const startTime = Date.now(); // Start timer
-    yield page.goto('https://omas-frontend.vercel.app/tulokset');
+    yield page.goto('http://localhost:3000/tulokset');
     const endTime = Date.now(); // End timer
     const loadTime = endTime - startTime;
     console.log(`The load time for the scores page was ${loadTime} milliseconds.`);

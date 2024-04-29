@@ -19,7 +19,7 @@ const playwright_1 = require("playwright");
     const page = yield context.newPage();
     const startTime = Date.now(); // Start timer
     // Navigate to the webpage containing the link
-    yield page.goto('https://omas-frontend.vercel.app/');
+    yield page.goto('http://localhost:3000/');
     const endTime = Date.now(); // End timer
     const loadTime = endTime - startTime;
     console.log(`The load time for the main page was ${loadTime} milliseconds.`);

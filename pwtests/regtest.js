@@ -18,7 +18,7 @@ const playwright_1 = require("playwright");
     // Create a new page
     const page = yield context.newPage();
     // Navigate to the login page
-    yield page.goto('https://omas-frontend.vercel.app/rekisteroidy');
+    yield page.goto('http://localhost:3000/rekisteroidy');
     // Fill out the username and password fields
     const startTime = Date.now(); // Start timer
     yield page.fill('input[name="email"]', 'example@gmail.com');
@@ -37,7 +37,7 @@ const playwright_1 = require("playwright");
     yield page.waitForLoadState();
     // Assert whether the browser is on the correct webpage
     const currentURL = page.url();
-    const expectedURL = 'https://omas-frontend.vercel.app/'; // Replace with the expected URL
+    const expectedURL = 'http://localhost:3000/'; // Replace with the expected URL
     if (currentURL === expectedURL) {
         console.log('Test Passed: Browser is on the correct webpage.');
     }
