@@ -5,6 +5,7 @@ import Link from "next/link";
 import { headerLinks } from "@/lib/links";
 import { User } from "@/types/commonTypes";
 import UserMenu from "./UserMenu";
+import useUserInfo from "@/lib/hooks/get-user.info";
 
 const Header: React.FC = () => {
     const [menuHidden, setMenuHidden] = useState("hidden");
@@ -12,6 +13,7 @@ const Header: React.FC = () => {
     const [user, setUser] = useState<User>();
     const [loggedIn, setLoggedIn] = useState(false);
     const [adminLoggedIn, setAdminLoggedIn] = useState(false);
+    const { userInfo } = useUserInfo();
   
     const handleMenuOnClick = (state: boolean) => {
         !state ? setMenuHidden("block") : setMenuHidden("hidden");
@@ -23,9 +25,8 @@ const Header: React.FC = () => {
 
     useEffect(() => {
       const checkLogin = () => {
-        const token = localStorage.getItem("token");
-          if (token) {
-            let user: User = JSON.parse(localStorage.getItem("userInfo")!);
+          if (userInfo) {
+            let user: User = JSON.parse(userInfo);
             setUser(user);
             setLoggedIn(true);
             if (user.roles.includes("ROLE_ADMIN")) setAdminLoggedIn(true);
@@ -36,7 +37,7 @@ const Header: React.FC = () => {
       return () => {
         window.removeEventListener("localStorageChange", checkLogin);
       };
-    }, []);
+    }, [userInfo]);
 
     return (
         <header>
