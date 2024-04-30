@@ -1,5 +1,8 @@
 
-
+/**
+ * Reusable JSX element used when only admin has privileges.
+ * @returns JSX.Element
+ */
 const OnlyAdminPermission = () => {
     return (
         <main className="flex min-h-screen flex-col items-center p-4">

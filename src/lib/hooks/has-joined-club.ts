@@ -2,6 +2,11 @@
 
 import { useEffect, useState } from "react";
 
+/**
+ * Hook to check whether user is in a club
+ * @returns boolean
+ */
+
 const useHasJoinedClub = () => {
   const [hasJoinedClub, setHasJoinedClub] = useState(false);
 
