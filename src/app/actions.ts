@@ -5,6 +5,7 @@ import {
   addTeamMemberURL,
   getFileUploadUrl,
 } from "@/lib/APIConstants";
+import jwt from "jsonwebtoken";
 
 /**
  * Send users score to the server
@@ -165,4 +166,27 @@ export async function captchaValidation(captchaToken: string | null) {
     console.error(error);
     throw new Error('Captchan todennus epäonnistui', error);
   }
+}
+
+
+/**
+ * Checks if a JWT token is expired without verifying its signature.
+ * @param token - The JWT token to check.
+ * @returns Returns true if the token is expired, false otherwise.
+ */
+export async function isJwtExpired(token: string) {
+  // If no token is provided, return false (not expired) as to not remove user data that doesnt even exist
+  console.log(token);
+  if (!token) {
+    return false;
+  }
+  const { exp } = jwt.decode(token, { complete: true })?.payload as jwt.JwtPayload;
+
+  if (!exp) {
+      return true; // If exp unable to be parsed, assume expired
+  }
+  
+  const currentTime = Math.floor(Date.now() / 1000);
+  console.log(exp < currentTime)
+  return exp < currentTime;
 }
