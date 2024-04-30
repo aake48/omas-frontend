@@ -183,10 +183,10 @@ export async function isJwtExpired(token: string) {
   const { exp } = jwt.decode(token, { complete: true })?.payload as jwt.JwtPayload;
 
   if (!exp) {
-      return true; // If exp unable to be parsed, assume expired
+      return false; // If exp unable to be parsed
   }
   
   const currentTime = Math.floor(Date.now() / 1000);
-  console.log(exp < currentTime)
+  console.log("jwt expired: ", exp < currentTime)
   return exp < currentTime;
 }
