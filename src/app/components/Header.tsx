@@ -33,9 +33,9 @@ const Header: React.FC = () => {
             }
         };
         checkLogin();
-        window.addEventListener("localStorageChange", checkLogin);
+        window.addEventListener("storage", checkLogin);
         return () => {
-            window.removeEventListener("localStorageChange", checkLogin);
+            window.removeEventListener("storage", checkLogin);
         };
     }, [userInfo, user]);
 
