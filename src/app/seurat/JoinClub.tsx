@@ -39,7 +39,6 @@ const JoinClub = ({ id }: JoinClubProps) => {
                 }
             });
 
-            console.log(res);
 
             if (res.status === 200) {
                 try {

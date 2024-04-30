@@ -36,7 +36,6 @@ const User = ({ user }: UserProps) => {
             role: role,
           },
         });
-        console.log(res);
 
         if (res.status === 200) {
           setMessage("Roolin lisääminen onnistui");

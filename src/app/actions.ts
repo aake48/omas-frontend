@@ -176,7 +176,6 @@ export async function captchaValidation(captchaToken: string | null) {
  */
 export async function isJwtExpired(token: string) {
   // If no token is provided, return false (not expired) as to not remove user data that doesnt even exist
-  console.log(token);
   if (!token) {
     return false;
   }
@@ -187,6 +186,5 @@ export async function isJwtExpired(token: string) {
   }
   
   const currentTime = Math.floor(Date.now() / 1000);
-  console.log("jwt expired: ", exp < currentTime)
   return exp < currentTime;
 }

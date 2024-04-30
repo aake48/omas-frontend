@@ -18,7 +18,6 @@ const PastCompetitions = () => {
 
 	let currentYear = new Date().getFullYear().valueOf();
 	let apiUrl = getCompetitionsByYearQueryUrl(searchQuery, searchYear, pageNumber, 5);
-	console.log(apiUrl);
 
 	const initialValues = {
 		year: `${currentYear}`

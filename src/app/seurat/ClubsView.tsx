@@ -23,7 +23,6 @@ const ClubsView = () => {
 					'Content-Type': 'application/json'
 				}
 			});
-			console.log(res);
 			setData(res.data);
 		} catch (e: any) {
 			console.error(e);
@@ -54,7 +53,6 @@ const ClubsView = () => {
 			const roles = user.roles.replace(/\[|\]/g,'').split(',');
 			let clubAdminRoles: string[] = [];
 			roles.forEach((role: string) => {
-				console.log(role);
 				if (role.endsWith("/admin")) {
 					clubAdminRoles.push(role.replace("/admin", "").replace(" ", ""));
 				}

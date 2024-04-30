@@ -26,6 +26,7 @@ const Header: React.FC = () => {
     useEffect(() => {
         const checkLogin = () => {
             if (userInfo) {
+                console.log(userInfo);
                 setUser(userInfo);
                 setLoggedIn(true);
                 if (user?.roles.includes("ROLE_ADMIN")) setAdminLoggedIn(true);

@@ -36,7 +36,6 @@ export default function ChangePassword() {
                     oldPassword: values.oldPassword
                 }
             });
-            console.log(res);
 
             if (res.status === 200) {
                 setMessage("Salasanan vaihto onnistui");

@@ -59,7 +59,6 @@ export default function AddCompetition() {
         });
       
         if (res.status === 201) {
-          console.log(res.data);
           setMessage(`Loit kilpailun nimeltä: ${values.competitionName}`);
         } else {
           console.log(res.data.message);

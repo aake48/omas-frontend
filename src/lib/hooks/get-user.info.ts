@@ -11,8 +11,7 @@ import { useEffect, useState } from "react";
 
 export async function checkJWTExpiry() {
     const expired = await isJwtExpired(localStorage.getItem('token') || '');
-    localStorage.clear();
-    window.dispatchEvent(new Event('localStorageChange'));
+
     return expired;
 }
 
@@ -24,6 +23,8 @@ const useUserInfo = () => {
             const expired = await checkJWTExpiry();
             if (expired) {
                 setStorage({});
+                localStorage.clear();
+                window.dispatchEvent(new Event('localStorageChange'));
             } else {
                 const allStorage = Object.keys(localStorage).reduce((obj, str) => {
                     let item = localStorage.getItem(str);
