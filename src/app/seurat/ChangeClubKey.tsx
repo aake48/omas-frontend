@@ -15,7 +15,6 @@ const ChangeClubKey = ({ clubName, token }: ChangeClubKeyProps) => {
     const [message, setMessage] = useState("");
     const [messageStyle, setMessageStyle] = useState("text-black");
 
-    // console.log(clubName, token);
     
     const handleSubmit = async (data: FormData) => {
         const pass = data.get("pass") || null;

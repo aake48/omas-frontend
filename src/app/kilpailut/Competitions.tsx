@@ -19,7 +19,6 @@ export default function Competitions() {
   
   async function getCompetitions() {
     const competitions = await fetchData(getCompetitionsQueryUrl(search, page));
-    console.log(competitions);
     setCompetitions(competitions.content);
     setTotalPage(competitions.totalPages);
   }

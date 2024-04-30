@@ -64,7 +64,6 @@ const User = ({ user }: UserProps) => {
           },
         });
 
-        console.log(res);
 
         if (res.status === 200) {
           setMessage("Roolin poistaminen onnistui");

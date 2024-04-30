@@ -13,13 +13,6 @@ interface ClubProps {
 const Club = ({ club, clubAdminRoles }: ClubProps) => {
     const { token } = useUserInfo();
 
-
-
-    if (clubAdminRoles) {
-        console.log(clubAdminRoles);
-        console.log(club.name, clubAdminRoles.includes(club.name));
-    }
-
     return (
         <div className="shadow p-2">
             <div>

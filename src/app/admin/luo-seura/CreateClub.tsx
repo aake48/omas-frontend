@@ -25,7 +25,6 @@ const CreateClub = () => {
                     clubName: clubName
                 }
             });
-            console.log(res);
 
             if (res.status === 200) {
                 setMessage(`Seuran luominen onnistui: ${clubName}`);

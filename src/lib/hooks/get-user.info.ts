@@ -1,17 +1,10 @@
 "use client"
 
-import { isJwtExpired } from "@/app/actions";
 import { useEffect, useState } from "react";
-
-/**
- * Hook to get user information from local storage.
- * it checks if the JWT token is expired and clears the local storage if it is.
- * @returns Returns an object containing user information.
- */
+import { isJwtExpired } from "@/app/actions";
 
 export async function checkJWTExpiry() {
     const expired = await isJwtExpired(localStorage.getItem('token') || '');
-
     return expired;
 }
 
@@ -19,7 +12,7 @@ const useUserInfo = () => {
     const [storage, setStorage] = useState<Record<string, any>>({});
 
     useEffect(() => {
-        (async () => {
+        const loadStorage = async () => {
             const expired = await checkJWTExpiry();
             if (expired) {
                 setStorage({});
@@ -38,7 +31,18 @@ const useUserInfo = () => {
                 }, {});
                 setStorage(allStorage);
             }
-        })();
+        };
+
+        loadStorage();  // Initial load of storage
+
+
+        // Add event listener for the storage event
+        window.addEventListener('storage', loadStorage);
+
+        return () => {
+            // Cleanup listener when the component unmounts
+            window.removeEventListener('storage', loadStorage);
+        };
     }, []);
 
     return storage;

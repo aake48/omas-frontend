@@ -27,7 +27,6 @@ export async function sendRegister(values: any) {
       }),
     });
     return response;
-    console.log(response);
   } catch (error: any) {
     console.error(error);
     return error;

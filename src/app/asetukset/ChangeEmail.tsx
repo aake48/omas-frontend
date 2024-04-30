@@ -36,7 +36,6 @@ export default function ChangePassword() {
                     password: values.password
                 }
             });
-            console.log(res);
 
             if (res.status === 200) {
                 setMessage("Sähköpostin vaihto onnistui");

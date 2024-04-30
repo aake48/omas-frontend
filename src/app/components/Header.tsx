@@ -1,20 +1,21 @@
 "use client";
+
 import { LoginButton } from "./ui/LoginButton";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { headerLinks } from "@/lib/links";
-import { User } from "@/types/commonTypes";
 import UserMenu from "./UserMenu";
 import useUserInfo from "@/lib/hooks/get-user.info";
+import useIsLoggedIn from "@/lib/hooks/is-logged-in";
 
 const Header: React.FC = () => {
     const [menuHidden, setMenuHidden] = useState("hidden");
     const [userMenuHidden, setUserMenuHidden] = useState(true);
-    const [user, setUser] = useState<User>();
-    const [loggedIn, setLoggedIn] = useState(false);
     const [adminLoggedIn, setAdminLoggedIn] = useState(false);
+    const loggedStatus = useIsLoggedIn();
     const { userInfo } = useUserInfo();
-
+    const [user, setUser] = useState(null);
+    
     const handleMenuOnClick = (state: boolean) => {
         !state ? setMenuHidden("block") : setMenuHidden("hidden");
     };
@@ -22,22 +23,17 @@ const Header: React.FC = () => {
     const handleUserMenuOnClick = () => {
         userMenuHidden ? setUserMenuHidden(false) : setUserMenuHidden(true);
     };
-
     useEffect(() => {
         const checkLogin = () => {
+            setUser(userInfo)
             if (userInfo) {
-                console.log(userInfo);
-                setUser(userInfo);
-                setLoggedIn(true);
-                if (user?.roles.includes("ROLE_ADMIN")) setAdminLoggedIn(true);
+                if (userInfo?.roles.includes("ROLE_ADMIN")) setAdminLoggedIn(true);
             }
         };
-        checkLogin();
+
         window.addEventListener("storage", checkLogin);
-        return () => {
-            window.removeEventListener("storage", checkLogin);
-        };
-    }, [userInfo, user]);
+        checkLogin();
+    }, [userInfo]);
 
     return (
         <header>
@@ -77,8 +73,7 @@ const Header: React.FC = () => {
                     </nav>
                     <LoginButton
                         onClick={handleUserMenuOnClick}
-                        loggedIn={loggedIn}
-                        user={user!}
+                        user={user}
                     />
                 </div>
             </div>

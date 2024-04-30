@@ -38,7 +38,7 @@ export default function Login() {
   
               localStorage.setItem("token", token);
               localStorage.setItem("userInfo", JSON.stringify(userInfo));
-              window.dispatchEvent(new Event("localStorageChange"));
+              window.dispatchEvent(new Event("storage"));
               router.push("/");
             } else {
               setMessage(

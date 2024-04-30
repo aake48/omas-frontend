@@ -39,7 +39,6 @@ export async function sendScore(token: string, formData: FormData) {
     });
 
     const body = await response.json();
-    console.log(body);
 
     images.forEach((image) => {
       uploadImage(token, image, formData.get("competitionName")?.toString()!);
