@@ -10,7 +10,7 @@ export default function page() {
                     <div className=" grid gap-5 p-4" key={index}>
                         <p>Sähköposti: {contact.email}</p>
                         <p>Osoite: {contact.address}</p>
-                        <p>Puhelinnumero: {contact.phone}</p>
+                        {/* <p>Puhelinnumero: {contact.phone}</p> */}
                     </div>
                 ))}
             </div>

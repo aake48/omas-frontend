@@ -1,7 +1,7 @@
 import { CompetitionResponse, CompetitionType } from "@/types/commonTypes";
 
 export const contacts = [
-  { phone: "123-456-7890", email: "toimisto@omas.fi", address: "Osoite 123" },
+  { phone: "123-456-7890", email: "toimisto@omas.fi", address: "Piriläntie 175, 90440 Kempele" },
 ];
 
 export const upcoming: CompetitionResponse[] = [
