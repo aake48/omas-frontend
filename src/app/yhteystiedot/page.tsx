@@ -1,5 +1,6 @@
 import React from "react";
 import { contacts } from "@/lib/constants";
+import Link from "next/link";
 
 export default function page() {
     return (
@@ -10,6 +11,7 @@ export default function page() {
                     <div className=" grid gap-5 p-4" key={index}>
                         <p>Sähköposti: {contact.email}</p>
                         <p>Osoite: {contact.address}</p>
+                        <Link className="text-blue-600 hover:underline" target="_blank" href="https://www.omas.fi/">OMAS.fi</Link>
                         {/* <p>Puhelinnumero: {contact.phone}</p> */}
                     </div>
                 ))}
