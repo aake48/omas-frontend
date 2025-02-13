@@ -53,35 +53,35 @@ export default function RegisterForm() {
       const success = captchaRes.body.success;
 
       if (!success) {
-          setMessage("Muista reCAPTCHA.");
-          reCaptchaRef?.current?.reset();
-          return;
+        setMessage("Muista reCAPTCHA.");
+        reCaptchaRef?.current?.reset();
+        return;
       }
 
-      const response  = await sendRegister(values);
+      const response = await sendRegister(values);
 
+      if (response.status === 200) {
+        setMessage("Rekisteröityminen onnistui.")
+
+        const response = await sendLogin(values.username, values.password);
+        const body = await response.json();
         if (response.status === 200) {
-            setMessage("Rekisteröityminen onnistui.")
+          const token = body.token;
+          const userInfo = body.user;
 
-            const response = await sendLogin(values.username, values.password);
-            const body = await response.json();
-            if (response.status === 200) {
-              const token = body.token;
-              const userInfo = body.user;
-  
-              localStorage.setItem("token", token);
-              localStorage.setItem("userInfo", JSON.stringify(userInfo));
-              window.dispatchEvent(new Event("localStorageChange"));
-              router.push("/");
-            }
-          } else {
-            setErrorMessage(`Rekisteröityminen epäonnistui.`);
-          }
+          localStorage.setItem("token", token);
+          localStorage.setItem("userInfo", JSON.stringify(userInfo));
+          window.dispatchEvent(new Event("localStorageChange"));
+          router.push("/");
+        }
+      } else {
+        setErrorMessage(`Rekisteröityminen epäonnistui.`);
+      }
     } catch (error) {
       console.error(error);
     } finally {
       reCaptchaRef?.current?.reset();
-  }
+    }
   };
 
   const onReCAPTCHAChange = async (captchaToken: string | null) => {
