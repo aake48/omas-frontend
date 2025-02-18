@@ -13,17 +13,18 @@ ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_RECAPTCHA_SITE_KEY=$NEXT_PUBLIC_RECAPTCHA_SITE_KEY
 ENV RECAPTCHA_SECRET_KEY=$RECAPTCHA_SECRET_KEY
 
-# FROM base as builder
-# WORKDIR /app
-# COPY . .
-# RUN npm run build
+FROM base as builder
+WORKDIR /app
+RUN npm install
+COPY . .
+RUN npm run build
 
 
-#FROM base as production
-#WORKDIR /app
+FROM base as production
+WORKDIR /app
 
-#ENV NODE_ENV=production
-#RUN npm ci
+ENV NODE_ENV=production
+RUN npm ci
 
 # RUN addgroup -g 1001 -S nodejs
 # RUN adduser -S nextjs -u 1001
@@ -37,8 +38,8 @@ COPY --from=builder /app/public ./public
 
 CMD npm start
 
-FROM base as dev
-ENV NODE_ENV=development
-RUN npm install 
-COPY . .
-CMD npm run dev
+# FROM base as dev
+# ENV NODE_ENV=development
+# RUN npm install 
+# COPY . .
+# CMD npm run dev
