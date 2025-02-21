@@ -4,11 +4,8 @@ import TeamCreator from "./TeamCreator";
 import CardContainer from "./CardContainer";
 import { formatDate } from "@/lib/utils";
 
-export default async function CompetitionPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
+export default async function CompetitionPage(props: Promise<{ params: { slug: string } }>) {
+  const { params } = await props;
   const competition = await fetchData(Q.getCompetitionByIdUrl(params.slug));
   const teams = await fetchData(
     Q.getCompetitionInfoQueryURL(params.slug, 0, 100)
