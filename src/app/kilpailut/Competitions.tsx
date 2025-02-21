@@ -3,7 +3,7 @@
 import Input from "@/components/ui/Input";
 import { getCompetitionsQueryUrl } from "../../lib/APIConstants";
 import { CompetitionResponse } from "@/types/commonTypes";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { formatDate } from "@/lib/utils";
 import Paginator from "../components/Paginator";
@@ -15,22 +15,22 @@ export default function Competitions() {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPage] = useState(0);
-  
-  
-  async function getCompetitions() {
+
+
+  const getCompetitions = useCallback(async () => {
     const competitions = await fetchData(getCompetitionsQueryUrl(search, page));
     setCompetitions(competitions.content);
     setTotalPage(competitions.totalPages);
-  }
-  
+  }, [search, page]);
+
   useEffect(() => {
     getCompetitions();
-  }, [page]);
+  }, [getCompetitions, page]);
 
   useEffect(() => {
     setPage(0);
     getCompetitions();
-  }, [search]);
+  }, [getCompetitions, search]);
 
   const handlePageNumberChange = (page: number) => {
     if (page < 0 || page > totalPages - 1) return;
