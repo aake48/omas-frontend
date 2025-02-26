@@ -19,6 +19,7 @@ export type ClubResponse = {
 export type PostCompetition = {
   competitionName: string; // name is the id
   competitionType: "rifle" | "pistol";
+  competitionSeries: "Y-Mestaruussarja" | "Y-suomisarja" | "Y50-mestaruussarja" | "Y50-suomisarja";
   startDate?: number;
   endDate?: number;
 };
@@ -30,6 +31,7 @@ export type CompetitionResponse = {
   competitionId: string; // name is the id - url frienldy
   displayName: string; //name but with öäå which were removed from name @id
   type: "rifle" | "pistol";
+  series: "Y-Mestaruussarja" | "Y-suomisarja" | "Y50-mestaruussarja" | "Y50-suomisarja";
   startDate: string;
   endDate: string;
   creationDate: string;
