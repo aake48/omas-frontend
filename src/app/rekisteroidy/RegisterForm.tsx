@@ -63,20 +63,21 @@ export default function RegisterForm() {
       if (response.status === 200) {
         setMessage("Rekisteröityminen onnistui.")
 
-        const response = await sendLogin(values.username, values.password);
-        const body = await response.json();
-        if (response.status === 200) {
-          const token = body.token;
-          const userInfo = body.user;
-
-          localStorage.setItem("token", token);
-          localStorage.setItem("userInfo", JSON.stringify(userInfo));
-          window.dispatchEvent(new Event("localStorageChange"));
-          router.push("/");
-        }
-      } else {
-        setErrorMessage(`Rekisteröityminen epäonnistui.`);
-      }
+            const response = await sendLogin(values.username, values.password);
+            const body = await response.json();
+            if (response.status === 200) {
+              const token = body.token;
+              const userInfo = body.user;
+  
+              localStorage.setItem("token", token);
+              localStorage.setItem("userInfo", JSON.stringify(userInfo));
+              //window.dispatchEvent(new Event("localStorageChange"));
+              window.dispatchEvent(new Event("storage"));
+              router.push("/");
+            }
+          } else {
+            setErrorMessage(`Rekisteröityminen epäonnistui.`);
+          }
     } catch (error) {
       console.error(error);
     } finally {
