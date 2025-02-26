@@ -33,17 +33,17 @@ export default function Login() {
             const response = await sendLogin(values.username, values.password);
             const body = await response.json();
             if (response.status === 200) {
-              const token = body.token;
-              const userInfo = body.user;
-  
-              localStorage.setItem("token", token);
-              localStorage.setItem("userInfo", JSON.stringify(userInfo));
-              window.dispatchEvent(new Event("storage"));
-              router.push("/");
+                const token = body.token;
+                const userInfo = body.user;
+
+                localStorage.setItem("token", token);
+                localStorage.setItem("userInfo", JSON.stringify(userInfo));
+                window.dispatchEvent(new Event("storage"));
+                router.push("/");
             } else {
-              setMessage(
-                "Kirjautuminen ei onnistunut. Tarkista, että syöttämäsi tiedot ovat oikein."
-              );
+                setMessage(
+                    "Kirjautuminen ei onnistunut. Tarkista, että syöttämäsi tiedot ovat oikein."
+                );
             }
 
         } catch (error) {

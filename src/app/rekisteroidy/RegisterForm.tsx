@@ -53,15 +53,15 @@ export default function RegisterForm() {
       const success = captchaRes.body.success;
 
       if (!success) {
-          setMessage("Muista reCAPTCHA.");
-          reCaptchaRef?.current?.reset();
-          return;
+        setMessage("Muista reCAPTCHA.");
+        reCaptchaRef?.current?.reset();
+        return;
       }
 
-      const response  = await sendRegister(values);
+      const response = await sendRegister(values);
 
-        if (response.status === 200) {
-            setMessage("Rekisteröityminen onnistui.")
+      if (response.status === 200) {
+        setMessage("Rekisteröityminen onnistui.")
 
             const response = await sendLogin(values.username, values.password);
             const body = await response.json();
@@ -82,7 +82,7 @@ export default function RegisterForm() {
       console.error(error);
     } finally {
       reCaptchaRef?.current?.reset();
-  }
+    }
   };
 
   const onReCAPTCHAChange = async (captchaToken: string | null) => {
