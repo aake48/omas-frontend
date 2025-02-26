@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { CompetitionResponse } from "@/types/commonTypes";
 import useUserInfo from "@/lib/hooks/get-user.info";
 import {
@@ -40,7 +40,7 @@ export default function Home() {
     }
   }
 
-  async function getOwnCompetitions() {
+  const getOwnCompetitions = useCallback(async () => {
     try {
       const response = await get(getActiveCompetitions(0, 50));
       if (response.content) {
@@ -83,14 +83,14 @@ export default function Home() {
     } catch (error) {
       console.log(error);
     }
-  }
+  },[tokenString]);
 
   useEffect(() => {
     getUpcoming();
     if (token) {
       getOwnCompetitions();
     }
-  }, [token]);
+  }, [getOwnCompetitions, token]);
 
   return (
     <main className="min-h-screen p-8">

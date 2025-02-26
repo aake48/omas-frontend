@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import useIsLoggedIn from '@/lib/hooks/is-logged-in';
 import axios from 'axios';
 import { getClubQueryUrl } from '@/lib/APIConstants';
@@ -16,7 +16,7 @@ const ClubsView = () => {
 
 	let apiUrl = getClubQueryUrl(search, pageNumber, 10);
 
-	const fetchClubs = async () => {
+	const fetchClubs = useCallback(async () => {
 		try {
 			const res = await axios.get(apiUrl, {
 				headers: {
@@ -27,7 +27,7 @@ const ClubsView = () => {
 		} catch (e: any) {
 			console.error(e);
 		}
-	}
+	},[apiUrl]);
 
 	const handlePageNumberChange = (page: number) => {
 		if (!data) return;
@@ -37,7 +37,7 @@ const ClubsView = () => {
 
 	useEffect(() => {
 		fetchClubs();
-	}, [pageNumber, search]);
+	}, [fetchClubs, pageNumber, search]);
 
 	useEffect(() => {
 		setPageNumber(0);

@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { QueryCompetition } from '@/types/commonTypes';
 import Score from './Score';
 import Paginator from '../components/Paginator';
@@ -29,7 +29,7 @@ const PastCompetitions = () => {
 		yearOptions.push(year);
 	}
   
-	const fetchContent = async () => {
+	const fetchContent = useCallback( async () => {
 		try {
 			const res = await axios.get(apiUrl, {
 				headers: {
@@ -40,7 +40,7 @@ const PastCompetitions = () => {
 		} catch (e: any) {
 			console.error(e);
 		}
-	}
+	},[apiUrl]);
 
 	const handleYearSelect = (e: any) => {
 		setSearchYear(e.target.value);
@@ -48,7 +48,7 @@ const PastCompetitions = () => {
 
 	useEffect(() => {
 		fetchContent();
-	}, [pageNumber, searchYear, searchQuery])
+	}, [pageNumber, searchYear, searchQuery, fetchContent])
 
 	useEffect(() => {
 		setPageNumber(0);

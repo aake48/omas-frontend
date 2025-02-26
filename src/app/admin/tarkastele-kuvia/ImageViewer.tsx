@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/Button";
 import { getCompetitionsQueryUrl, getFileDownloadUrl } from "@/lib/APIConstants";
 import { CompetitionResponse, ImageProof, QueryCompetition } from "@/types/commonTypes";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Images from "./Images";
 import Paginator from "../../components/Paginator";
 import Competition from "./Competition";
@@ -18,7 +18,7 @@ const ImageViewer = () => {
     const apiUrl = getCompetitionsQueryUrl(searchQuery, pageNumber, 5)
 
     console.log(apiUrl);
-    const fetchCompetitions = async () => {
+    const fetchCompetitions = useCallback(async () => {
 		try {
 			const res = await axios.get(apiUrl, {
 				headers: {
@@ -30,11 +30,11 @@ const ImageViewer = () => {
 		} catch (e: any) {
 			console.error(e);
 		}
-	}
+	}, [apiUrl]);
     
     useEffect(() => {
         fetchCompetitions();
-    }, [pageNumber, searchQuery])
+    }, [fetchCompetitions, pageNumber, searchQuery])
 
     useEffect(() => {
 		setPageNumber(0);

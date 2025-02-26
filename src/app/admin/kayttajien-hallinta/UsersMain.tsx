@@ -1,7 +1,7 @@
 'use client';
 import { getAdminUserQueryUrl } from "@/lib/APIConstants";
 import { AdminQueryUser } from '@/types/commonTypes';
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Paginator from "../../components/Paginator";
 import Input from "@/components/ui/Input";
 import axios from "axios";
@@ -17,7 +17,7 @@ const UsersMain = () => {
 
     let apiUrl = getAdminUserQueryUrl(search, pageNumber, 10);
 
-    const fetchUsers = async () => {
+    const fetchUsers = useCallback(async () => {
         try {
             const res = await axios.get(apiUrl, {
                 headers: {
@@ -29,7 +29,7 @@ const UsersMain = () => {
         } catch (e: any) {
             console.error(e);
         }
-    }
+    },[apiUrl, token]);
 
     const handlePageNumberChange = (page: number) => {
         if (!data) return;
@@ -39,7 +39,7 @@ const UsersMain = () => {
 
     useEffect(() => {
         if (token) fetchUsers();
-    }, [pageNumber, search, token]);
+    }, [fetchUsers, pageNumber, search, token]);
 
     useEffect(() => {
         setPageNumber(0);

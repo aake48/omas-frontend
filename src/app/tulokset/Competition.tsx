@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { competitionResults } from "@/types/commonTypes";
 import Team from "./Team";
 import { getCompetitionByNameUrl } from "../../lib/APIConstants";
@@ -37,7 +37,7 @@ const Competition = ({
       typeFinnish = "";
   }
 
-  const fetchContent = async () => {
+  const fetchContent = useCallback(async () => {
     try {
       const res = await axios.get(apiUrl, {
         headers: {
@@ -48,11 +48,11 @@ const Competition = ({
     } catch (e: any) {
       console.error(e);
     }
-  };
+  }, [apiUrl]);
 
   useEffect(() => {
     fetchContent();
-  }, [apiUrl]);
+  }, [apiUrl, fetchContent]);
 
   const arrowUp = (
     <svg

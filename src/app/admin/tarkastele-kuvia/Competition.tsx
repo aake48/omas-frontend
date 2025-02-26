@@ -1,6 +1,6 @@
 'use client';
 import { CompetitionResponse, CompetitionTeamsResponse } from "@/types/commonTypes";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { getCompetitionTeamsQueryUrl } from "@/lib/APIConstants";
 import axios from "axios";
 import Paginator from "../../components/Paginator";
@@ -30,7 +30,7 @@ const Competition = ({ comp }: CompetitionProps) => {
 
     const apiUrl = getCompetitionTeamsQueryUrl(comp.competitionId, pageNumber, 5)
 
-    const fetchTeams = async () => {
+    const fetchTeams = useCallback(async () => {
 		try {
 			const res = await axios.get(apiUrl, {
 				headers: {
@@ -41,10 +41,10 @@ const Competition = ({ comp }: CompetitionProps) => {
 		} catch (e: any) {
 			console.error(e);
 		}
-	}
+	},[apiUrl]);
     useEffect(() => {
         fetchTeams();
-    }, [pageNumber])
+    }, [fetchTeams, pageNumber])
 
 
     if (!data) return;
