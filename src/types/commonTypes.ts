@@ -108,6 +108,7 @@ export type competitionResults = {
   displayName: string;
   creationDate: string;
   type: "rifle" | "pistol";
+  series: "Y-Mestaruussarja" | "Y-suomisarja" | "Y50-mestaruussarja" | "Y50-suomisarja";
   startDate: string;
   endDate: string;
   teams: competitionResultsTeam[] | null;
@@ -240,6 +241,7 @@ export enum AdminViewType {
 }
 
 export type CompetitionType = "rifle" | "pistol";
+export type CompetitionSeries = "Y-Mestaruussarja" | "Y-suomisarja" | "Y50-mestaruussarja" | "Y50-suomisarja";
 
 export type captchaResponse = {
   success: boolean,
