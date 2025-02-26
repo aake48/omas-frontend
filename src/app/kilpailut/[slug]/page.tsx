@@ -4,14 +4,17 @@ import TeamCreator from "./TeamCreator";
 import CardContainer from "./CardContainer";
 import { formatDate } from "@/lib/utils";
 
+export type paramsType = Promise<{slug: string}>
+
 export default async function CompetitionPage({
   params,
 }: {
-  params: { slug: string };
+  params: paramsType;
 }) {
-  const competition = await fetchData(Q.getCompetitionByIdUrl(params.slug));
+  const {slug} = await params;
+  const competition = await fetchData(Q.getCompetitionByIdUrl(slug));
   const teams = await fetchData(
-    Q.getCompetitionInfoQueryURL(params.slug, 0, 100)
+    Q.getCompetitionInfoQueryURL(slug, 0, 100)
   );
   return (
     <div className="grid p-5 my-5 justify-center md:p-10 gap-3 shadow-lg">
@@ -25,7 +28,7 @@ export default async function CompetitionPage({
       </span>
       <TeamCreator competition={competition} />
       <CardContainer
-        slug={params.slug}
+        slug={slug}
         teams={teams}
         competition={competition}
       />
