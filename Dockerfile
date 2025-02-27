@@ -15,15 +15,13 @@ ENV RECAPTCHA_SECRET_KEY=$RECAPTCHA_SECRET_KEY
 
 FROM base as builder
 WORKDIR /app
-RUN npm install
-RUN npm audit fix
+RUN npm ci
 COPY . .
 RUN npm run build
 
 
 FROM base as production
 WORKDIR /app
-
 ENV NODE_ENV=production
 RUN npm ci
 
