@@ -25,12 +25,12 @@ export default function Competitions() {
 
   useEffect(() => {
     getCompetitions();
-  }, [getCompetitions, page]);
+  }, [page]);
 
   useEffect(() => {
     setPage(0);
     getCompetitions();
-  }, [getCompetitions, search]);
+  }, [search]);
 
   const handlePageNumberChange = (page: number) => {
     if (page < 0 || page > totalPages - 1) return;
