@@ -22,6 +22,9 @@ export default async function CompetitionPage({
       <p>
         Tyyppi: {competition.type === "rifle" ? "ilmakivääri" : "ilmapistooli"}
       </p>
+      <p>
+        Sarja:
+      </p>
       <span className="flex flex-row gap-5">
         <p>Alkaa: {formatDate(competition.startDate)}</p>
         <p>Päättyy: {formatDate(competition.endDate)}</p>
