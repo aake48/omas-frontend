@@ -241,7 +241,7 @@ export enum AdminViewType {
 }
 
 export type CompetitionType = "rifle" | "pistol";
-export type CompetitionSeries = "Y-mestaruussarja" | "Y-suomisarja" | "Y50-mestaruussarja" | "Y50-suomisarja";
+export type CompetitionSeries = "Y_mestaruussarja" | "Y_suomisarja" | "Y50_mestaruussarja" | "Y50_suomisarja";
 
 export type captchaResponse = {
   success: boolean,

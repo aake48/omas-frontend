@@ -1,4 +1,4 @@
-import { CompetitionResponse, CompetitionType } from "@/types/commonTypes";
+import { CompetitionResponse, CompetitionType, CompetitionSeries } from "@/types/commonTypes";
 
 export const contacts = [
   { phone: "123-456-7890", email: "toimisto@omas.fi", address: "Piriläntie 175, 90440 Kempele" },
@@ -97,4 +97,11 @@ export const testDataAdminViewUsers = [
 export const competitionTypes: Record<CompetitionType, string> = {
   rifle: "Ilmakivääri",
   pistol: "Ilmapistooli",
+};
+
+export const competitionSeries: Record<CompetitionSeries, string> = {
+  Y_mestaruussarja: "Y-mestaruussarja",
+  Y_suomisarja: "Y-suomisarja", 
+  Y50_mestaruussarja: "Y50-mestaruussarja",
+  Y50_suomisarja: "Y50-suomisarja",
 };
