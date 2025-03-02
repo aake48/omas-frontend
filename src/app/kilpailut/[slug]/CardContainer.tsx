@@ -66,16 +66,16 @@ export default function CardContainer({
     };
 
     fetchCompetitions();
-  }, [token, slug]); 
+  }, [token, slug, userClubName]); 
 
 
     // Check if user is member of any team
     useEffect(() => {
         if (competitions != null) {
-            const memberOf = competitions.find(
+            const usersTeam = competitions.find(
                 (comp) => comp.competitionId === competition.competitionId
             );
-            memberOf ? setIsMemberOf(memberOf.teamName) : setIsMemberOf(null);
+            usersTeam ? setIsMemberOf(usersTeam.teamName) : setIsMemberOf(null);
         }
     }, [competitions, competition]);
 
@@ -89,7 +89,7 @@ export default function CardContainer({
                   memberOf={memberOf} 
                   userClubName={userClubName} 
                   token={token}
-                  user={user?.userInfo?.legalName}
+                  userLegalName={user?.userInfo?.legalName}
                 />
             ))}
         </div>
