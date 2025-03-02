@@ -19,7 +19,7 @@ export default function AddCompetition() {
   const { token } = useUserInfo();
 
   type CompetitionType = "rifle" | "pistol";
-  type CompetitionSeries = "Y-Mestaruussarja" | "Y-suomisarja" | "Y50-mestaruussarja" | "Y50-suomisarja";
+  type CompetitionSeries = "Y-mestaruussarja" | "Y-suomisarja" | "Y50-mestaruussarja" | "Y50-suomisarja";
 
   const competitionTypes: Record<string, CompetitionType> = {
     Ilmakivääri: "rifle",
@@ -27,7 +27,7 @@ export default function AddCompetition() {
   };
 
   const competitionSeries: Record<string, CompetitionSeries> = {
-    Y_Mestaruussarja: "Y-Mestaruussarja",
+    Y_mestaruussarja: "Y-mestaruussarja",
     Y_suomisarja: "Y-suomisarja",
     Y50_mestaruussarja: "Y50-mestaruussarja",
     Y50_suomisarja: "Y50-suomisarja",
@@ -39,14 +39,14 @@ export default function AddCompetition() {
   const initialValues = {
     competitionName: "",
     competitionType: "Ilmakivääri",
-    competitionSeries: "Y-Mestaruussarja",
+    competitionSeries: "Y-mestaruussarja",
     startDate: "",
     endDate: "",
   };
 
   const handleAddCompetition = async (values: any) => {
     try {
-      const competitonInfo: PostCompetition =
+      const competitionInfo: PostCompetition =
         values.startDate || values.endDate
           ? {
             competitionName: values.competitionName,
@@ -67,7 +67,7 @@ export default function AddCompetition() {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
             "Content-Type": "application/json",
           },
-          data: competitonInfo,
+          data: competitionInfo,
         });
       
         if (res.status === 201) {

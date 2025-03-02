@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  ClubResponse,
     CompetitionResponse,
     TTeam,
     UsersCompetition,
@@ -9,6 +10,7 @@ import TeamCard from "./TeamCard";
 import useUserInfo from "@/lib/hooks/get-user.info";
 import { useEffect, useState } from "react";
 import * as Q from "@/lib/APIConstants";
+import { resolve } from "path";
 
 async function getUserCompetitions(token: any) {
     try {
@@ -18,7 +20,7 @@ async function getUserCompetitions(token: any) {
           "Content-Type": "application/json",
         },
       });
-  
+      console.log(response)
       if (!response.ok) {
         console.error(`HTTP error! status: ${response.status}`);
         return null;
@@ -32,6 +34,26 @@ async function getUserCompetitions(token: any) {
     }
   }
 
+async function getUserClub(token: any) {
+    try {
+      const response = await fetch(Q.getUserClub(), {
+        headers:{
+          Authorization: "Bearer " + token,
+          "Content-Type": "application/json",
+        }
+      });
+      console.log(response)
+      if (!response.ok) {
+        console.error(`HTTP error! status: ${response.status}`);
+        return null;
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+}
 
 export default function CardContainer({
     teams,
@@ -47,6 +69,7 @@ export default function CardContainer({
     const [memberOf, setIsMemberOf] = useState<string | null>(null);
     const user = useUserInfo();
     const [isPartOfClub, setIsPartOfClub] = useState(false);
+    const [usersClub, setUsersClub] = useState<ClubResponse>();
     useEffect(() => {
         if (user.userInfo != null) {
             setIsPartOfClub(user.userInfo.club != null);
@@ -59,11 +82,14 @@ export default function CardContainer({
       if (token == null || !isPartOfClub) {
         return;
       }
-
+      const clubData = await getUserClub(token);
+      console.log(clubData);
       const data = await getUserCompetitions(token);
       if (data) {
         setCompetitions(data);
-
+      }
+      if(clubData){
+        setUsersClub(clubData)
       }
     };
 
@@ -84,7 +110,7 @@ export default function CardContainer({
     return (
         <div className="grid my-5 justify-center sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8">
             {teams.content.map((team: TTeam) => (
-                <TeamCard setIsMember={setIsMemberOf} key={team.teamName} team={team} memberOf={memberOf} isPartOfClub={isPartOfClub} />
+                <TeamCard setIsMember={setIsMemberOf} key={team.teamName} team={team} memberOf={memberOf} clubName={usersClub?.name || ""} />
             ))}
         </div>
     );

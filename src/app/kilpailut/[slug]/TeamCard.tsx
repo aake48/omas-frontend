@@ -38,11 +38,14 @@ export async function joinTeam(
     }
   }
 
-export default function TeamCard({ team, memberOf, setIsMember, isPartOfClub }: { team: TTeam , memberOf: string | null, setIsMember: (teamName: string) => void, isPartOfClub: boolean} ) {
+export default function TeamCard({ team, memberOf, setIsMember, clubName}: { team: TTeam , memberOf: string | null, setIsMember: (teamName: string) => void, clubName: string} ) {
     const isLoggedIn = useIsLoggedIn();
 
     const [isFull , setIsFull] = React.useState<boolean>(false);
     const { token } = useUserInfo();
+    //console.log(team.clubName)
+    //console.log(clubName)
+    const isPartOfClub = team.clubName == clubName;
 
     useEffect(() => {
         if (team.teamMembers && team.teamMembers.length === 5) {
@@ -80,7 +83,7 @@ export default function TeamCard({ team, memberOf, setIsMember, isPartOfClub }: 
                             disabled={memberOf !== null || isFull || !isPartOfClub}
                         >
                             {memberOf === team.teamName
-                                ? "Olet joukkueessa" : !isPartOfClub ? "Liity seuraan": isFull ? "Joukkue on täynnä" : "Liity joukkueeseen"}
+                                ? "Olet joukkueessa" : isPartOfClub ? "Liity seuraan": isFull ? "Joukkue on täynnä" : "Liity joukkueeseen"}
                         </Button>
                     )}
                 </div>
