@@ -1,9 +1,9 @@
 "use client";
 
 import { Button } from "@/components/ui/Button";
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import useIsLoggedIn from "@/lib/hooks/is-logged-in";
-import {TTeam,} from "@/types/commonTypes";
+import {TTeam,TTeamMember} from "@/types/commonTypes";
 import useUserInfo from "@/lib/hooks/get-user.info";
 import { addTeamMemberURL } from "@/lib/APIConstants";
 
@@ -38,15 +38,12 @@ export async function joinTeam(
     }
   }
 
-export default function TeamCard({ team, memberOf, setIsMember, clubName}: { team: TTeam , memberOf: string | null, setIsMember: (teamName: string) => void, clubName: string} ) {
+export default function TeamCard({ team, memberOf, setIsMember, userClubName, token, user}: 
+    { team: TTeam , memberOf: string | null, setIsMember: (teamName: string) => void, userClubName: string | null, token: string, user: string} ) {
     const isLoggedIn = useIsLoggedIn();
-
+    const [teamMembers, setTeamMembers] = useState(team.teamMembers)
     const [isFull , setIsFull] = React.useState<boolean>(false);
-    const { token } = useUserInfo();
-    //console.log(team.clubName)
-    //console.log(clubName)
-    const isPartOfClub = team.clubName == clubName;
-
+    const isPartOfClub = userClubName === team.clubName;
     useEffect(() => {
         if (team.teamMembers && team.teamMembers.length === 5) {
             setIsFull(true);
@@ -61,7 +58,12 @@ export default function TeamCard({ team, memberOf, setIsMember, clubName}: { tea
 
     async function handleClick(teamName: string, competitionId: string) {
         const response = await joinTeam(token, teamName, competitionId);
-        response.status === 200 ? setIsMember(teamName) : null;
+        if (response.status === 200){
+            setIsMember(teamName);
+            const tempMember: TTeamMember = {userId: 0, competitionId: competitionId, teamName: teamName, legalName: user}
+            teamMembers?.push(tempMember);
+            setTeamMembers(teamMembers);
+        }
     }
 
     return (
@@ -83,16 +85,16 @@ export default function TeamCard({ team, memberOf, setIsMember, clubName}: { tea
                             disabled={memberOf !== null || isFull || !isPartOfClub}
                         >
                             {memberOf === team.teamName
-                                ? "Olet joukkueessa" : isPartOfClub ? "Liity seuraan": isFull ? "Joukkue on täynnä" : "Liity joukkueeseen"}
+                                ? "Olet joukkueessa" : !isPartOfClub ? "Liity seuraan": isFull ? "Joukkue on täynnä" : "Liity joukkueeseen"}
                         </Button>
                     )}
                 </div>
 
                 <div className="grid gap-1">
                     <p className=" text-md">Jäsenet:</p>
-                    {team.teamMembers && team.teamMembers.length > 0 ? (
+                    {teamMembers && teamMembers.length > 0 ? (
                         <div className="grid border h-full border-slate-300 gap-x-4 bg-slate-100 p-2 shadow-md rounded-md grid-cols-2">
-                            {team.teamMembers.map((member, index) => {
+                            {teamMembers.map((member, index) => {
                                 return <p key={index}>{member.legalName}</p>;
                             })}
                         </div>

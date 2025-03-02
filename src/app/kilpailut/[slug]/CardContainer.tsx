@@ -20,7 +20,6 @@ async function getUserCompetitions(token: any) {
           "Content-Type": "application/json",
         },
       });
-      console.log(response)
       if (!response.ok) {
         console.error(`HTTP error! status: ${response.status}`);
         return null;
@@ -33,27 +32,6 @@ async function getUserCompetitions(token: any) {
       return null;
     }
   }
-
-async function getUserClub(token: any) {
-    try {
-      const response = await fetch(Q.getUserClub(), {
-        headers:{
-          Authorization: "Bearer " + token,
-          "Content-Type": "application/json",
-        }
-      });
-      console.log(response)
-      if (!response.ok) {
-        console.error(`HTTP error! status: ${response.status}`);
-        return null;
-      }
-
-      return await response.json();
-    } catch (error) {
-      console.error(error);
-      return null;
-    }
-}
 
 export default function CardContainer({
     teams,
@@ -68,33 +46,27 @@ export default function CardContainer({
     const { token } = useUserInfo();
     const [memberOf, setIsMemberOf] = useState<string | null>(null);
     const user = useUserInfo();
-    const [isPartOfClub, setIsPartOfClub] = useState(false);
-    const [usersClub, setUsersClub] = useState<ClubResponse>();
+    const [userClubName, setUserClubName] = useState<string | null>(null);
     useEffect(() => {
         if (user.userInfo != null) {
-            setIsPartOfClub(user.userInfo.club != null);
+            setUserClubName(user.userInfo.club);
         }
     }, [user]);
 
   // Fetch user's competitions
   useEffect(() => {
     const fetchCompetitions = async () => {
-      if (token == null || !isPartOfClub) {
+      if (token == null || !userClubName) {
         return;
       }
-      const clubData = await getUserClub(token);
-      console.log(clubData);
       const data = await getUserCompetitions(token);
       if (data) {
         setCompetitions(data);
       }
-      if(clubData){
-        setUsersClub(clubData)
-      }
     };
 
     fetchCompetitions();
-  }, [token, slug, isPartOfClub]);
+  }, [token, slug]); 
 
 
     // Check if user is member of any team
@@ -110,7 +82,15 @@ export default function CardContainer({
     return (
         <div className="grid my-5 justify-center sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8">
             {teams.content.map((team: TTeam) => (
-                <TeamCard setIsMember={setIsMemberOf} key={team.teamName} team={team} memberOf={memberOf} clubName={usersClub?.name || ""} />
+                <TeamCard 
+                  setIsMember={setIsMemberOf} 
+                  key={team.teamName} 
+                  team={team} 
+                  memberOf={memberOf} 
+                  userClubName={userClubName} 
+                  token={token}
+                  user={user?.userInfo?.legalName}
+                />
             ))}
         </div>
     );
