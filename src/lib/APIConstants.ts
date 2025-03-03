@@ -80,6 +80,9 @@ export const addTeamToCompetitionURL: string =
 export const addTeamMemberURL: string =
   baseURL + "api/competition/team/member/add";
 
+export const removeTeamMemberURL: string =
+  baseURL + "api/competition/team/member/remove";
+
 export const addScore: string =
   baseURL + "api/competition/team/member/score/add";
 

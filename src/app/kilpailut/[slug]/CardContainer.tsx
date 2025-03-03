@@ -90,6 +90,7 @@ export default function CardContainer({
                   userClubName={userClubName} 
                   token={token}
                   userLegalName={user?.userInfo?.legalName}
+                  userId={user?.userInfo?.userId}
                 />
             ))}
         </div>
