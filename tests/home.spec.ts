@@ -28,7 +28,7 @@ test.describe('has containers for season + future and past competitions', () => 
  */
 test('future container has children = data', async ({ page }) => {
   await page.goto('/');
-  
+
 });
 
 /**
@@ -36,5 +36,5 @@ test('future container has children = data', async ({ page }) => {
  */
 test('past container has children = data', async ({ page }) => {
   await page.goto('/');
-  
+
 });

@@ -20,7 +20,7 @@
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "lucide-react": "^0.338.0",
-    "next": "15.1.6",
+    "next": "^15.2.0-canary.64",
     "omas-frontend": "file:",
     "playwright": "^1.43.1",
     "react": "^18",
@@ -30,7 +30,7 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
-    "@playwright/test": "^1.42.1",
+    "@playwright/test": "^1.50.1",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20",
     "@types/react": "^18",

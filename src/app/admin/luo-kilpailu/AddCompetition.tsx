@@ -19,34 +19,46 @@ export default function AddCompetition() {
   const { token } = useUserInfo();
 
   type CompetitionType = "rifle" | "pistol";
+  type CompetitionSeries = "Y-mestaruussarja" | "Y-suomisarja" | "Y50-mestaruussarja" | "Y50-suomisarja";
 
   const competitionTypes: Record<string, CompetitionType> = {
     Ilmakivääri: "rifle",
     Ilmapistooli: "pistol",
   };
 
+  const competitionSeries: Record<string, CompetitionSeries> = {
+    Y_mestaruussarja: "Y-mestaruussarja",
+    Y_suomisarja: "Y-suomisarja",
+    Y50_mestaruussarja: "Y50-mestaruussarja",
+    Y50_suomisarja: "Y50-suomisarja",
+  };
+
   const competitionTypeOptions = Object.keys(competitionTypes);
+  const competitionSeriesOptions = Object.keys(competitionSeries);
 
   const initialValues = {
     competitionName: "",
     competitionType: "Ilmakivääri",
+    competitionSeries: "Y-mestaruussarja",
     startDate: "",
     endDate: "",
   };
 
   const handleAddCompetition = async (values: any) => {
     try {
-      const competitonInfo: PostCompetition =
+      const competitionInfo: PostCompetition =
         values.startDate || values.endDate
           ? {
-              competitionName: values.competitionName,
-              competitionType: competitionTypes[values.competitionType],
-              startDate: Date.parse(values.startDate),
-              endDate: Date.parse(values.endDate),
-            }
+            competitionName: values.competitionName,
+            competitionType: competitionTypes[values.competitionType],
+            competitionSeries: competitionSeries[values.competitionSeries],
+            startDate: Date.parse(values.startDate),
+            endDate: Date.parse(values.endDate),
+          }
           : {
-              competitionName: values.competitionName,
-              competitionType: competitionTypes[values.competitionType],
+            competitionName: values.competitionName,
+            competitionType: competitionTypes[values.competitionType],
+            competitionSeries: competitionSeries[values.competitionSeries],
             };
       const res = await axios({
           method: "post",
@@ -55,7 +67,7 @@ export default function AddCompetition() {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
             "Content-Type": "application/json",
           },
-          data: competitonInfo,
+          data: competitionInfo,
         });
       
         if (res.status === 201) {
@@ -96,7 +108,13 @@ export default function AddCompetition() {
               name={"competitionType"}
               placeholder={"Kilpailun tyyppi"}
               options={competitionTypeOptions}
-              />
+            />
+            <CustomDropdown
+              label={"Kilpailusarja"}
+              name={"competitionSeries"}
+              placeholder="Kilpailusarja"
+              options={competitionSeriesOptions}
+            />
             <span className="flex flex-row gap-5 justify-center">
               <CustomInput
                 label={"Alkamispäivämäärä"}

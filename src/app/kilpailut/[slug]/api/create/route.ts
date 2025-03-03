@@ -1,6 +1,7 @@
 import { addTeamToCompetitionURL } from "@/lib/APIConstants";
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
+import https from 'https'
 
 export async function POST(request: NextRequest) {
     const requestBody = await request.json();
@@ -23,6 +24,9 @@ export async function POST(request: NextRequest) {
               Authorization: authHeader,
               "Content-Type": "application/json",
             },
+            httpsAgent: new https.Agent({
+                rejectUnauthorized: false
+            }),
           }
         );
         return NextResponse.json({body: response.data, status: response.status });

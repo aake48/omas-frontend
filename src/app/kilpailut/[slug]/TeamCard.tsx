@@ -1,9 +1,9 @@
 "use client";
 
 import { Button } from "@/components/ui/Button";
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import useIsLoggedIn from "@/lib/hooks/is-logged-in";
-import {TTeam,} from "@/types/commonTypes";
+import {TTeam,TTeamMember} from "@/types/commonTypes";
 import useUserInfo from "@/lib/hooks/get-user.info";
 import { addTeamMemberURL } from "@/lib/APIConstants";
 
@@ -38,11 +38,13 @@ export async function joinTeam(
     }
   }
 
-export default function TeamCard({ team, memberOf, setIsMember, isPartOfClub }: { team: TTeam , memberOf: string | null, setIsMember: (teamName: string) => void, isPartOfClub: boolean} ) {
+export default function TeamCard({ team, memberOf, setIsMember, userClubName, token, userLegalName}: 
+    { team: TTeam , memberOf: string | null, setIsMember: (teamName: string | null) => void, userClubName: string | null, token: string, userLegalName: string} ) {
     const isLoggedIn = useIsLoggedIn();
-
-    const [isFull , setIsFull] = React.useState<boolean>(false);
-    const { token } = useUserInfo();
+    const [teamMembers, setTeamMembers] = useState(team.teamMembers)
+    const [isFull , setIsFull] = useState<boolean>(false);
+    const isPartOfClub = userClubName === team.clubName;
+    const [isInTeam, setIsInTeam] = useState<boolean>(memberOf === team.teamName)
 
     useEffect(() => {
         if (team.teamMembers && team.teamMembers.length === 5) {
@@ -51,21 +53,27 @@ export default function TeamCard({ team, memberOf, setIsMember, isPartOfClub }: 
     }, [team]);
 
     useEffect(() => {
-        if (memberOf === team.teamName) {
+        if (isInTeam) {
             setIsMember(memberOf);
         }
-    }, [memberOf, team, setIsMember]);
+        memberOf === team.teamName ? setIsInTeam(true) : setIsInTeam(false);
+    }, [memberOf, teamMembers, setIsMember]);
 
     async function handleClick(teamName: string, competitionId: string) {
         const response = await joinTeam(token, teamName, competitionId);
-        response.status === 200 ? setIsMember(teamName) : null;
+        if (response.status === 200){
+            setIsMember(teamName);
+            const currentUser: TTeamMember = {userId: 0, competitionId: competitionId, teamName: teamName, legalName: userLegalName}
+            teamMembers?.push(currentUser);
+            setTeamMembers(teamMembers);
+        }
     }
 
     return (
         <Suspense fallback={<div>Loading...</div>}>
             <div
                 className={`flex flex-col border-2 shadow-md p-5 gap-5 rounded-md ${
-                    memberOf === team.teamName ? "bg-slate-200" : null
+                    isInTeam ? "bg-slate-200" : null
                 }`}
             >
                 <div className="flex flex-col gap-2 justify-between md:flex-row items-center">
@@ -79,17 +87,17 @@ export default function TeamCard({ team, memberOf, setIsMember, isPartOfClub }: 
                             }
                             disabled={memberOf !== null || isFull || !isPartOfClub}
                         >
-                            {memberOf === team.teamName
-                                ? "Olet joukkueessa" : !isPartOfClub ? "Liity seuraan": isFull ? "Joukkue on täynnä" : "Liity joukkueeseen"}
+                            {isInTeam
+                                ? "Olet joukkueessa" : !isPartOfClub ? "Et ole tässä seurassa": isFull ? "Joukkue on täynnä" : "Liity joukkueeseen"}
                         </Button>
                     )}
                 </div>
 
                 <div className="grid gap-1">
                     <p className=" text-md">Jäsenet:</p>
-                    {team.teamMembers && team.teamMembers.length > 0 ? (
+                    {teamMembers && teamMembers.length > 0 ? (
                         <div className="grid border h-full border-slate-300 gap-x-4 bg-slate-100 p-2 shadow-md rounded-md grid-cols-2">
-                            {team.teamMembers.map((member, index) => {
+                            {teamMembers.map((member, index) => {
                                 return <p key={index}>{member.legalName}</p>;
                             })}
                         </div>
