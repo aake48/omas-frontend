@@ -11,6 +11,7 @@ import useUserInfo from "@/lib/hooks/get-user.info";
 import { useEffect, useState } from "react";
 import * as Q from "@/lib/APIConstants";
 import { resolve } from "path";
+import Input from "@/components/ui/Input";
 
 async function getUserCompetitions(token: any) {
     try {
@@ -47,6 +48,8 @@ export default function CardContainer({
     const [memberOf, setIsMemberOf] = useState<string | null>(null);
     const user = useUserInfo();
     const [userClubName, setUserClubName] = useState<string | null>(null);
+  const [search, setSearch] = useState("");
+  const [searchedTeams, setSearchedTeams] = useState<TTeam[]>(teams.content);
     useEffect(() => {
         if (user.userInfo != null) {
             setUserClubName(user.userInfo.club);
@@ -78,10 +81,29 @@ export default function CardContainer({
             usersTeam ? setIsMemberOf(usersTeam.teamName) : setIsMemberOf(null);
         }
     }, [competitions, competition]);
+    
+    //Search for teams
+    useEffect(() => {
+      const searchedTeams = teams.content.filter((team) =>
+        team.teamDisplayName.toLowerCase().includes(search.toLowerCase())
+      );
+      setSearchedTeams(searchedTeams);
+    }, [search, teams.content]);
 
-    return (
-        <div className="grid my-5 justify-center sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8">
-            {teams.content.map((team: TTeam) => (
+
+  return (
+    <div className="grid my-5 justify-center sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8">
+      <div className="col-span-full mb-4">
+        <Input
+          id="search"
+          placeholder="Hae joukkuetta"
+          required={false}
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
+            {searchedTeams.length > 0 ? searchedTeams.map((team: TTeam) => (
                 <TeamCard 
                   setIsMember={setIsMemberOf} 
                   key={team.teamName} 
@@ -91,7 +113,9 @@ export default function CardContainer({
                   token={token}
                   userLegalName={user?.userInfo?.legalName}
                 />
-            ))}
+            )) : (
+              <p>Kyseisellä nimellä ei löytynyt joukkueita</p>
+            )}
         </div>
     );
 }
