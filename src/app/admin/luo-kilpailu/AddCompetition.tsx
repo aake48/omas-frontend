@@ -46,7 +46,7 @@ export default function AddCompetition() {
 
   const handleAddCompetition = async (values: any) => {
     try {
-      const competitonInfo: PostCompetition =
+      const competitionInfo: PostCompetition =
         values.startDate || values.endDate
           ? {
             competitionName: values.competitionName,
@@ -67,7 +67,7 @@ export default function AddCompetition() {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
             "Content-Type": "application/json",
           },
-          data: competitonInfo,
+          data: competitionInfo,
         });
       
         if (res.status === 201) {

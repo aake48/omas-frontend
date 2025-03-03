@@ -1,12 +1,13 @@
 "use client";
 
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useCallback, useEffect, useState } from "react";
 import Input from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { usePathname } from "next/navigation";
 import { CompetitionResponse } from "@/types/commonTypes";
 import useIsLoggedIn from "@/lib/hooks/is-logged-in";
 import useUserInfo from "@/lib/hooks/get-user.info";
+
 
 export default function TeamCreator({
   competition,
@@ -21,7 +22,8 @@ export default function TeamCreator({
   const isLoggedIn = useIsLoggedIn();
   const user = useUserInfo();
   const [isPartOfClub, setIsPartOfClub] = useState(false);
-    
+  const [search, setSearch] = useState("");
+
   useEffect(() => {
       if (user.userInfo != null) {
           setIsPartOfClub(user.userInfo.club != null);
@@ -47,8 +49,15 @@ export default function TeamCreator({
   {
     return (isLoggedIn && isPartOfClub) ? (
       <>
+          <Input
+          id={"search"}
+          placeholder={"Hae joukkuetta"}
+          required={false}
+          type={"text"}
+          onChange={(e) => setSearch(e.target.value)}
+        ></Input>
         <Input
-          id={"newTeamName"}
+          id={"search"}
           placeholder={"Joukkueen nimi"}
           required={false}
           type={"text"}
