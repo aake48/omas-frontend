@@ -14,6 +14,7 @@ export default function TeamCreator({
   competition: CompetitionResponse;
 }) {
   const [newTeamName, setNewTeamName] = useState("");
+  const [newTeamShort, setNewTeamShort] = useState("");
   const [info, setInfo] = useState("");
   const [isMember, setIsMember] = useState("");
   const pathName = usePathname();
@@ -60,7 +61,7 @@ export default function TeamCreator({
         <Button
           variant="outline"
           className="hover:bg-slate-100 mx-2"
-          onClick={() => handleSubmit(newTeamName)}
+          onClick={() => handleSubmit(newTeamName) }
           disabled={isMember !== ""}
         >
           Luo joukkue
