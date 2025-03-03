@@ -79,7 +79,6 @@ export default function TeamCard({ team, memberOf, setIsMember, userClubName, to
     const [isInTeam, setIsInTeam] = useState<boolean>(memberOf === team.teamName)
 
     useEffect(() => {
-        //if (team.teamMembers && team.teamMembers.length === 5) {
         if (teamMembers && teamMembers.length === 5) {
             setIsFull(true);
         }
@@ -107,12 +106,8 @@ export default function TeamCard({ team, memberOf, setIsMember, userClubName, to
             if (response.status === 200){
                 setIsMember(null)
                 const index = teamMembers?.findIndex(member => member.userId === userId);
-                console.log(index);
-                console.log(teamMembers);
-                console.log(currentUser);
                 if(index){
                     teamMembers?.splice(index, 1)
-                    console.log(teamMembers);
                     setTeamMembers(teamMembers)
                 } 
             } 
