@@ -88,7 +88,7 @@ export default function TeamCard({ team, memberOf, setIsMember, userClubName, to
                             disabled={memberOf !== null || isFull || !isPartOfClub}
                         >
                             {isInTeam
-                                ? "Olet joukkueessa" : !isPartOfClub ? "Liity seuraan": isFull ? "Joukkue on täynnä" : "Liity joukkueeseen"}
+                                ? "Olet joukkueessa" : !isPartOfClub ? "Et ole tässä seurassa": isFull ? "Joukkue on täynnä" : "Liity joukkueeseen"}
                         </Button>
                     )}
                 </div>
