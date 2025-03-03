@@ -134,7 +134,6 @@ export type TTeam = {
   competitionId: string;
   teamName: string;
   teamDisplayName: string;
-  //teamDisplayShort: string;
   teamMembers?: TTeamMember[];
 };
 

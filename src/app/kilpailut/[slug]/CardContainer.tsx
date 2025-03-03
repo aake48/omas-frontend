@@ -43,7 +43,7 @@ export default function CardContainer({
     slug: string;
 }) {
     const [competitions, setCompetitions] = useState<UsersCompetition[]>();
-    const { token } = useUserInfo();
+    const {token} = useUserInfo();
     const [memberOf, setIsMemberOf] = useState<string | null>(null);
     const user = useUserInfo();
     const [userClubName, setUserClubName] = useState<string | null>(null);
