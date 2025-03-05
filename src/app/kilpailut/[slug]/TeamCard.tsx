@@ -79,10 +79,10 @@ export default function TeamCard({ team, memberOf, setIsMember, userClubName, to
     const [isInTeam, setIsInTeam] = useState<boolean>(memberOf === team.teamName)
 
     useEffect(() => {
-        if (teamMembers && teamMembers.length === 5) {
+        if (teamMembers?.length === 5) {
             setIsFull(true);
         }
-    }, [team, teamMembers]);
+    }, [team, teamMembers, setTeamMembers]);
 
     useEffect(() => {
         if (isInTeam) {
