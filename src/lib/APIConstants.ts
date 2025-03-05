@@ -15,9 +15,10 @@ const clubQuery: string = "api/club/query";
 export const getCompetitionsQueryUrl = (
   search: string = "",
   page: number,
-  size: number = 10
+  series: string = "",
+  size: number = 10,
 ): string => {
-  return `${baseURL}${compQuery}?search=${search}&page=${page}&size=${size}`;
+  return `${baseURL}${compQuery}?search=${search}&page=${page}&size=${size}&series=${series}`;
 };
 
 export const getCompetitionsByYearQueryUrl = (
