@@ -23,7 +23,7 @@ export default function SeriesDropdown({
             id={id ? id : "dropdown"}
             disabled={disabled}
             required={required}
-            className="py-2 text-xl bg-white placeholder:bg-gray-500 border-slate-500 text-black px-3 min-w-0 border rounded-lg"
+            className="py-2 text-xl bg-white placeholder:bg-gray-500 text-black px-3 min-w-0 border rounded-lg w-80 mt-2 mb-1"
             value={selected ?? "none"}
             onChange={onChange}
         >
