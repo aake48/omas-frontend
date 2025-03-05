@@ -60,6 +60,8 @@ export const addClubURL: string = baseURL + "api/auth/club/new";
 
 export const joinClubURL: string = baseURL + "api/auth/club/join";
 
+export const leaveClubURL: string = baseURL + "api/auth/club/leave";
+
 export const changeClubKeyURL: string = baseURL + "api/club/setPasskey";
 
 export const getClubByIdURL = (id: string) => {

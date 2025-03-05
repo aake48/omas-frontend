@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/Button"
-import { joinClubURL } from "@/lib/APIConstants";
+import { joinClubURL, leaveClubURL } from "@/lib/APIConstants";
 import { User } from "@/types/commonTypes";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -68,11 +68,31 @@ const JoinClub = ({ id, joinedClub, setJoinedClub }: JoinClubProps) => {
         setShowConfirmLeave(true);
     };
 
-    const confirmLeaveClub = (confirm: boolean) => {
-        if (confirm) {
-            handleProfileUpdate(null);
-            setMessage(`Olet poistunut seurasta ${id}.`);
-            setMessageStyle("text-black");
+    const confirmLeaveClub = async (confirm: boolean) => {
+        if (!confirm) {
+            setShowConfirmLeave(false);
+            return;
+        }
+
+        try {
+            const res = await axios.post(
+                leaveClubURL,
+                {},
+                { headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" } }
+            );
+
+            if (res.status === 200) {
+                handleProfileUpdate(null);
+                setMessage(`Olet poistunut seurasta ${id}.`);
+                setMessageStyle("text-black");
+            } else {
+                setMessage(`Seurasta poistuminen epäonnistui.`);
+                setMessageStyle("text-red-500");
+            }
+        } catch (error) {
+            console.log(error);
+            setMessage(`Seurasta poistuminen epäonnistui.`);
+            setMessageStyle("text-red-500");
         }
         setShowConfirmLeave(false);
     };
