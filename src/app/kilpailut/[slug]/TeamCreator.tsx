@@ -15,7 +15,7 @@ export default function TeamCreator({
   competition: CompetitionResponse;
 }) {
   const [newTeamName, setNewTeamName] = useState("");
-  const [newTeamShort, setNewTeamShort] = useState("");
+  const [teamDisplayShort, setTeamDisplayShort] = useState("");
   const [info, setInfo] = useState("");
   const [isMember, setIsMember] = useState("");
   const pathName = usePathname();
@@ -30,7 +30,7 @@ export default function TeamCreator({
       }
   }, [user]);
 
-  async function handleSubmit(teamName: string) {
+  async function handleSubmit(teamName: string, teamDisplayShort: string) {
     const response = await fetch(`${pathName}/api/create`, {
       method: "POST",
       headers: {
@@ -40,6 +40,7 @@ export default function TeamCreator({
       body: JSON.stringify({
         teamName: teamName,
         competitionName: competition.competitionId,
+        teamDisplayShort: teamDisplayShort,
       }),
     });
     const data = await response.json();
@@ -67,10 +68,21 @@ export default function TeamCreator({
           value={newTeamName}
           disabled={isMember !== ""}
         ></Input>
+         <Input
+          id={"search"}
+          placeholder={"Joukkueen lyhenne"}
+          required={false}
+          type={"text"}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setTeamDisplayShort(e.target.value)
+          }
+          value={teamDisplayShort}
+          disabled={isMember !== ""}
+        ></Input>
         <Button
           variant="outline"
           className="hover:bg-slate-100 mx-2"
-          onClick={() => handleSubmit(newTeamName) }
+          onClick={() => handleSubmit(newTeamName, teamDisplayShort) }
           disabled={isMember !== ""}
         >
           Luo joukkue
