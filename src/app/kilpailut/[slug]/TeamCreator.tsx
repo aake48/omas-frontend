@@ -12,7 +12,7 @@ import useUserInfo from "@/lib/hooks/get-user.info";
 export default function TeamCreator({
   competition,
 }: {
-  competition: CompetitionResponse;
+    competition: CompetitionResponse;
 }) {
   const [newTeamName, setNewTeamName] = useState("");
   const [teamDisplayShort, setTeamDisplayShort] = useState("");
@@ -22,7 +22,7 @@ export default function TeamCreator({
   const isLoggedIn = useIsLoggedIn();
   const user = useUserInfo();
   const [isPartOfClub, setIsPartOfClub] = useState(false);
-  const [search, setSearch] = useState("");
+
 
   useEffect(() => {
       if (user.userInfo != null) {
@@ -50,13 +50,6 @@ export default function TeamCreator({
   {
     return (isLoggedIn && isPartOfClub) ? (
       <>
-          <Input
-          id={"search"}
-          placeholder={"Hae joukkuetta"}
-          required={false}
-          type={"text"}
-          onChange={(e) => setSearch(e.target.value)}
-        ></Input>
         <Input
           id={"search"}
           placeholder={"Joukkueen nimi"}
