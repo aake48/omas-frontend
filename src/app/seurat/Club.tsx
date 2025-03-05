@@ -6,11 +6,13 @@ import { formatDate } from "@/lib/utils";
 import useUserInfo from "@/lib/hooks/get-user.info";
 
 interface ClubProps {
-    club: ClubResponse,
-    clubAdminRoles: string[]
+    club: ClubResponse;
+    clubAdminRoles: string[];
+    joinedClub: string | null;
+    setJoinedClub: (club: string | null) => void;
 }
 
-const Club = ({ club, clubAdminRoles }: ClubProps) => {
+const Club = ({ club, clubAdminRoles, joinedClub, setJoinedClub }: ClubProps) => {
     const { token } = useUserInfo();
 
     return (
@@ -20,11 +22,14 @@ const Club = ({ club, clubAdminRoles }: ClubProps) => {
                 <p className="text-slate-700">Seura luotu: {formatDate(club.creationDate)}</p>
             </div>
             <div>
-			    <JoinClub id={club.name} />
-                { (clubAdminRoles && clubAdminRoles.includes(club.name)) ? <ChangeClubKey token={token} clubName={club.name} /> : null }
+                {/* Pass `joinedClub` state to JoinClub */}
+                <JoinClub id={club.name} joinedClub={joinedClub} setJoinedClub={setJoinedClub} />
+
+                {/* Display ChangeClubKey only for club admins */}
+                {clubAdminRoles.includes(club.name) && <ChangeClubKey token={token} clubName={club.name} />}
             </div>
         </div>
-    )
-}
+    );
+};
   
 export default Club;
