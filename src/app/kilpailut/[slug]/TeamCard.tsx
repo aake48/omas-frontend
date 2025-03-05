@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/Button";
 import React, { Suspense, useEffect, useState } from "react";
 import useIsLoggedIn from "@/lib/hooks/is-logged-in";
 import {TTeam,TTeamMember} from "@/types/commonTypes";
-import useUserInfo from "@/lib/hooks/get-user.info";
 import { addTeamMemberURL } from "@/lib/APIConstants";
+import { removeTeamMemberURL } from "@/lib/APIConstants";
 
 export async function joinTeam(
     token: string,
@@ -38,8 +38,40 @@ export async function joinTeam(
     }
   }
 
-export default function TeamCard({ team, memberOf, setIsMember, userClubName, token, userLegalName}: 
-    { team: TTeam , memberOf: string | null, setIsMember: (teamName: string | null) => void, userClubName: string | null, token: string, userLegalName: string} ) {
+export async function leaveTeam(
+    token: string,
+    teamName: string,
+    competitionName: string
+  ) {
+    const trimmedTeamName = teamName.trim();
+  
+    if (token == null) {
+      return { message: "Virheellinen käyttäjä", status: 400 };
+    }
+    try {
+      const response = await fetch(removeTeamMemberURL, {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + token,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ teamName: trimmedTeamName, competitionName: competitionName })
+      });
+  
+      if (!response.ok) {
+        return { message: "Virhe joukkueesta poistumisessa", status: response.status };
+      }
+  
+      return { body: "Joukkueesta poistuminen onnistui", status: response.status };
+    } catch (error: any) {
+      console.error(error);
+      return { message: "Virhe joukkueesta poistumisessa: ", status: 500 };
+    }
+  }
+
+export default function TeamCard({ team, memberOf, setIsMember, userClubName, token, userLegalName, userId}: 
+    { team: TTeam , memberOf: string | null, setIsMember: (teamName: string | null) => void, userClubName: string | null, 
+        token: string, userLegalName: string, userId: number} ) {
     const isLoggedIn = useIsLoggedIn();
     const [teamMembers, setTeamMembers] = useState(team.teamMembers)
     const [isFull , setIsFull] = useState<boolean>(false);
@@ -47,10 +79,10 @@ export default function TeamCard({ team, memberOf, setIsMember, userClubName, to
     const [isInTeam, setIsInTeam] = useState<boolean>(memberOf === team.teamName)
 
     useEffect(() => {
-        if (team.teamMembers && team.teamMembers.length === 5) {
+        if (teamMembers && teamMembers.length === 5) {
             setIsFull(true);
         }
-    }, [team]);
+    }, [team, teamMembers]);
 
     useEffect(() => {
         if (isInTeam) {
@@ -59,16 +91,30 @@ export default function TeamCard({ team, memberOf, setIsMember, userClubName, to
         memberOf === team.teamName ? setIsInTeam(true) : setIsInTeam(false);
     }, [memberOf, teamMembers, setIsMember]);
 
-    async function handleClick(teamName: string, competitionId: string) {
-        const response = await joinTeam(token, teamName, competitionId);
-        if (response.status === 200){
-            setIsMember(teamName);
-            const currentUser: TTeamMember = {userId: 0, competitionId: competitionId, teamName: teamName, legalName: userLegalName}
-            teamMembers?.push(currentUser);
-            setTeamMembers(teamMembers);
+    async function handleClick(teamName: string, competitionId: string, leave: boolean) {
+        const currentUser: TTeamMember = {userId: userId, competitionId: competitionId, teamName: teamName, legalName: userLegalName}
+        if(!leave){
+            const response = await joinTeam(token, teamName, competitionId);
+            if (response.status === 200){
+                setIsMember(teamName);
+                teamMembers?.push(currentUser);
+                setTeamMembers(teamMembers);
+            }
+        }
+        else{
+            const response = await leaveTeam(token, teamName, competitionId);
+            if (response.status === 200){
+                setIsMember(null)
+                const index = teamMembers?.findIndex(member => member.userId === userId);
+                if(index){
+                    teamMembers?.splice(index, 1)
+                    setTeamMembers(teamMembers)
+                } 
+            } 
         }
     }
-
+    let buttonDisabled = memberOf !== null || isFull || !isPartOfClub;
+    buttonDisabled ? buttonDisabled = isInTeam ? false : true : true;
     return (
         <Suspense fallback={<div>Loading...</div>}>
             <div
@@ -83,12 +129,12 @@ export default function TeamCard({ team, memberOf, setIsMember, userClubName, to
                             variant="outline"
                             className="hover:bg-slate-100"
                             onClick={() =>
-                                handleClick(team.teamName, team.competitionId)
+                                handleClick(team.teamName, team.competitionId, isInTeam)
                             }
-                            disabled={memberOf !== null || isFull || !isPartOfClub}
+                            disabled={buttonDisabled}
                         >
                             {isInTeam
-                                ? "Olet joukkueessa" : !isPartOfClub ? "Et ole tässä seurassa": isFull ? "Joukkue on täynnä" : "Liity joukkueeseen"}
+                                ? "Poistu joukkueesta" : !isPartOfClub ? "Et ole tässä seurassa": isFull ? "Joukkue on täynnä" : "Liity joukkueeseen"}
                         </Button>
                     )}
                 </div>
