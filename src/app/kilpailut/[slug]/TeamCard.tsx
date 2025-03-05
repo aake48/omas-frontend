@@ -124,6 +124,7 @@ export default function TeamCard({ team, memberOf, setIsMember, userClubName, to
             >
                 <div className="flex flex-col gap-2 justify-between md:flex-row items-center">
                     <p className="text-lg truncate">{team.teamDisplayName}</p>
+                    <p className="text-lg truncate">{team.teamDisplayShort}</p>
                     {isLoggedIn && (
                         <Button
                             variant="outline"
