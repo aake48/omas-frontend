@@ -31,7 +31,7 @@ export type CompetitionResponse = {
   competitionId: string; // name is the id - url frienldy
   displayName: string; //name but with öäå which were removed from name @id
   type: "rifle" | "pistol";
-  series: "Y-mestaruussarja" | "Y-suomisarja" | "Y50-mestaruussarja" | "Y50-suomisarja";
+  competitionSeries: "Y-mestaruussarja" | "Y-suomisarja" | "Y50-mestaruussarja" | "Y50-suomisarja";
   startDate: string;
   endDate: string;
   creationDate: string;
