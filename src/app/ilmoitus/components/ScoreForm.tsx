@@ -159,12 +159,6 @@ export default function ScoreCard({
               )}
             </Field>}
             </div>
-          { <Custominput
-                        label="Kilpailija"
-                        name="name"
-                        type="text"
-                        placeholder="Nimi"
-                    /> }
           <Custominput
             label="Kierrostulos"
             name="score"
