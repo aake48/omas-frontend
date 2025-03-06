@@ -45,7 +45,7 @@ export interface UsersCompetition {
   teamName: string;
   clubName: string;
   teamDisplayName: string;
-  teamMembers: Object[];
+  teamMembers?: TTeamMember[];
 }
 
 /**

@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik, Form, Field } from "formik";
 import { fullCompValidationSchema, roundValidationSchema } from "../validation";
 import Custominput from "@/components/ui/CustomInput";
 import Dropdown from "@/components/ui/Dropdown";
-import { ScoreType, UsersCompetition } from "@/types/commonTypes";
+import { ScoreType, TTeam, TTeamMember, UsersCompetition } from "@/types/commonTypes";
 import UploadFile from "./UploadFile";
 import { sendScore } from "@/app/actions";
 import useUserInfo from "@/lib/hooks/get-user.info";
@@ -24,12 +24,13 @@ export default function ScoreCard({
   const scoreValue = scoreType === "update" ? round : total;
   const [message, setMessage] = React.useState<PostReturn | null>(null);
   const [teamName, setTeamName] = React.useState<string | null>(null);
+  const [teamMembers, setTeamMembers] = useState<string[]>([]);
+
   let competitionNames: any[] = ["none"];
   if (competitions != null) {
     competitionNames = competitions.map(
       (competition) => competition.competitionId
     );
-    
   }
   const { token } = useUserInfo();
   const [resetUploadKey, setResetUploadKey] = useState(0); // A key used to trigger a reset
@@ -40,8 +41,14 @@ export default function ScoreCard({
     );
     if (foundCompetition) {
       setTeamName(foundCompetition.teamName);
+      console.log("Team name: " +  teamName);
+    }
+
+    if (foundCompetition?.teamMembers && foundCompetition.teamMembers.length > 0) {
+      setTeamMembers(foundCompetition.teamMembers.map(member => member.legalName));
     }
   }
+
 
   return (
     <div>
@@ -53,6 +60,7 @@ export default function ScoreCard({
         id="scoreCardForm"
         initialValues={{
           competitionName: "none",
+          teamMember: "",
           bullseyes: "",
           score: "",
           images: [] as FileList | [],
@@ -112,6 +120,7 @@ export default function ScoreCard({
                     selected={field.value}
                     required
                     onChange={(e) => {
+                      console.log("Kisan (e) nimi: " + e.target.value)
                       form.setFieldValue(field.name, e.target.value);
                       handleDropDownChange(e.target.value);
                     }}
@@ -126,12 +135,36 @@ export default function ScoreCard({
             </Field>
             <div>{teamName}</div>
           </div>
-          {/* <Custominput
-                        label="Nimi"
+          <div className="grid gap-2">
+            <label className="md:text-xl font-light">Joukkueen jäsen</label>
+            {<Field name="teamMember">
+              {({ field, form }: any) => (
+                <div className="grid">
+                  <Dropdown
+                    id="teamMemberDropdown"
+                    options={teamMembers}
+                    selected={field.value}
+                    required
+                    onChange={(e) => {
+                      console.log("e:n arvo, joukkueen jäsen: " + e.target.value)
+                      form.setFieldValue(field.name, e.target.value);
+                    }}
+                  />
+                  {form.errors.teamMember && form.touched ? (
+                    <div className="text-red-500 w-fit p-1 bg-red-100 rounded-b-md translate-x-1">
+                      {form.errors.teamMember}
+                    </div>
+                  ) : null}
+                </div>
+              )}
+            </Field>}
+            </div>
+          { <Custominput
+                        label="Kilpailija"
                         name="name"
                         type="text"
                         placeholder="Nimi"
-                    /> */}
+                    /> }
           <Custominput
             label="Kierrostulos"
             name="score"
