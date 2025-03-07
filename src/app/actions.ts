@@ -5,6 +5,8 @@ import {
   addTeamMemberURL,
   getFileUploadUrl,
 } from "@/lib/APIConstants";
+import axios from "axios";
+import https from "https";
 import jwt from "jsonwebtoken";
 
 /**
@@ -22,35 +24,51 @@ export async function sendScore(token: string, formData: FormData) {
     console.error("No auth header found in request.");
     return { message: "Virheellinen käyttäjä", status: 400 };
   }
+  /*  try {
+      const response = await fetch(addScoreSum, {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + token,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          competitionName: formData.get("competitionName")?.toString(),
+          teamName: formData.get("teamName")?.toString(),
+          score: formData.get("score"),
+          bullsEyeCount: formData.get("bullseyes"),
+          requestType: formData.get("requestType"),
+        }),
+      });*/
   try {
-    const response = await fetch(addScoreSum, {
-      method: 'POST',
+    const response = await axios.post(addScoreSum, {
+      competitionName: formData.get("competitionName")?.toString(),
+      teamName: formData.get("teamName")?.toString(),
+      teamMember: formData.get("teamMember")?.toString(),
+      score: formData.get("score"),
+      bullsEyeCount: formData.get("bullseyes"),
+      requestType: formData.get("requestType"),
+    }, {
       headers: {
         'Authorization': 'Bearer ' + token,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        competitionName: formData.get("competitionName")?.toString(),
-        teamName: formData.get("teamName")?.toString(),
-        score: formData.get("score"),
-        bullsEyeCount: formData.get("bullseyes"),
-        requestType: formData.get("requestType"),
+      httpsAgent: new https.Agent({
+          rejectUnauthorized: false
       }),
-    });
+    })
 
-    const body = await response.json();
+    //const body = await response.json();
 
-    images.forEach((image) => {
+    /*images.forEach((image) => {
       uploadImage(token, image, formData.get("competitionName")?.toString()!);
-    });
+    });*/
 
-    return { body: body, status: response.status };
+    return { body: response.data, status: response.status };
   } catch (error: any) {
     console.log(error);
     return { message: "Virhe tuloksen lähetyksessä", status: 500 };
   }
 }
-
 /**
 * upload image
 * POST api/file/upload/
