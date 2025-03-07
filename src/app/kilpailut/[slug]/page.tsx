@@ -1,6 +1,5 @@
 import * as Q from "@/lib/APIConstants";
 import fetchData from "@/api/get";
-import TeamCreator from "./TeamCreator";
 import CardContainer from "./CardContainer";
 import { formatDate } from "@/lib/utils";
 
@@ -29,7 +28,6 @@ export default async function CompetitionPage({
         <p>Alkaa: {formatDate(competition.startDate)}</p>
         <p>Päättyy: {formatDate(competition.endDate)}</p>
       </span>
-      <TeamCreator competition={competition} />
       <CardContainer
         slug={slug}
         teams={teams}
