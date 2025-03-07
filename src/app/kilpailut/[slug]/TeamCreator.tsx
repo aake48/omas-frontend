@@ -12,16 +12,17 @@ import useUserInfo from "@/lib/hooks/get-user.info";
 export default function TeamCreator({
   competition,
 }: {
-  competition: CompetitionResponse;
+    competition: CompetitionResponse;
 }) {
   const [newTeamName, setNewTeamName] = useState("");
+  const [teamDisplayShort, setTeamDisplayShort] = useState("");
   const [info, setInfo] = useState("");
   const [isMember, setIsMember] = useState("");
   const pathName = usePathname();
   const isLoggedIn = useIsLoggedIn();
   const user = useUserInfo();
   const [isPartOfClub, setIsPartOfClub] = useState(false);
-  const [search, setSearch] = useState("");
+
 
   useEffect(() => {
       if (user.userInfo != null) {
@@ -29,7 +30,7 @@ export default function TeamCreator({
       }
   }, [user]);
 
-  async function handleSubmit(teamName: string) {
+  async function handleSubmit(teamName: string, teamDisplayShort: string) {
     const response = await fetch(`${pathName}/api/create`, {
       method: "POST",
       headers: {
@@ -39,6 +40,7 @@ export default function TeamCreator({
       body: JSON.stringify({
         teamName: teamName,
         competitionName: competition.competitionId,
+        teamDisplayShort: teamDisplayShort,
       }),
     });
     const data = await response.json();
@@ -48,13 +50,6 @@ export default function TeamCreator({
   {
     return (isLoggedIn && isPartOfClub) ? (
       <>
-          <Input
-          id={"search"}
-          placeholder={"Hae joukkuetta"}
-          required={false}
-          type={"text"}
-          onChange={(e) => setSearch(e.target.value)}
-        ></Input>
         <Input
           id={"search"}
           placeholder={"Joukkueen nimi"}
@@ -66,10 +61,21 @@ export default function TeamCreator({
           value={newTeamName}
           disabled={isMember !== ""}
         ></Input>
+         <Input
+          id={"search"}
+          placeholder={"Joukkueen lyhenne"}
+          required={false}
+          type={"text"}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setTeamDisplayShort(e.target.value)
+          }
+          value={teamDisplayShort}
+          disabled={isMember !== ""}
+        ></Input>
         <Button
           variant="outline"
           className="hover:bg-slate-100 mx-2"
-          onClick={() => handleSubmit(newTeamName)}
+          onClick={() => handleSubmit(newTeamName, teamDisplayShort) }
           disabled={isMember !== ""}
         >
           Luo joukkue
