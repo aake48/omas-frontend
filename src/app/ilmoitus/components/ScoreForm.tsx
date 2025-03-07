@@ -41,15 +41,12 @@ export default function ScoreCard({
     );
     if (foundCompetition) {
       setTeamName(foundCompetition.teamName);
-      console.log("Team name: " +  teamName);
     }
 
     if (foundCompetition?.teamMembers && foundCompetition.teamMembers.length > 0) {
       setTeamMembers(foundCompetition.teamMembers.map(member => member.legalName));
     }
   }
-
-
   return (
     <div>
       {message && (
@@ -82,6 +79,7 @@ export default function ScoreCard({
           });
 
           formData.append("teamName", teamName!);
+          formData.append("teamMember", values.teamMember);
           formData.append("requestType", scoreType);
 
           for (let index = 0; index < values.images.length; index++) {
