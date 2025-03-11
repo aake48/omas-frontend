@@ -23,8 +23,7 @@ const User = ({ user }: UserProps) => {
   })
 
   const handleSubmit = async (data: FormData) => {
-//    const role = data.get("role");
-      const role = selectedRole;
+    const role = data.get("role");
     if (data.get("promote")) {
       try {
         const res = await axios({
@@ -111,6 +110,10 @@ const User = ({ user }: UserProps) => {
       }
     };
 
+    function handleSelectedRoleChange(role: string){
+      setSelectedRole(role);
+    }
+
     return (
       <div className="items-center gap-2 p-2 w-full border-solid border border-slate-300 rounded-lg shadow-md">
         <Button
@@ -145,11 +148,12 @@ const User = ({ user }: UserProps) => {
             className='flex flex-row gap-2'
           >
             <Dropdown
-                id="role"
-                options={["admin", "user"
-                ]}
-                onChange={(e) => setSelectedRole(e.target.value)}
-                selected={selectedRole}
+              id="role"
+              name="role"
+              options={["admin", "user"
+              ]}
+              onChange={(e) => handleSelectedRoleChange(e.target.value)}
+              selected={selectedRole}
             />
             <Button
               variant="outline"
