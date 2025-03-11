@@ -5,6 +5,7 @@ import { getAdminDeleteUserUrl, getAdminDemoteUserUrl, getAdminPromoteUserUrl } 
 import { AdminUser } from '@/types/commonTypes';
 import { formatDate } from "@/lib/utils";
 import useUserInfo from '@/lib/hooks/get-user.info';
+import Dropdown from '@/components/ui/Dropdown';
 
 interface UserProps {
   user: AdminUser;
@@ -14,6 +15,7 @@ const User = ({ user }: UserProps) => {
   const [message, setMessage] = useState("");
   const [messageStyle, setMessageStyle] = useState("text-black");
   const { token } = useUserInfo();
+  const [selectedRole, setSelectedRole] = useState("");
 
   const roles: string[] = [];
   user.roles.map(role => {
@@ -21,7 +23,8 @@ const User = ({ user }: UserProps) => {
   })
 
   const handleSubmit = async (data: FormData) => {
-    const role = data.get("role");
+//    const role = data.get("role");
+      const role = selectedRole;
     if (data.get("promote")) {
       try {
         const res = await axios({
@@ -141,11 +144,12 @@ const User = ({ user }: UserProps) => {
             action={handleSubmit}
             className='flex flex-row gap-2'
           >
-            <input
-              className='border rounded-lg p-2'
-              type="text"
-              name="role"
-              placeholder="rooli"
+            <Dropdown
+                id="role"
+                options={["admin", "user"
+                ]}
+                onChange={(e) => setSelectedRole(e.target.value)}
+                selected={selectedRole}
             />
             <Button
               variant="outline"
