@@ -30,10 +30,9 @@ export const roundValidationSchema = Yup.object().shape({
         .required('Kilpailu on pakollinen')
         .notOneOf(['none'], 'Kilpailu on pakollinen')
         .default('none'),
-    // name: Yup.string()
-    //     .min(2, 'Nimi on liian lyhyt')
-    //     .max(50, 'Nimi on liian pitkä')
-    //     .required('Nimi on pakollinen'),
+        teamMember: Yup.string()
+        .required('Joukkueen jäsen on pakollinen')
+        .default('none'),
     score: Yup.number()
         .min(0, 'Tulos ei voi olla negatiivinen')
         .max(10.9, 'Tulos ei voi olla yli 10.9')
@@ -50,10 +49,9 @@ export const fullCompValidationSchema = Yup.object().shape({
         .required('Kilpailu on pakollinen')
         .notOneOf(['none'], 'Kilpailu on pakollinen')
         .default('none'),
-    // name: Yup.string()
-    //     .min(2, 'Nimi on liian lyhyt')
-    //     .max(50, 'Nimi on liian pitkä')
-    //     .required('Nimi on pakollinen'),
+     teamMember: Yup.string()
+        .required('Joukkueen jäsen on pakollinen')
+        .default('none'),
     score: Yup.number()
         .min(0, 'Tulos ei voi olla negatiivinen')
         .max(654, 'Tulos ei voi olla yli 654')

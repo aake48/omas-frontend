@@ -15,9 +15,10 @@ const clubQuery: string = "api/club/query";
 export const getCompetitionsQueryUrl = (
   search: string = "",
   page: number,
-  size: number = 10
+  series: string = "",
+  size: number = 10,
 ): string => {
-  return `${baseURL}${compQuery}?search=${search}&page=${page}&size=${size}`;
+  return `${baseURL}${compQuery}?search=${search}&page=${page}&size=${size}&series=${series}`;
 };
 
 export const getCompetitionsByYearQueryUrl = (
@@ -59,6 +60,8 @@ export const addCompetitionURL: string = baseURL + "api/auth/competition/new";
 export const addClubURL: string = baseURL + "api/auth/club/new";
 
 export const joinClubURL: string = baseURL + "api/auth/club/join";
+
+export const leaveClubURL: string = baseURL + "api/auth/club/leave";
 
 export const changeClubKeyURL: string = baseURL + "api/club/setPasskey";
 
