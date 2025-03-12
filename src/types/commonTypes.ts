@@ -136,6 +136,7 @@ export type TTeam = {
   teamDisplayName: string;
   teamDisplayShort: string;
   teamMembers?: TTeamMember[];
+  teamSeries: string;
 };
 
 export type TTeamMember = {

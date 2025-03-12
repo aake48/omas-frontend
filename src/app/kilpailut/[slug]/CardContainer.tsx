@@ -17,7 +17,6 @@ import useIsLoggedIn from "@/lib/hooks/is-logged-in";
 import { Button } from "@/components/ui/Button";
 import fetchData from "@/api/get";
 import SeriesDropdown from "@/components/ui/SeriesDropdown";
-import Dropdown from "@/components/ui/Dropdown";
 
 export default function CardContainer({
   teams,
@@ -34,8 +33,7 @@ export default function CardContainer({
   const user = useUserInfo();
   const [userClubName, setUserClubName] = useState<string | null>(null);
   const [search, setSearch] = useState("");
-  const [searchedTeams, setSearchedTeams] = useState<TTeam[]>(teams.content);
-  const [currentTeams, setCurrentTeams] = useState<{content: TTeam[]}>(teams);
+  const [currentTeams, setCurrentTeams] = useState<TTeam[]>(teams.content);
 
   const [newTeamName, setNewTeamName] = useState("");
   const [teamDisplayShort, setTeamDisplayShort] = useState("");
@@ -130,11 +128,20 @@ async function getUserCompetitions(token: any) {
     
     //Search for teams
     useEffect(() => {
-      const searchedTeams = currentTeams.content.filter((team) =>
-        team.teamDisplayName.toLowerCase().includes(search.toLowerCase())
-      );
-      setSearchedTeams(searchedTeams);
-    }, [search, currentTeams]);
+      const fetchTeams = async () => {
+        try {
+          const teams = await fetchData(
+            Q.getCompetitionInfoQueryURL(slug, 0, 0, seriesFilter, search)
+          );
+          if(teams){
+            setCurrentTeams(teams.content);
+          }
+        } catch (e: any) {
+          console.error(e);
+        }
+      }
+      fetchTeams();
+    }, [search, seriesFilter]);
 
     const handleSeriesFilterChange = (series: string) => {
       if(series !== "Kaikki sarjat"){
@@ -146,14 +153,13 @@ async function getUserCompetitions(token: any) {
     }
 
     const handleCreateTeamSeriesChange = (series: string) => {
-      if(series !== "Valitse sarja"){
+      if(series !== "Valitse joukkueen sarja"){
         setCreateTeamSeries(series);
       }
       else{
         setCreateTeamSeries("");
       }
     }
-
   const teamCreator = 
   <>
     <Input
@@ -194,7 +200,6 @@ async function getUserCompetitions(token: any) {
     </Button>
     <p className="whitespace-pre">{info ? info : null}</p>
   </>;
-
   const teamCards = 
   <div className="grid my-5 justify-center sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8">
       <div className="col-span-full mb-4">
@@ -208,14 +213,14 @@ async function getUserCompetitions(token: any) {
         />
         <SeriesDropdown
           id={"seriesDropdown"}
-          options={["Kaikki sarjat", "Y-mestaruussarja", "Y-suomisarja", "Y50-mestaruussarja", "Y50-suomisarja"]}
+          options={["Kaikki sarjat"].concat(competition.competitionSeries)}
           selected={seriesFilter}
           onChange={(e) => handleSeriesFilterChange(e.target.value)}
           required={false}
           leftGap={"ml-4"}
         />
       </div>
-        {searchedTeams.length > 0 ? searchedTeams.map((team: TTeam) => (
+        {currentTeams.length > 0 ? currentTeams.map((team: TTeam) => (
             <TeamCard 
               setIsMember={setIsMemberOf} 
               key={team.teamName} 
