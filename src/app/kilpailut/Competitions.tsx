@@ -62,6 +62,7 @@ export default function Competitions() {
         selected={seriesFilter}
         onChange={(e) => handleSeriesFilterChange(e.target.value)}
         required={false}
+        width={"w-80"}
       />
       {competitions &&
         competitions.map((competition, index) => (
