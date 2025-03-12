@@ -12,7 +12,8 @@ const CreateClub = () => {
 
     const handleSubmit = async (data: FormData) => {
         const clubName = data.get("club");
-        
+        const clubPassword = data.get("passKey");
+
         try {
             const res = await axios({
                 method: 'post',
@@ -22,7 +23,8 @@ const CreateClub = () => {
                     'Content-Type': 'application/json'
                 },
                 data: {
-                    clubName: clubName
+                    clubName: clubName,
+                    passkey: clubPassword
                 }
             });
 
@@ -57,6 +59,12 @@ const CreateClub = () => {
                             type="text"
                             name="club"
                             placeholder="seuran nimi"
+                            />
+                        <input
+                            className='border rounded-lg p-2'
+                            type="text"
+                            name="passKey"
+                            placeholder="seuran salasana"
                             />
                         <Button
                             variant="outline"
