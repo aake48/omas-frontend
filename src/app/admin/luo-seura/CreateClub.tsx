@@ -24,7 +24,7 @@ const CreateClub = () => {
                 },
                 data: {
                     clubName: clubName,
-                    passkey: clubPassword
+                    passKey: clubPassword
                 }
             });
 
@@ -62,7 +62,7 @@ const CreateClub = () => {
                             />
                         <input
                             className='border rounded-lg p-2'
-                            type="text"
+                            type="password"
                             name="passKey"
                             placeholder="seuran salasana"
                             />
