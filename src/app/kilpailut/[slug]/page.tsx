@@ -1,6 +1,5 @@
 import * as Q from "@/lib/APIConstants";
 import fetchData from "@/api/get";
-import TeamCreator from "./TeamCreator";
 import CardContainer from "./CardContainer";
 import { formatDate } from "@/lib/utils";
 
@@ -23,13 +22,13 @@ export default async function CompetitionPage({
         Tyyppi: {competition.type === "rifle" ? "ilmakivääri" : "ilmapistooli"}
       </p>
       <p>
-        Sarja: {competition.competitionSeries}
+        Sarjat: {competition.competitionSeries.length > 1 ? competition.competitionSeries.join(", ")
+                : competition.competitionSeries}
       </p>
       <span className="flex flex-row gap-5">
         <p>Alkaa: {formatDate(competition.startDate)}</p>
         <p>Päättyy: {formatDate(competition.endDate)}</p>
       </span>
-      <TeamCreator competition={competition} />
       <CardContainer
         slug={slug}
         teams={teams}

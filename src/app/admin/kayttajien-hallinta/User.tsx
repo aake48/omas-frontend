@@ -5,6 +5,7 @@ import { getAdminDeleteUserUrl, getAdminDemoteUserUrl, getAdminPromoteUserUrl } 
 import { AdminUser } from '@/types/commonTypes';
 import { formatDate } from "@/lib/utils";
 import useUserInfo from '@/lib/hooks/get-user.info';
+import Dropdown from '@/components/ui/Dropdown';
 
 interface UserProps {
   user: AdminUser;
@@ -14,6 +15,7 @@ const User = ({ user }: UserProps) => {
   const [message, setMessage] = useState("");
   const [messageStyle, setMessageStyle] = useState("text-black");
   const { token } = useUserInfo();
+  const [selectedRole, setSelectedRole] = useState("");
 
   const roles: string[] = [];
   user.roles.map(role => {
@@ -108,6 +110,10 @@ const User = ({ user }: UserProps) => {
       }
     };
 
+    function handleSelectedRoleChange(role: string){
+      setSelectedRole(role);
+    }
+
     return (
       <div className="items-center gap-2 p-2 w-full border-solid border border-slate-300 rounded-lg shadow-md">
         <Button
@@ -141,11 +147,13 @@ const User = ({ user }: UserProps) => {
             action={handleSubmit}
             className='flex flex-row gap-2'
           >
-            <input
-              className='border rounded-lg p-2'
-              type="text"
+            <Dropdown
+              id="role"
               name="role"
-              placeholder="rooli"
+              options={["admin", "user"
+              ]}
+              onChange={(e) => handleSelectedRoleChange(e.target.value)}
+              selected={selectedRole}
             />
             <Button
               variant="outline"

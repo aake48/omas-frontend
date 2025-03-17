@@ -8,6 +8,8 @@ interface DropdownProps {
     selected?: any;
     onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     value?: any;
+    width?: string;
+    leftGap?: string;
 }
 
 export default function SeriesDropdown({
@@ -17,13 +19,15 @@ export default function SeriesDropdown({
     required = false,
     selected,
     onChange,
+    width,
+    leftGap
 }: DropdownProps) {
     return (
         <select
             id={id ? id : "dropdown"}
             disabled={disabled}
             required={required}
-            className="py-2 text-xl bg-white placeholder:bg-gray-500 text-black px-3 min-w-0 border rounded-lg w-80 mt-2 mb-1"
+            className={"py-2 text-xl bg-white placeholder:bg-gray-500 text-black px-3 min-w-0 border rounded-lg mt-2 mb-1 " + width + " " + leftGap}
             value={selected ?? "none"}
             onChange={onChange}
         >
