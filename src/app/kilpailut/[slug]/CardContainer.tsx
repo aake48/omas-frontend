@@ -198,7 +198,7 @@ async function getUserCompetitions(token: any) {
     >
       Luo joukkue
     </Button>
-    <p className="whitespace-pre">{info ? info : null}</p>
+    <p className="whitespace-pre">{info || null}</p>
   </>;
   const teamCards = 
   <div className="grid my-5 justify-center sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8">

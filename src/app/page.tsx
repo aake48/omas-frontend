@@ -20,7 +20,7 @@ export type competitionListProps = {
 
 export default function Home() {
   const { token } = useUserInfo();
-  const tokenString = token ? token : "";
+  const tokenString = token || "";
 
   const [futureCompetitions, setFutureCompetitions] = useState<
     CompetitionResponse[]

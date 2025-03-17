@@ -70,8 +70,8 @@ export async function leaveTeam(
   }
 
 export default function TeamCard({ team, memberOf, setIsMember, userClubName, token, userLegalName, userId}: 
-    { team: TTeam , memberOf: string | null, setIsMember: (teamName: string | null) => void, userClubName: string | null, 
-        token: string, userLegalName: string, userId: number} ) {
+    Readonly<{ team: TTeam , memberOf: string | null, setIsMember: (teamName: string | null) => void, userClubName: string | null,
+        token: string, userLegalName: string, userId: number}> ) {
     const isLoggedIn = useIsLoggedIn();
     const [teamMembers, setTeamMembers] = useState(team.teamMembers)
     const [isFull , setIsFull] = useState<boolean>(false);

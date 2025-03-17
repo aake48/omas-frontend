@@ -8,7 +8,7 @@ interface ScoreTypeSelectorContainerProps {
 
 export default function ScoreTypeSelectorContainer({
     onScoreTypeChange,
-}: ScoreTypeSelectorContainerProps) {
+}: Readonly<ScoreTypeSelectorContainerProps>) {
     const [scoreType, setScoreType] = React.useState<ScoreType | null>(null);
 
     function handleClick(scoreType: ScoreType) {

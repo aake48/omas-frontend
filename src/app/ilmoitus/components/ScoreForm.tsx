@@ -15,10 +15,10 @@ interface PostReturn {
 export default function ScoreCard({
   scoreType,
   competitions,
-}: {
+}: Readonly<{
   scoreType: ScoreType;
   competitions: UsersCompetition[] | null;
-}) {
+}>) {
   const round = { bullseyes: 10, score: 10.9 };
   const total = { bullseyes: 60, score: 654 };
   const scoreValue = scoreType === "update" ? round : total;
@@ -82,11 +82,11 @@ export default function ScoreCard({
           formData.append("teamMember", values.teamMember);
           formData.append("requestType", scoreType);
 
-          for (let index = 0; index < values.images.length; index++) {
+          for (const element of values.images) {
             formData.append(
               `image`,
-              values.images[index],
-              values.images[index].name
+              element,
+              element.name
             );
           }
 
