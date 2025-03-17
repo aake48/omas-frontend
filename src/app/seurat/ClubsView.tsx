@@ -79,9 +79,9 @@ const ClubsView = () => {
                 <Input id="search" placeholder="Hae seuraa" type="text" onChange={(e) => setSearch(e.target.value)} />
                 <Paginator pageNumber={pageNumber} totalPages={data.totalPages} handlePageNumberChange={handlePageNumberChange} />
                 <div className="flex flex-col gap-2 w-full">
-                    {data.content.map((club: ClubResponse) => (
+                    {data.content.map((club: ClubResponse, index: number) => (
                         <Club
-                            key={club.id}
+                            key={club.id ?? `club-${index}`}
                             club={club}
                             joinedClub={joinedClub}
                             setJoinedClub={setJoinedClub}
