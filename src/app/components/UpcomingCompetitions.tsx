@@ -6,7 +6,7 @@ import { competitionListProps } from "../page";
 import { competitionTypes } from "@/lib/constants";
 import { useRouter } from "next/navigation";
 
-export default function UpcomingCompetitions(props: competitionListProps) {
+export default function UpcomingCompetitions(props: Readonly<competitionListProps>) {
   const router = useRouter();
 
   return (
