@@ -4,8 +4,7 @@ import { Button } from "@/components/ui/Button";
 import React, { Suspense, useEffect, useState } from "react";
 import useIsLoggedIn from "@/lib/hooks/is-logged-in";
 import {TTeam,TTeamMember} from "@/types/commonTypes";
-import { addTeamMemberURL } from "@/lib/APIConstants";
-import { removeTeamMemberURL } from "@/lib/APIConstants";
+import { addTeamMemberURL, removeTeamMemberURL } from "@/lib/APIConstants";
 
 export async function joinTeam(
     token: string,
@@ -70,8 +69,8 @@ export async function leaveTeam(
   }
 
 export default function TeamCard({ team, memberOf, setIsMember, userClubName, token, userLegalName, userId}: 
-    { team: TTeam , memberOf: string | null, setIsMember: (teamName: string | null) => void, userClubName: string | null, 
-        token: string, userLegalName: string, userId: number} ) {
+    Readonly<{ team: TTeam , memberOf: string | null, setIsMember: (teamName: string | null) => void, userClubName: string | null,
+        token: string, userLegalName: string, userId: number}> ) {
     const isLoggedIn = useIsLoggedIn();
     const [teamMembers, setTeamMembers] = useState(team.teamMembers)
     const [isFull , setIsFull] = useState<boolean>(false);
@@ -143,16 +142,16 @@ export default function TeamCard({ team, memberOf, setIsMember, userClubName, to
                     )}
                 </div>
 
-                <div className="grid gap-1">
-                    <p className=" text-md">Jäsenet:</p>
-                    {teamMembers && teamMembers.length > 0 ? (
+                {isLoggedIn && teamMembers && teamMembers.length > 0 ? (
+                    <div className="grid gap-1">
+                        <p className="text-md">Jäsenet:</p>
                         <div className="grid border h-full border-slate-300 gap-x-4 bg-slate-100 p-2 shadow-md rounded-md grid-cols-2">
-                            {teamMembers.map((member, index) => {
-                                return <p key={index}>{member.legalName}</p>;
-                            })}
+                            {teamMembers.map((member) => (
+                                <p key={member.userId}>{member.legalName}</p>
+                            ))}
                         </div>
-                    ) : null}
-                </div>
+                    </div>
+                ) : null}
             </div>
         </Suspense>
     );

@@ -47,7 +47,7 @@ const ClubsView = () => {
                 if (storedUser?.club) setJoinedClub(storedUser.club);
 
                 if (storedUser?.roles) {
-                    const roles:String[] = storedUser.roles.replace(/[[\]]/g, "").split(",");
+                    const roles:string[] = storedUser.roles.replace(/[[\]]/g, "").split(",");
                     const adminRoles = roles
                         .filter(role => role.endsWith("/admin"))
                         .map(role => role.replace("/admin", "").trim());

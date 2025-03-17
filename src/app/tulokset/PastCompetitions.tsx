@@ -99,7 +99,7 @@ const PastCompetitions = () => {
 				</Formik>
 			</div>
 			{ 
-				!(content.totalPages < 1) ?
+				content.totalPages >= 1 ?
 					<Paginator
 						pageNumber={pageNumber}
 						totalPages={content.totalPages}
