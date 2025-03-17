@@ -7,11 +7,13 @@ import { Form, Formik } from "formik";
 import validationSchema from "./add-competition-validation";
 import CustomInput from "@/components/ui/CustomInput";
 import CustomDropdown from "@/components/ui/CustomDropdown";
+import SeriesCombobox from "@/components/ui/SeriesCombobox";
 import { useRouter } from "next/navigation";
 import { PostCompetition } from "@/types/commonTypes";
 import { useState } from "react";
 import useUserInfo from "@/lib/hooks/get-user.info";
 import AdminNavbar from "../AdminNavbar";
+
 
 export default function AddCompetition() {
   const [message, setMessage] = useState("");
@@ -39,27 +41,29 @@ export default function AddCompetition() {
   const initialValues = {
     competitionName: "",
     competitionType: "Ilmakivääri",
-    competitionSeries: "Y-mestaruussarja",
+    competitionSeries: "",
     startDate: "",
     endDate: "",
   };
 
   const handleAddCompetition = async (values: any) => {
+    console.log("Sarjat: " + values.competitionSeries);
     try {
       const competitionInfo: PostCompetition =
         values.startDate || values.endDate
           ? {
             competitionName: values.competitionName,
             competitionType: competitionTypes[values.competitionType],
-            competitionSeries: competitionSeries[values.competitionSeries],
+            competitionSeries: values.competitionSeries,
             startDate: Date.parse(values.startDate),
             endDate: Date.parse(values.endDate),
           }
           : {
             competitionName: values.competitionName,
             competitionType: competitionTypes[values.competitionType],
-            competitionSeries: competitionSeries[values.competitionSeries],
-            };
+            competitionSeries: values.competitionSeries,
+          };
+      console.log("Kilpailun sarjat: " + competitionInfo.competitionSeries.toString());
       const res = await axios({
           method: "post",
           url: addCompetitionURL,
@@ -79,7 +83,6 @@ export default function AddCompetition() {
 
     } catch (error: any) {
       if (error.response.data) {
-        console.log(error.response.data);
         setMessage(`Kilpailun ${values.competitionName} luonti epäonnistui`);
       }
     }
@@ -109,7 +112,7 @@ export default function AddCompetition() {
               placeholder={"Kilpailun tyyppi"}
               options={competitionTypeOptions}
             />
-            <CustomDropdown
+            <SeriesCombobox
               label={"Kilpailusarja"}
               name={"competitionSeries"}
               placeholder="Kilpailusarja"

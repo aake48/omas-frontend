@@ -18,7 +18,8 @@ export async function POST(request: NextRequest) {
     try {
         const response = await axios.post(
           addTeamToCompetitionURL,
-          { teamName: trimmedTeamName, competitionName: requestBody.competitionName, teamDisplayShort: requestBody.teamDisplayShort },
+          { teamName: trimmedTeamName, competitionName: requestBody.competitionName, 
+            teamDisplayShort: requestBody.teamDisplayShort, teamSeries: requestBody.teamSeries},
           {
             headers: {
               Authorization: authHeader,
