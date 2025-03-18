@@ -7,7 +7,6 @@ import { ScoreType, TTeam, TTeamMember, UsersCompetition } from "@/types/commonT
 import UploadFile from "./UploadFile";
 import { sendScore } from "@/app/actions";
 import useUserInfo from "@/lib/hooks/get-user.info";
-import { set } from "lodash";
 
 interface PostReturn {
   message: string;
