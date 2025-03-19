@@ -62,6 +62,7 @@ export default function Competitions() {
         selected={seriesFilter}
         onChange={(e) => handleSeriesFilterChange(e.target.value)}
         required={false}
+        width={"w-80"}
       />
       {competitions &&
         competitions.map((competition, index) => (
@@ -76,7 +77,7 @@ export default function Competitions() {
             </p>
             <p className="sm:ml-auto sm:mr-5 text-slate-700">
               <span 
-                className="text-sm text-black mr-10 text-base">{competition.competitionSeries}
+                className="text-sm text-black mr-10 text-base">{competition.competitionSeries.join(", ")}
               </span>
               {formatDate(competition.startDate) +
                 " - " +

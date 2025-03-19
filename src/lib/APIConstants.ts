@@ -99,9 +99,11 @@ export const getTeamsByCompetitionIdURL = (id: string) => {
 export const getCompetitionInfoQueryURL = (
   id: string,
   page: number = 0,
-  size: number = 10
+  size: number = 10,
+  series: string = "",
+  search: string = ""
 ) => {
-  return `${baseURL}${comp}/teams?search=${id}&page=${page}&size=${size}`;
+  return `${baseURL}${comp}/teams?search=${id}&page=${page}&size=${size}&series=${series}&name=${search}`;
 };
 
 export const getTeamMembersURL = (teamName: string, competitionId: string) => {

@@ -16,6 +16,7 @@ import { usePathname } from "next/navigation";
 import useIsLoggedIn from "@/lib/hooks/is-logged-in";
 import { Button } from "@/components/ui/Button";
 import fetchData from "@/api/get";
+import SeriesDropdown from "@/components/ui/SeriesDropdown";
 
 export default function CardContainer({
   teams,
@@ -32,8 +33,13 @@ export default function CardContainer({
   const user = useUserInfo();
   const [userClubName, setUserClubName] = useState<string | null>(null);
   const [search, setSearch] = useState("");
+<<<<<<< HEAD
   const [searchedTeams, setSearchedTeams] = useState<TTeam[]>(teams.content);
   const [currentTeams, setCurrentTeams] = useState<{content: TTeam[]}>(teams);
+=======
+  const [currentTeams, setCurrentTeams] = useState<TTeam[]>(teams.content);
+
+>>>>>>> 8363cbee84b81440c2f17844b2ad0a2dc6e64c0c
   const [newTeamName, setNewTeamName] = useState("");
   const [teamDisplayShort, setTeamDisplayShort] = useState("");
   const [info, setInfo] = useState("");
@@ -41,6 +47,8 @@ export default function CardContainer({
   const pathName = usePathname();
   const isLoggedIn = useIsLoggedIn();
   const [isPartOfClub, setIsPartOfClub] = useState(false);
+  const [seriesFilter, setSeriesFilter] = useState("")
+  const [createTeamSeries, setCreateTeamSeries] = useState("")
 
   useEffect(() => {
     if (user.userInfo != null) {
@@ -48,7 +56,7 @@ export default function CardContainer({
     }
   }, [user]);
 
-  async function handleSubmit(teamName: string, teamDisplayShort: string) {
+  async function handleSubmit(teamName: string, teamDisplayShort: string, teamSeries: string) {
     const response = await fetch(`${pathName}/api/create`, {
       method: "POST",
       headers: {
@@ -59,10 +67,10 @@ export default function CardContainer({
         teamName: teamName,
         competitionName: competition.competitionId,
         teamDisplayShort: teamDisplayShort,
+        teamSeries: teamSeries,
       }),
     });
     const data = await response.json();
-    console.log(data)
     setInfo(data.message);
 
     setCurrentTeams(teams = await fetchData(
@@ -125,12 +133,38 @@ async function getUserCompetitions(token: any) {
     
     //Search for teams
     useEffect(() => {
-      const searchedTeams = currentTeams.content.filter((team) =>
-        team.teamDisplayName.toLowerCase().includes(search.toLowerCase())
-      );
-      setSearchedTeams(searchedTeams);
-    }, [search, currentTeams]);
+      const fetchTeams = async () => {
+        try {
+          const teams = await fetchData(
+            Q.getCompetitionInfoQueryURL(slug, 0, 0, seriesFilter, search)
+          );
+          if(teams){
+            setCurrentTeams(teams.content);
+          }
+        } catch (e: any) {
+          console.error(e);
+        }
+      }
+      fetchTeams();
+    }, [search, seriesFilter]);
 
+    const handleSeriesFilterChange = (series: string) => {
+      if(series !== "Kaikki sarjat"){
+        setSeriesFilter(series);
+      }
+      else{
+        setSeriesFilter("");
+      }
+    }
+
+    const handleCreateTeamSeriesChange = (series: string) => {
+      if(series !== "Valitse joukkueen sarja"){
+        setCreateTeamSeries(series);
+      }
+      else{
+        setCreateTeamSeries("");
+      }
+    }
   const teamCreator = 
   <>
     <Input
@@ -155,17 +189,22 @@ async function getUserCompetitions(token: any) {
       value={teamDisplayShort}
       disabled={isMember !== ""}
     ></Input>
+    <SeriesDropdown
+      options={["Valitse joukkueen sarja"].concat(competition.competitionSeries)}
+      selected={createTeamSeries}
+      onChange={(e) => handleCreateTeamSeriesChange(e.target.value)}
+      required={false}
+        />
     <Button
       variant="outline"
       className="hover:bg-slate-100 mx-2"
-      onClick={() => handleSubmit(newTeamName, teamDisplayShort) }
+      onClick={() => handleSubmit(newTeamName, teamDisplayShort, createTeamSeries) }
       disabled={isMember !== ""}
     >
       Luo joukkue
     </Button>
     <p className="whitespace-pre">{info ? info : null}</p>
   </>;
-
   const teamCards = 
   <div className="grid my-5 justify-center sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8">
       <div className="col-span-full mb-4">
@@ -177,8 +216,16 @@ async function getUserCompetitions(token: any) {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
+        <SeriesDropdown
+          id={"seriesDropdown"}
+          options={["Kaikki sarjat"].concat(competition.competitionSeries)}
+          selected={seriesFilter}
+          onChange={(e) => handleSeriesFilterChange(e.target.value)}
+          required={false}
+          leftGap={"ml-4"}
+        />
       </div>
-        {searchedTeams.length > 0 ? searchedTeams.map((team: TTeam) => (
+        {currentTeams.length > 0 ? currentTeams.map((team: TTeam) => (
             <TeamCard 
               setIsMember={setIsMemberOf} 
               key={team.teamName} 
@@ -190,7 +237,7 @@ async function getUserCompetitions(token: any) {
               userId={user?.userInfo?.userId}
             />
         )) : (
-          <p>Kyseisellä nimellä ei löytynyt joukkueita</p>
+          <p>Joukkueita ei löytynyt</p>
         )}
     </div>
 

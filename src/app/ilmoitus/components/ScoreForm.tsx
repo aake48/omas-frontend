@@ -25,6 +25,7 @@ export default function ScoreCard({
   const [message, setMessage] = React.useState<PostReturn | null>(null);
   const [teamName, setTeamName] = React.useState<string | null>(null);
   const [teamMembers, setTeamMembers] = useState<string[]>([]);
+  const [teamMemberIds, setTeamMemberIds] = useState<number[]>([]);
 
   let competitionNames: any[] = ["none"];
   if (competitions != null) {
@@ -45,6 +46,7 @@ export default function ScoreCard({
 
     if (foundCompetition?.teamMembers && foundCompetition.teamMembers.length > 0) {
       setTeamMembers(foundCompetition.teamMembers.map(member => member.legalName));
+      setTeamMemberIds(foundCompetition.teamMembers.map(member => member.userId));
     }
   }
   return (
@@ -95,6 +97,7 @@ export default function ScoreCard({
             resetForm();
             setResetUploadKey((prevKey) => prevKey + 1);
             setTeamName(null);
+            setTeamMembers([]);
             console.log(response);
             response.status === 200
               ? setMessage({
@@ -141,9 +144,11 @@ export default function ScoreCard({
                   <Dropdown
                     id="teamMemberDropdown"
                     options={teamMembers}
+                    value={teamMemberIds}
                     selected={field.value}
                     required
                     onChange={(e) => {
+                      console.log("Valittu joukkueen jäsen: " + e.target.value + " Joukkueen jäsenen id: " + teamMemberIds[teamMembers.indexOf(e.target.value)])
                       console.log("e:n arvo, joukkueen jäsen: " + e.target.value)
                       form.setFieldValue(field.name, e.target.value);
                     }}

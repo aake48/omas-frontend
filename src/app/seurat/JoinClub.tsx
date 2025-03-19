@@ -45,7 +45,7 @@ const JoinClub = ({ id, joinedClub, setJoinedClub }: JoinClubProps) => {
         try {
             const res = await axios.post(
                 joinClubURL,
-                { clubName: id, passkey: pass },
+                { clubName: id, passKey: pass },
                 { headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" } }
             );
 

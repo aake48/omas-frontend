@@ -118,13 +118,16 @@ export default function TeamCard({ team, memberOf, setIsMember, userClubName, to
     return (
         <Suspense fallback={<div>Loading...</div>}>
             <div
-                className={`flex flex-col border-2 shadow-md p-5 gap-5 rounded-md ${
+                className={`flex flex-col border-2 shadow-md p-5 gap-2 rounded-md ${
                     isInTeam ? "bg-slate-200" : null
                 }`}
             >
-                <div className="flex flex-col gap-2 justify-between md:flex-row items-center">
-                    <p className="text-lg truncate">{team.teamDisplayName}</p>
-                    <p className="text-lg truncate">{team.teamDisplayShort}</p>
+                <div className="flex flex-col justify-between md:flex-row items-center">
+                  <div className="flex flex-col">
+                      <p className="text-lg truncate">{team.teamDisplayName}</p>
+                      <p className="text-md truncate mt-2">{team.teamDisplayShort}</p>
+                      <p className="text-md truncate mt-2">{team.teamSeries}</p>
+                  </div>
                     {isLoggedIn && (
                         <Button
                             variant="outline"
