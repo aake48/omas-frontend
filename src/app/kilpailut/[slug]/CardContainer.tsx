@@ -67,10 +67,10 @@ export default function CardContainer({
     });
     const data = await response.json();
     setInfo(data.message);
-
-    setCurrentTeams(teams = await fetchData(
-        Q.getCompetitionInfoQueryURL(slug, 0, 100)
-      ));
+    const teamsData = await fetchData(
+      Q.getCompetitionInfoQueryURL(slug, 0, 100)
+    )
+    setCurrentTeams(teamsData.content);
   }
 
 async function getUserCompetitions(token: any) {
