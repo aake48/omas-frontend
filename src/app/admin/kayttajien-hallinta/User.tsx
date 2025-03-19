@@ -6,6 +6,8 @@ import { AdminUser } from '@/types/commonTypes';
 import { formatDate } from "@/lib/utils";
 import useUserInfo from '@/lib/hooks/get-user.info';
 import Dropdown from '@/components/ui/Dropdown';
+import * as Q from "@/lib/APIConstants";
+import fetchData from '@/api/get';
 
 interface UserProps {
   user: AdminUser;
@@ -16,6 +18,7 @@ const User = ({ user }: UserProps) => {
   const [messageStyle, setMessageStyle] = useState("text-black");
   const { token } = useUserInfo();
   const [selectedRole, setSelectedRole] = useState("");
+  const [userRoles, setUserRoles] = useState<string[]>([]);
 
   const roles: string[] = [];
   user.roles.map(role => {
@@ -80,7 +83,16 @@ const User = ({ user }: UserProps) => {
         setMessageStyle("text-red-500");
       }
     }
-  };
+  const rolesData = await axios({
+    url: Q.getUserRoles(),
+    headers: {
+      Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+  });
+  const rolesString = JSON.stringify(rolesData.data).split(",")
+  setUserRoles(rolesString);
+  }
 
     const handleDeleteUser = async () => {
       try {

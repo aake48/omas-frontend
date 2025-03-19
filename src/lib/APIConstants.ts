@@ -166,6 +166,10 @@ export const getUserClub = () => {
   return `${baseURL}api/user/club`;
 }
 
+export const getUserRoles = () => {
+  return `${baseURL}api/user/role`;
+}
+
 export const getActiveCompetitions = (page: number = 0, size: number = 10) => {
   return `${baseURL}${comp}/active/query?page=${page}&size=${size}`;
 };

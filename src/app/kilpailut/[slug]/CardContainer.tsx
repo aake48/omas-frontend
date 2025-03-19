@@ -33,8 +33,13 @@ export default function CardContainer({
   const user = useUserInfo();
   const [userClubName, setUserClubName] = useState<string | null>(null);
   const [search, setSearch] = useState("");
+<<<<<<< HEAD
+  const [searchedTeams, setSearchedTeams] = useState<TTeam[]>(teams.content);
+  const [currentTeams, setCurrentTeams] = useState<{content: TTeam[]}>(teams);
+=======
   const [currentTeams, setCurrentTeams] = useState<TTeam[]>(teams.content);
 
+>>>>>>> 8363cbee84b81440c2f17844b2ad0a2dc6e64c0c
   const [newTeamName, setNewTeamName] = useState("");
   const [teamDisplayShort, setTeamDisplayShort] = useState("");
   const [info, setInfo] = useState("");
@@ -232,7 +237,7 @@ async function getUserCompetitions(token: any) {
               userId={user?.userInfo?.userId}
             />
         )) : (
-          <p>Kyseisellä nimellä ei löytynyt joukkueita</p>
+          <p>Joukkueita ei löytynyt</p>
         )}
     </div>
 
