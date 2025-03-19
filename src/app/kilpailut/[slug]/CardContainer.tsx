@@ -34,7 +34,6 @@ export default function CardContainer({
   const [search, setSearch] = useState("");
   const [searchedTeams, setSearchedTeams] = useState<TTeam[]>(teams.content);
   const [currentTeams, setCurrentTeams] = useState<{content: TTeam[]}>(teams);
-
   const [newTeamName, setNewTeamName] = useState("");
   const [teamDisplayShort, setTeamDisplayShort] = useState("");
   const [info, setInfo] = useState("");
