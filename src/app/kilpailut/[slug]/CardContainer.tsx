@@ -232,7 +232,7 @@ async function getUserCompetitions(token: any) {
               userId={user?.userInfo?.userId}
             />
         )) : (
-          <p>Kyseisellä nimellä ei löytynyt joukkueita</p>
+          <p>Joukkueita ei löytynyt</p>
         )}
     </div>
 
