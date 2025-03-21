@@ -76,12 +76,12 @@ export default function ScoreCard({
           Object.entries(values).forEach(([key, value]) => {
             if (key !== "images") {
               // Skip the image field for now
-              formData.append(key, value.toString()); // Ensure value is a string
+              key === "teamMember" ? formData.append(key, teamMemberIds[teamMembers.indexOf(value.toString())].toString())
+              : formData.append(key, value.toString()); // Ensure value is a string
             }
           });
 
           formData.append("teamName", teamName!);
-          formData.append("teamMember", values.teamMember);
           formData.append("requestType", scoreType);
 
           for (let index = 0; index < values.images.length; index++) {
