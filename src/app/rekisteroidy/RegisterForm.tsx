@@ -73,7 +73,7 @@ export default function RegisterForm() {
               localStorage.setItem("userInfo", JSON.stringify(userInfo));
               //window.dispatchEvent(new Event("localStorageChange"));
               window.dispatchEvent(new Event("storage"));
-              router.push("/");
+              router.push("/seurat");
             }
           } else {
             setErrorMessage(`Rekisteröityminen epäonnistui.`);
