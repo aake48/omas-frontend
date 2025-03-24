@@ -80,7 +80,6 @@ export default function ScoreCard({
               : formData.append(key, value.toString()); // Ensure value is a string
             }
           });
-
           formData.append("teamName", teamName!);
           formData.append("requestType", scoreType);
 
@@ -139,7 +138,14 @@ export default function ScoreCard({
           <div className="grid gap-2">
             <label className="md:text-xl font-light">Joukkueen jäsen</label>
             {<Field name="teamMember">
-              {({ field, form }: any) => (
+              {({ field, form }: any) => {
+                useEffect(() => {
+                  if (teamMemberIds.length > 0) {
+                    console.log("Valittu joukkueen jäsen: " + teamMembers[0] + " Joukkueen jäsenen id: " + teamMemberIds[teamMembers.indexOf(teamMembers[0])])
+                    form.setFieldValue(field.name, teamMembers[0]);
+                  }
+                }, [teamMemberIds]);
+              return (
                 <div className="grid">
                   <Dropdown
                     id="teamMemberDropdown"
@@ -159,7 +165,7 @@ export default function ScoreCard({
                     </div>
                   ) : null}
                 </div>
-              )}
+              )}}
             </Field>}
             </div>
           <Custominput
