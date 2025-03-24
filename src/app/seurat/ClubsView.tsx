@@ -78,7 +78,7 @@ const ClubsView = () => {
 	return (
         <main className="flex min-h-screen flex-col items-center p-4 gap-10">
             <h1 className="text-4xl">Seurat</h1>
-                <Input id="search" placeholder="Hae seuraa" required={false} type="text" onChange={(e) => setSearch(e.target.value)} />
+                <Input id="search" placeholder="Hae seuraa" type="text" onChange={(e) => setSearch(e.target.value)} required={false}  />
                 <Paginator pageNumber={pageNumber} totalPages={data.totalPages} handlePageNumberChange={handlePageNumberChange} />
                 <div className="flex flex-col gap-2 w-full">
                     {data.content?.map((club: ClubResponse) => (
