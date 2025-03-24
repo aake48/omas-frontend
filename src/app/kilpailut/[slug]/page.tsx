@@ -7,9 +7,9 @@ export type paramsType = Promise<{slug: string}>
 
 export default async function CompetitionPage({
   params,
-}: {
+}: Readonly<{
   params: paramsType;
-}) {
+}>) {
   const {slug} = await params;
   const competition = await fetchData(Q.getCompetitionByIdUrl(slug));
   const teams = await fetchData(
