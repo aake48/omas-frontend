@@ -47,7 +47,11 @@ const ClubsView = () => {
                 if (storedUser?.club) setJoinedClub(storedUser.club);
 
                 if (storedUser?.roles) {
+<<<<<<< HEAD
                     const roles:string[] = storedUser.roles.replace(/[[\]]/g, "").split(",");
+=======
+                    const roles:String[] = storedUser.roles.replace(/[[\]]/g, "").split(",");
+>>>>>>> kirjautuminen-feature
                     const adminRoles = roles
                         .filter(role => role.endsWith("/admin"))
                         .map(role => role.replace("/admin", "").trim());
@@ -76,7 +80,11 @@ const ClubsView = () => {
 	return (
         <main className="flex min-h-screen flex-col items-center p-4 gap-10">
             <h1 className="text-4xl">Seurat</h1>
+<<<<<<< HEAD
                 <Input id="search" placeholder="Hae seuraa" type="text" onChange={(e) => setSearch(e.target.value)} required={false} />
+=======
+                <Input id="search" placeholder="Hae seuraa" required={false} type="text" onChange={(e) => setSearch(e.target.value)} />
+>>>>>>> kirjautuminen-feature
                 <Paginator pageNumber={pageNumber} totalPages={data.totalPages} handlePageNumberChange={handlePageNumberChange} />
                 <div className="flex flex-col gap-2 w-full">
                     {data.content?.map((club: ClubResponse) => (

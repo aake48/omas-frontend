@@ -39,7 +39,11 @@ export default function Login() {
                 localStorage.setItem("token", token);
                 localStorage.setItem("userInfo", JSON.stringify(userInfo));
                 window.dispatchEvent(new Event("storage"));
-                router.push("/");
+                if (userInfo.club == null) {
+                    router.push("/seurat");
+                } else {
+                    router.push("/");
+                }
             } else {
                 setMessage(
                     "Kirjautuminen ei onnistunut. Tarkista, että syöttämäsi tiedot ovat oikein."

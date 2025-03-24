@@ -43,7 +43,7 @@ export async function sendScore(token: string, formData: FormData) {
     const response = await axios.post(addScoreSum, {
       competitionName: formData.get("competitionName")?.toString(),
       teamName: formData.get("teamName")?.toString(),
-      teamMember: formData.get("teamMember")?.toString(),
+      userId: formData.get("teamMember"),
       score: formData.get("score"),
       bullsEyeCount: formData.get("bullseyes"),
       requestType: formData.get("requestType"),

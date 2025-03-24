@@ -18,13 +18,17 @@ export default function ScoreTypeSelectorContainer({
     return (
         <div className=" justify-around gap-16 flex p-2">
             <Button
-                className="border w-32 px-4 py-2 rounded-lg hover:bg-slate-100"
+                className={`border w-32 px-4 py-2 rounded-lg ${
+                    scoreType === "update" ? "bg-blue-200" : ""}
+                `}
                 onClick={() => handleClick("update")}
             >
                 Kierros
             </Button>
             <Button
-                className="border px-4 py-2 rounded-lg hover:bg-slate-100"
+                className={`border px-4 py-2 rounded-lg ${
+                    scoreType === "set" ? "bg-blue-200" : ""}
+                `} 
                 onClick={() => handleClick("set")}
             >
                 Kokonaistulos

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import axios from 'axios';
 import { getAdminDeleteUserUrl, getAdminDemoteUserUrl, getAdminPromoteUserUrl } from '@/lib/APIConstants';
@@ -6,6 +6,7 @@ import { AdminUser } from '@/types/commonTypes';
 import { formatDate } from "@/lib/utils";
 import useUserInfo from '@/lib/hooks/get-user.info';
 import Dropdown from '@/components/ui/Dropdown';
+import * as Q from "@/lib/APIConstants";
 
 interface UserProps {
   user: AdminUser;
@@ -16,14 +17,11 @@ const User = ({ user }: UserProps) => {
   const [messageStyle, setMessageStyle] = useState("text-black");
   const { token } = useUserInfo();
   const [selectedRole, setSelectedRole] = useState("");
-
-  const roles: string[] = [];
-  user.roles.map(role => {
-    roles.push(role.role);
-  })
+  const [userRoles, setUserRoles] = useState<string[]>();
 
   const handleSubmit = async (data: FormData) => {
-    const role = data.get("role");
+    let role = data.get("role");
+    role = role === "admin" ? "ROLE_ADMIN" : role === "user" ? "ROLE_USER" : "";
     if (data.get("promote")) {
       try {
         const res = await axios({
@@ -80,7 +78,32 @@ const User = ({ user }: UserProps) => {
         setMessageStyle("text-red-500");
       }
     }
-  };
+  const rolesData = await fetchRoles();
+  setUserRoles(rolesData);
+  }
+
+  async function fetchRoles(){
+    const rolesData = await axios({
+      url: Q.getUserRoles(user.id),
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+    const rolesArray = rolesData.data;
+    return rolesArray;
+  }
+
+  useEffect(() => {
+    if(token){
+      const fetchInitialRoles = async () => {
+        const rolesData = await fetchRoles();
+        setUserRoles(rolesData);
+      };
+      
+      fetchInitialRoles();
+    }
+  }, [token]);
 
     const handleDeleteUser = async () => {
       try {
@@ -134,8 +157,8 @@ const User = ({ user }: UserProps) => {
           <h1>{`Viimeisin kirjautuminen: ${formatDate(user.lastLogin)}`}</h1>
           <div className='flex flex-row gap-2'>
             <h1>roolit:</h1>
-            {roles.length !== 0 ? roles.map((role: string, index: number) => (
-              <p key={index}>{role}</p>
+            {userRoles?.length !== 0 ? userRoles?.map((role: string, index: number) => (
+              <p key={index}>{role === "ROLE_ADMIN" ? "admin" : role === "ROLE_USER" ? "user" : ""}</p>
             )) : (
               <p>ei rooleja</p>
             )}
