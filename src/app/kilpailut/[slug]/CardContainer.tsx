@@ -34,7 +34,6 @@ export default function CardContainer({
   const [userClubName, setUserClubName] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [currentTeams, setCurrentTeams] = useState<TTeam[]>(teams.content);
-
   const [newTeamName, setNewTeamName] = useState("");
   const [teamDisplayShort, setTeamDisplayShort] = useState("");
   const [info, setInfo] = useState("");
@@ -67,10 +66,10 @@ export default function CardContainer({
     });
     const data = await response.json();
     setInfo(data.message);
-
-    setCurrentTeams(teams = await fetchData(
-        Q.getCompetitionInfoQueryURL(slug, 0, 100)
-      ));
+    const teamsData = await fetchData(
+      Q.getCompetitionInfoQueryURL(slug, 0, 100)
+    )
+    setCurrentTeams(teamsData.content);
   }
 
 async function getUserCompetitions(token: any) {
@@ -232,7 +231,7 @@ async function getUserCompetitions(token: any) {
               userId={user?.userInfo?.userId}
             />
         )) : (
-          <p>Kyseisellä nimellä ei löytynyt joukkueita</p>
+          <p>Joukkueita ei löytynyt</p>
         )}
     </div>
 
