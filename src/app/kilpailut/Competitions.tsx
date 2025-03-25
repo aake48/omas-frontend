@@ -9,6 +9,7 @@ import { formatDate } from "@/lib/utils";
 import Paginator from "../components/Paginator";
 import fetchData from "@/api/get";
 import SeriesDropdown from "@/components/ui/SeriesDropdown"
+import { ChevronUp, ChevronDown } from "lucide-react";
 
 
 export default function Competitions() {
@@ -17,16 +18,18 @@ export default function Competitions() {
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPage] = useState(0);
   const [seriesFilter, setSeriesFilter] = useState("")
+  const[sortType, setSortType] = useState<"" | "display_name" | "start_date" | "end_date">("");
+  const[sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
   const getCompetitions = useCallback(async () => {
-    const competitions = await fetchData(getCompetitionsQueryUrl(search, page, seriesFilter));
+    const competitions = await fetchData(getCompetitionsQueryUrl(search, page, seriesFilter, sortType, sortOrder));
     setCompetitions(competitions.content);
     setTotalPage(competitions.totalPages);
-  }, [search, page, seriesFilter]);
+  }, [search, page, seriesFilter, sortType, sortOrder]);
 
   useEffect(() => {
     getCompetitions();
-  }, [page]);
+  }, [page, sortType, sortOrder]);
 
   useEffect(() => {
     setPage(0);
@@ -47,6 +50,22 @@ export default function Competitions() {
     }
   }
 
+  const handleSortTypeChange = (type: "display_name" | "start_date" | "end_date") => {
+    if(sortType === type){
+      if(sortOrder === "desc"){
+        setSortType("");
+        setSortOrder("asc");
+      }
+      else{
+        setSortOrder("desc");
+      }
+    }
+    else{
+      setSortType(type);
+      setSortOrder("asc");
+    }
+  }
+
   return (
     <div className="flex flex-col py-5">
       <Input
@@ -64,11 +83,43 @@ export default function Competitions() {
         required={false}
         width={"w-80"}
       />
+      <div className="flex space-x-4 rounded-md my-1">
+        <button
+          onClick={() => handleSortTypeChange("display_name")}
+          className={`flex justify-between items-center px-5 py-2 border-2 rounded-md transition-all ${
+        	sortType === "display_name" ? "border-slate-400 bg-slate-100" : ""} hover:bg-slate-100`}
+        >
+          Nimi
+          {sortType === "display_name" && (
+            <span className="ml-8">{sortOrder === "asc" ? <ChevronUp size={20}/> : <ChevronDown size={20}/>}</span>
+          )}
+        </button>
+        <button
+          onClick={() => handleSortTypeChange("start_date")}
+          className={`flex justify-between items-center px-5 py-2 border-2 rounded-md transition-all ${
+            sortType === "start_date" ? "border-slate-400 bg-slate-100" : ""} hover:bg-slate-100`}
+        >
+          Alkamispäivämäärä
+          {sortType === "start_date" && (
+            <span className="ml-8">{sortOrder === "asc" ? <ChevronUp size={20}/> : <ChevronDown size={20}/>}</span>
+          )}
+        </button>
+        <button
+          onClick={() => handleSortTypeChange("end_date")}
+          className={`flex justify-between items-center px-5 py-2 border-2 rounded-md transition-all ${
+            sortType === "end_date" ? "border-slate-400 bg-slate-100" : ""} hover:bg-slate-100`}
+        >
+          Loppumispäivämäärä
+          {sortType === "end_date" && (
+            <span className="ml-8">{sortOrder === "asc" ? <ChevronUp size={20}/> : <ChevronDown size={20}/>}</span>
+          )}
+        </button>
+      </div>
       {competitions &&
         competitions.map((competition, index) => (
           <Link
             key={index}
-            className={`flex rounded-md cursor-pointer sm:flex-row flex-col items-baseline border my-1 p-2 sm:pl-10 hover:bg-slate-100 
+            className={`flex rounded-md cursor-pointer sm:flex-row transition-all flex-col items-baseline border my-1 p-2 sm:pl-10 hover:bg-slate-100 
               ${(Date.now() > new Date(competition.startDate).getTime() && Date.now() < new Date(competition.endDate).getTime()) ? "bg-slate-200" : ""}`}
             href={"/kilpailut/" + competition.competitionId}
           >
