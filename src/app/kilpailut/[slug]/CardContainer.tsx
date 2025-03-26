@@ -199,47 +199,84 @@ async function getUserCompetitions(token: any) {
     </Button>
     <p className="whitespace-pre">{info || null}</p>
   </>;
-  const teamCards = 
-  <div className="grid my-5 justify-center sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8">
-      <div className="col-span-full mb-4">
-        <Input
-          id="search"
-          placeholder="Hae joukkuetta"
-          required={false}
-          type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <SeriesDropdown
-          id={"seriesDropdown"}
-          options={["Kaikki sarjat"].concat(competition.competitionSeries)}
-          selected={seriesFilter}
-          onChange={(e) => handleSeriesFilterChange(e.target.value)}
-          required={false}
-          leftGap={"ml-4"}
-        />
+
+  const searchBar =
+    <div className="col-span-full mb-4">
+      <Input
+        id="search"
+        placeholder="Hae joukkuetta"
+        required={false}
+        type="text"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+      <SeriesDropdown
+        id={"seriesDropdown"}
+        options={["Kaikki sarjat"].concat(competition.competitionSeries)}
+        selected={seriesFilter}
+        onChange={(e) => handleSeriesFilterChange(e.target.value)}
+        required={false}
+        leftGap={"ml-4"}
+      />
+    </div>
+
+  const userClubTeamCards =
+    <div className="my-5">
+      <h2 className="text-xl font-semibold text-left">Oman seuran joukkueet</h2>
+      <div className="grid my-5 justify-center sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8">
+          {currentTeams.length > 0 ? currentTeams.map((team: TTeam) => (
+            user.userInfo?.club !== undefined && team.clubName === user.userInfo.club ?
+              <TeamCard 
+                setIsMember={setIsMemberOf} 
+                key={team.teamName} 
+                team={team} 
+                memberOf={memberOf} 
+                userClubName={userClubName} 
+                token={token}
+                userLegalName={user?.userInfo?.legalName}
+                userId={user?.userInfo?.userId}
+              />
+            : null
+          )) : (
+            <p>Joukkueita ei löytynyt</p>
+          )}
       </div>
-        {currentTeams.length > 0 ? currentTeams.map((team: TTeam) => (
-            <TeamCard 
-              setIsMember={setIsMemberOf} 
-              key={team.teamName} 
-              team={team} 
-              memberOf={memberOf} 
-              userClubName={userClubName} 
-              token={token}
-              userLegalName={user?.userInfo?.legalName}
-              userId={user?.userInfo?.userId}
-            />
-        )) : (
-          <p>Joukkueita ei löytynyt</p>
-        )}
+    </div>
+
+  const teamCards = 
+    <div>
+      <h2 className="text-xl font-semibold text-left">Muiden seurojen joukkueet</h2>
+      <div className="grid my-5 justify-center sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8">
+          {currentTeams.length > 0 ? currentTeams.map((team: TTeam) => (
+            user.userInfo?.club !== undefined && team.clubName !== user.userInfo.club ?
+              <TeamCard 
+                setIsMember={setIsMemberOf} 
+                key={team.teamName} 
+                team={team} 
+                memberOf={memberOf} 
+                userClubName={userClubName} 
+                token={token}
+                userLegalName={user?.userInfo?.legalName}
+                userId={user?.userInfo?.userId}
+              />
+            : null
+          )) : (
+            <p>Joukkueita ei löytynyt</p>
+          )}
+      </div>
     </div>
 
   return (
     (isLoggedIn && isPartOfClub) ? (
       <>
         {teamCreator}
+        {searchBar}
+        {userClubTeamCards}
         {teamCards}
       </>)
-      : (teamCards));
+      : (
+      <>
+        {searchBar}
+        {teamCards}
+      </>));
 }
