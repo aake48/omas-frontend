@@ -18,6 +18,7 @@ const validationSchema = yup.object().shape({
   startDate: yup
     .date()
     .nullable()
+    .required("Kilpailun aloituspäivämäärä on pakollinen")
     .min(startOfToday, "Kilpailun alkupäivämäärän pitää olla tulevaisuudessa")
     .max(
       oneYearFromNow,
@@ -26,6 +27,7 @@ const validationSchema = yup.object().shape({
   endDate: yup
     .date()
     .nullable()
+    .required("Kilpailun päättymispäivämäärä on pakollinen")
     .min(
       yup.ref("startDate"),
       "Kilpailun loppupäivämäärän pitää olla alkupäivämäärän jälkeen"
