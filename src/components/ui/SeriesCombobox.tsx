@@ -36,6 +36,7 @@ export default function SeriesCombobox({
   const handleAddNewSeries = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && inputValue.trim() !== "") {
       const newSeries = inputValue.trim();
+      e.preventDefault();
       if (!selectedOptions.includes(newSeries)) {
         setSelectedOptions([...selectedOptions, newSeries]);
         helpers.setValue([...selectedOptions, newSeries]);
