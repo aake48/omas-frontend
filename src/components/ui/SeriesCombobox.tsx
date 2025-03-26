@@ -1,5 +1,5 @@
 import { useField } from "formik";
-import { useState } from "react";
+import { useState, useEffect, useRef} from "react";
 import { Cross1Icon } from "@radix-ui/react-icons"
 interface SeriesComboboxProps {
   label: string;
@@ -17,12 +17,14 @@ export default function SeriesCombobox({
   const [inputValue, setInputValue] = useState("");
   const [isFocused, setIsFocused] = useState(false)
   const [selectedOptions, setSelectedOptions] = useState<string[]>(field.value || []);
+  const ref = useRef<HTMLDivElement>(null);
 
   const filteredOptions = options.filter(
     (option) =>
       option.toLowerCase().includes(inputValue.toLowerCase()) &&
       !selectedOptions.includes(option)
   );
+
 
   const handleSelect = (option: string) => {
     setSelectedOptions([...selectedOptions, option]);
@@ -41,6 +43,22 @@ export default function SeriesCombobox({
       setInputValue("");
     }
   };
+
+
+  
+  useEffect(() => {
+    //Close the combobox after clicking outside of it
+    function handleClickOutside(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setIsFocused(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [ref]
+  );
 
   const handleRemove = (option: string) => {
     const updatedOptions = selectedOptions.filter((item) => item !== option);
@@ -77,7 +95,7 @@ export default function SeriesCombobox({
       />
 
       {isFocused && filteredOptions.length > 0 && (
-        <div className="absolute top-full left-0 right-0 mt-1 bg-white border transition-colors rounded-md shadow-lg z-10">
+        <div className="absolute top-full left-0 right-0 mt-1 bg-white border transition-colors rounded-md shadow-lg z-10"  ref={ref}>
           {filteredOptions.map((option) => (
             <div
               key={option}
