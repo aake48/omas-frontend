@@ -33,11 +33,11 @@ export const getCompetitionsByYearQueryUrl = (
 };
 
 export const getCompetitionByNameUrl = (name: string) => {
-  return `${baseURL}${compResultQuery}/${name}`;
+  return `${baseURL}${compResultQuery}?name=${name}`;
 };
 
 export const getCompetitionByIdUrl = (id: string) => {
-  return `${baseURL}${comp}/${id}`;
+  return `${baseURL}${comp}?id=${id}`;
 };
 
 export const getClubQueryUrl = (
@@ -68,7 +68,7 @@ export const leaveClubURL: string = baseURL + "api/auth/club/leave";
 export const changeClubKeyURL: string = baseURL + "api/club/setPasskey";
 
 export const getClubByIdURL = (id: string) => {
-  return `${baseURL}api/club/${id}`;
+  return `${baseURL}api/club/?id=${id}`;
 };
 
 export const getCompetitionTeamsQueryUrl = (
