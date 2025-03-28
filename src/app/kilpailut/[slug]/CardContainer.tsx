@@ -222,7 +222,7 @@ async function getUserCompetitions(token: any) {
 
   const userClubTeamCards =
     <div className="my-5">
-      <h2 className="text-xl font-semibold text-left">Oman seuran joukkueet</h2>
+      <h2 className="text-xl font-semibold text-left">Seurasi joukkueet</h2>
       <div className="grid my-5 justify-center sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8">
           {currentTeams.length > 0 ? currentTeams.map((team: TTeam) => (
             user.userInfo?.club !== undefined && team.clubName === user.userInfo.club ?
@@ -248,7 +248,18 @@ async function getUserCompetitions(token: any) {
       <h2 className="text-xl font-semibold text-left">Muiden seurojen joukkueet</h2>
       <div className="grid my-5 justify-center sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8">
           {currentTeams.length > 0 ? currentTeams.map((team: TTeam) => (
-            user.userInfo?.club !== undefined && team.clubName !== user.userInfo.club ?
+            !isLoggedIn ? 
+              <TeamCard 
+                setIsMember={setIsMemberOf} 
+                key={team.teamName} 
+                team={team} 
+                memberOf={memberOf} 
+                userClubName={userClubName} 
+                token={token}
+                userLegalName={user?.userInfo?.legalName}
+                userId={user?.userInfo?.userId}
+              />
+            : user.userInfo?.club !== undefined && team.clubName !== user.userInfo.club ?
               <TeamCard 
                 setIsMember={setIsMemberOf} 
                 key={team.teamName} 
