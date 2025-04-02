@@ -28,7 +28,9 @@ const CreateUserForm: React.FC<CreateUserFormProps> = ({ isOpen, onClose, onUser
     const [isLoading, setIsLoading] = useState(false);
     const { token } = useUserInfo();
 
-    const [selectedClub, setSelectedClub] = useState("");
+    const [selectedClub, setSelectedClub] = useState({
+        key: '', value: ''
+    });
     const [fetchedClubs, setFetchedClubs] = useState<{key: string, value: string}[]>([]);
 
     useEffect(() => {
@@ -171,10 +173,10 @@ const CreateUserForm: React.FC<CreateUserFormProps> = ({ isOpen, onClose, onUser
                             options={fetchedClubs}
                             onSelect={handleClubSelect}
                             placeholder="Valitse Seura..."
-                            value={selectedClub}
+                            defaultValue={selectedClub}
                         />
                         <Dropdown
-                            id="role"
+                            id="new_user_role"
                             name="role"
                             options={["admin", "user"
                             ]}

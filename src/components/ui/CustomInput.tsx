@@ -8,7 +8,7 @@ interface CustomInputProps {
   placeholder: string;
 }
 
-export default function CustomInput({ label, ...props }: CustomInputProps) {
+export default function CustomInput({ label, ...props }: Readonly<CustomInputProps>) {
   const [field, meta] = useField(props);
   return (
     <div className="relative">
@@ -31,8 +31,9 @@ export default function CustomInput({ label, ...props }: CustomInputProps) {
       </label>
       <input
         id={field.name}
-        {...field}
-        {...props}
+          {...field}
+          {...props}
+          value={field.value ?? ""}
         className={`block z-50 my-2 w-full hover:bg-slate-100 focus:bg-slate-100 text-black rounded-lg border transition-colors  duration-300 md:text-xl text-md px-3 py-2 ${
           meta.touched && meta.error ? "border-red-500" : "border-slate-500"
         }`}
