@@ -32,6 +32,7 @@ export const roundValidationSchema = Yup.object().shape({
         .default('none'),
         teamMember: Yup.string()
         .required('Joukkueen jäsen on pakollinen')
+        .notOneOf(['none'], 'Jäsen on pakollinen')
         .default('none'),
     score: Yup.number()
         .min(0, 'Tulos ei voi olla negatiivinen')
@@ -51,6 +52,7 @@ export const fullCompValidationSchema = Yup.object().shape({
         .default('none'),
      teamMember: Yup.string()
         .required('Joukkueen jäsen on pakollinen')
+        .notOneOf(['none'], 'Jäsen on pakollinen')
         .default('none'),
     score: Yup.number()
         .min(0, 'Tulos ei voi olla negatiivinen')
