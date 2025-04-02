@@ -11,7 +11,7 @@ export default function CustomInput({
   label,
   options,
   ...props
-}: CustomInputProps) {
+}: Readonly<CustomInputProps>) {
   const [field, meta] = useField(props);
   return (
     <div className="relative">
