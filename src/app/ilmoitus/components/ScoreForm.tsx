@@ -59,11 +59,10 @@ export default function ScoreCard({
         id="scoreCardForm"
         initialValues={{
           competitionName: "none",
-          teamMember: "",
+          teamMember: "none",
           bullseyes: "",
           score: "",
           images: [] as FileList | [],
-          // name: "",
         }}
         validationSchema={
           scoreType === "update"
@@ -75,9 +74,13 @@ export default function ScoreCard({
 
           Object.entries(values).forEach(([key, value]) => {
             if (key !== "images") {
-              // Skip the image field for now
-              key === "teamMember" ? formData.append(key, teamMemberIds[teamMembers.indexOf(value.toString())].toString())
-              : formData.append(key, value.toString()); // Ensure value is a string
+              try {
+                // Skip the image field for now
+                key === "teamMember" ? formData.append(key, teamMemberIds[teamMembers.indexOf(value.toString())].toString())
+                : formData.append(key, value.toString()); // Ensure value is a string
+              } catch (error) {
+                console.error(error);
+              }
             }
           });
           formData.append("teamName", teamName!);
@@ -137,14 +140,9 @@ export default function ScoreCard({
           </div>
           <div className="grid gap-2">
             <label className="md:text-xl font-light">Joukkueen jäsen</label>
-            {<Field name="teamMember">
+            
+            <Field name="teamMember">
               {({ field, form }: any) => {
-                useEffect(() => {
-                  if (teamMemberIds.length > 0) {
-                    console.log("Valittu joukkueen jäsen: " + teamMembers[0] + " Joukkueen jäsenen id: " + teamMemberIds[teamMembers.indexOf(teamMembers[0])])
-                    form.setFieldValue(field.name, teamMembers[0]);
-                  }
-                }, [teamMemberIds]);
               return (
                 <div className="grid">
                   <Dropdown
@@ -159,14 +157,14 @@ export default function ScoreCard({
                       form.setFieldValue(field.name, e.target.value);
                     }}
                   />
-                  {form.errors.teamMember && form.touched ? (
+                  {form.errors.teamMember && form.touched.teamMember ? (
                     <div className="text-red-500 w-fit p-1 bg-red-100 rounded-b-md translate-x-1">
                       {form.errors.teamMember}
                     </div>
                   ) : null}
                 </div>
               )}}
-            </Field>}
+            </Field>
             </div>
           <Custominput
             label="Kierrostulos"
