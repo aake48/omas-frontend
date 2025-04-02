@@ -18,11 +18,9 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({
                             }) => {
     const [inputValue, setInputValue] = useState('');
     const [filteredOptions, setFilteredOptions] = useState(options);
-    const [selectedOption, setSelectedOption] = useState({
-        key: '', value: ''
-    });
+    const [selectedOption, setSelectedOption] = useState<{ key: string; value: string } | null>(null);
     const [isOpen, setIsOpen] = useState(false);
-    const dropdownRef = useRef(null);
+    const dropdownRef = useRef<HTMLDivElement | null>(null);
 
 
     useEffect(() => {
@@ -37,8 +35,8 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({
 
 
     useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
                 setIsOpen(false);
             }
         };
@@ -49,7 +47,7 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({
         };
     }, []);
 
-    const handleInputChange = (e) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setInputValue(value);
 
@@ -65,7 +63,7 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({
         }
     };
 
-    const handleOptionClick = (option) => {
+    const handleOptionClick = (option: { key: string; value: string }) => {
         setSelectedOption(option);
         setInputValue(option.value);
         onSelect(option.key);
