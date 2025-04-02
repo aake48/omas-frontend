@@ -1,6 +1,15 @@
 import React, {useState, useEffect, useRef} from 'react';
 
-const SearchableDropdown = ({
+interface SearchableDropdownProps {
+    options: { key: string; value: string }[];
+    placeholder?: string;
+    onSelect: (key: string | null) => void;
+    disabled?: boolean;
+    defaultValue?: {key: string, value: string};
+    value?: string | null; // Add this
+}
+
+const SearchableDropdown: React.FC<SearchableDropdownProps> = ({
                                 options,
                                 placeholder = 'Valitse...',
                                 onSelect,
@@ -9,14 +18,16 @@ const SearchableDropdown = ({
                             }) => {
     const [inputValue, setInputValue] = useState('');
     const [filteredOptions, setFilteredOptions] = useState(options);
-    const [selectedOption, setSelectedOption] = useState(null);
+    const [selectedOption, setSelectedOption] = useState({
+        key: '', value: ''
+    });
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
 
 
     useEffect(() => {
         if (defaultValue && options) {
-            const defaultOption = options.find(opt => opt.key === defaultValue);
+            const defaultOption = options.find(opt => opt.key === defaultValue.key);
             if (defaultOption) {
                 setSelectedOption(defaultOption);
                 setInputValue(defaultOption.value);

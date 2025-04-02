@@ -76,7 +76,6 @@ const UsersMain = () => {
                             type="text"
                             onChange={(e) => setSearch(e.target.value)}
                             required={false}
-                            className="flex-grow"
                         />
                     </div>
                 </div>
