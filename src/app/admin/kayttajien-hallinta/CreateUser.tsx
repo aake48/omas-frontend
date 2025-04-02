@@ -39,7 +39,7 @@ const CreateUserForm: React.FC<CreateUserFormProps> = ({ isOpen, onClose, onUser
         }
     }, [isOpen, token]);
 
-    const handleClubSelect = (key) => {
+    const handleClubSelect = (key: any) => {
         setSelectedClub(key);
         formData.club = key;
     };
