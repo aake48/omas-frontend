@@ -19,11 +19,11 @@ export default function Dropdown({
     required = false,
     selected,
     onChange,
-}: DropdownProps) {
+}: Readonly<DropdownProps>) {
     return (
         <select
-            id={id ? id : "dropdown"}
-            name={name ? name : "dropdown"}
+            id={id ?? "dropdown"}
+            name={name ?? "dropdown"}
             disabled={disabled}
             required={required}
             className="py-2 text-xl bg-white placeholder:bg-gray-500 border-slate-500 text-black px-3 min-w-0 border rounded-lg"

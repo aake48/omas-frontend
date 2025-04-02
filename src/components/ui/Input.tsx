@@ -20,7 +20,7 @@ export default function Input({
   onChange,
   disabled = false,
   value,
-}: InputProps) {
+}: Readonly<InputProps>) {
   return (
     <input
       className="py-2 px-1 min-w-0 border rounded-lg"
