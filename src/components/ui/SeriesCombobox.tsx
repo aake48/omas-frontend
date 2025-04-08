@@ -12,7 +12,7 @@ export default function SeriesCombobox({
   label,
   options,
   ...props
-}: SeriesComboboxProps) {
+}: Readonly<SeriesComboboxProps>) {
   const [field, meta, helpers] = useField(props);
   const [inputValue, setInputValue] = useState("");
   const [isFocused, setIsFocused] = useState(false)

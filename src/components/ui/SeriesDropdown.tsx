@@ -21,10 +21,10 @@ export default function SeriesDropdown({
     onChange,
     width,
     leftGap
-}: DropdownProps) {
+}: Readonly<DropdownProps>) {
     return (
         <select
-            id={id ? id : "dropdown"}
+            id={id ?? "dropdown"}
             disabled={disabled}
             required={required}
             className={"py-2 text-xl bg-white placeholder:bg-gray-500 text-black px-3 min-w-0 border rounded-lg mt-2 mb-1 " + width + " " + leftGap}

@@ -46,3 +46,6 @@ next-env.d.ts
 
 # Playwright
 node_modules/
+
+# IDE
+.idea
