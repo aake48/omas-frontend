@@ -46,7 +46,7 @@ export const footerLinks = [
 
 export const userLinks = [
   {
-    text: "Asetukset",
+    text: "Omat tiedot",
     href: "/asetukset",
   },
   {
