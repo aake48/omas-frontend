@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 
-const MAX_FILE_SIZE = 6291456; // 6MB
+const MAX_FILE_SIZE = 10485760; // 10MB
 const validFileExtensions = { images: ['jpg', 'png', 'jpeg', 'webp'] };
 
 function isValidFileType(fileName: any, fileType: keyof typeof validFileExtensions) {
@@ -21,7 +21,7 @@ const testFiles = (files: FileList | null, testType: 'type' | 'size') => {
 const fileValidationTests = [
     Yup.mixed()
         .test("is-valid-type", "Väärä tiedostomuoto", (files: any) => testFiles(files, 'type'))
-        .test("is-valid-size", "Suurin sallittu tiedosto on 6MB", (files: any) => testFiles(files, 'size')),
+        .test("is-valid-size", "Suurin sallittu tiedosto on 10MB", (files: any) => testFiles(files, 'size')),
 ];
 
 
