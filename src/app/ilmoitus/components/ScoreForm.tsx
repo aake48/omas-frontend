@@ -51,10 +51,6 @@ export default function ScoreCard({
   }
   return (
     <div>
-      {message && (
-        <p>{message.message}</p>
-      )}
-
       <Formik
         id="scoreCardForm"
         initialValues={{
@@ -112,7 +108,7 @@ export default function ScoreCard({
         }}
       >
         <Form className=" md:my-5 w-full justify-around gap-2 md:gap-5 grid p-5">
-          <div className="grid gap-2">
+          <div className="w-full px-10 pt-5 flex-auto">
             <label className="md:text-xl font-light">Kilpailu</label>
             <Field name="competitionName">
               {({ field, form }: any) => (
@@ -138,7 +134,7 @@ export default function ScoreCard({
             </Field>
             <div>{teamName}</div>
           </div>
-          <div className="grid gap-2">
+          <div className="w-full px-10 pt-5 flex-auto">
             <label className="md:text-xl font-light">Joukkueen jäsen</label>
             
             <Field name="teamMember">
@@ -165,19 +161,23 @@ export default function ScoreCard({
                 </div>
               )}}
             </Field>
+          </div>
+          <div className="w-full px-10 pt-5 flex-auto">
+            <Custominput
+              label="Kierrostulos"
+              name="score"
+              type="number"
+              placeholder={`0-${scoreValue.score}`}
+            />
+          </div>
+          <div className="w-full px-10 pt-5 flex-auto">
+            <Custominput
+                label="Napakympit"
+                name="bullseyes"
+                type="number"
+                placeholder={`0-${scoreValue.bullseyes}`}
+              />
             </div>
-          <Custominput
-            label="Kierrostulos"
-            name="score"
-            type="number"
-            placeholder={`0-${scoreValue.score}`}
-          />
-          <Custominput
-            label="Napakympit"
-            name="bullseyes"
-            type="number"
-            placeholder={`0-${scoreValue.bullseyes}`}
-          />
           <Field name="images">
             {({ field, form }: any) => (
               <UploadFile
@@ -191,6 +191,11 @@ export default function ScoreCard({
               />
             )}
           </Field>
+          {message && (
+        <div className="w-full px-4 md:px-10 pt-5">
+          <p className="w-full text-center text-green-700 p-2 rounded-md">{message.message}</p>
+          </div>
+      )}
           <button
             className={`my-2 h-14 hover:bg-opacity-10 md:h-20 w-40 border rounded-lg mx-auto disabled:brightness-75  p-2 text-xl text-light transition duration-300 hover:font-medium hover:text-secondary active:scale-95`}
             type="submit"
