@@ -83,7 +83,7 @@ export default function Competitions() {
         required={false}
         width={"w-80"}
       />
-      <div className="flex space-x-4 rounded-md my-1">
+      <div className="flex flex-col sm:flex-row gap-2 rounded-md my-1">
         <button
           onClick={() => handleSortTypeChange("display_name")}
           className={`flex justify-between items-center px-5 py-2 border-2 rounded-md transition-all ${
