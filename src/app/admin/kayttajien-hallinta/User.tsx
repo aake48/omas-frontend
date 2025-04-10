@@ -95,7 +95,7 @@ const User = ({ user }: UserProps) => {
   }
 
   useEffect(() => {
-    if(token){
+    if(token !== undefined){
       const fetchInitialRoles = async () => {
         const rolesData = await fetchRoles();
         setUserRoles(rolesData);
