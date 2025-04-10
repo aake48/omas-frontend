@@ -164,7 +164,7 @@ export default function ScoreCard({
           </div>
           <div className="w-full px-10 pt-5 flex-auto">
             <Custominput
-              label="Kierrostulos"
+              label="Tulos"
               name="score"
               type="number"
               placeholder={`0-${scoreValue.score}`}
