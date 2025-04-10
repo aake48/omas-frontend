@@ -42,7 +42,7 @@ function delay(ms) {
     }
     yield page.click('text=ginyu95');
     yield page.waitForTimeout(2000); // Wait for 2 seconds
-    yield page.click('text=Asetukset');
+    yield page.click('text=Omat tiedot');
     yield page.waitForTimeout(2000); // Wait for 2 seconds
     yield page.click('text=Vaihda sähköposti');
     yield page.waitForTimeout(2000); // Wait for 2 seconds
