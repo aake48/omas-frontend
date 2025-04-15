@@ -35,7 +35,7 @@ export async function sendRegister(values: any) {
 
 export default function RegisterForm() {
   const [message, setMessage] = useState<string | null>();
-  //const reCaptchaRef = createRef<ReCAPTCHA>();
+  const reCaptchaRef = createRef<ReCAPTCHA>();
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const initialValues = {
     username: "",
@@ -49,14 +49,14 @@ export default function RegisterForm() {
 
   const handleRegister = async (values: any) => {
     try {
-      /* const captchaRes = await captchaValidation(captchaToken);
+      const captchaRes = await captchaValidation(captchaToken);
       const success = captchaRes.body.success;
 
       if (!success) {
         setMessage("Muista reCAPTCHA.");
         reCaptchaRef?.current?.reset();
         return;
-      } */
+      }
 
       const response = await sendRegister(values);
 
@@ -71,7 +71,6 @@ export default function RegisterForm() {
   
               localStorage.setItem("token", token);
               localStorage.setItem("userInfo", JSON.stringify(userInfo));
-              //window.dispatchEvent(new Event("localStorageChange"));
               window.dispatchEvent(new Event("storage"));
               router.push("/seurat");
             }
@@ -81,7 +80,7 @@ export default function RegisterForm() {
     } catch (error) {
       console.error(error);
     } finally {
-      //reCaptchaRef?.current?.reset();
+      reCaptchaRef?.current?.reset();
     }
   };
 
@@ -144,11 +143,11 @@ export default function RegisterForm() {
               type="password"
               placeholder="Salasana uudelleen"
             />
-            {/* <ReCAPTCHA
+            <ReCAPTCHA
               ref={reCaptchaRef}
               sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
               onChange={onReCAPTCHAChange}
-            /> */}
+            />
             <Button
               variant={"outline"}
               size={"lg"}
