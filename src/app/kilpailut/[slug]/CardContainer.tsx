@@ -209,7 +209,7 @@ export default function CardContainer({
     >
       Luo joukkue
     </Button>
-    <p className="whitespace-pre">{info || null}</p>
+    <p className="whitespace-pre text-red-500 text-xl">{info || null}</p>
   </>;
 
   const searchBar =
