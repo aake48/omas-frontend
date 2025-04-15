@@ -23,7 +23,7 @@ const CreateUserForm: React.FC<CreateUserFormProps> = ({ isOpen, onClose, onUser
         role: '',
         club: ''
     });
-    const [selectedRole, setSelectedRole] = useState("user");
+    const [selectedRole, setSelectedRole] = useState<string>();
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const { token } = useUserInfo();

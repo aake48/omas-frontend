@@ -4,7 +4,7 @@ const today = new Date();
 const startOfToday = new Date(
   today.getFullYear(),
   today.getMonth(),
-  today.getDate()
+  today.getDate() - 1
 );
 const oneYearFromNow = new Date(
   today.getFullYear() + 1,

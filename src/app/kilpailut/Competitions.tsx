@@ -22,7 +22,7 @@ export default function Competitions() {
   const[sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
   const getCompetitions = useCallback(async () => {
-    const competitions = await fetchData(getCompetitionsQueryUrl(search, page, seriesFilter, sortType, sortOrder));
+    const competitions = await fetchData(getCompetitionsQueryUrl(search, page, seriesFilter.replace(/-/g, "_"), sortType, sortOrder));
     setCompetitions(competitions.content);
     setTotalPage(competitions.totalPages);
   }, [search, page, seriesFilter, sortType, sortOrder]);
@@ -83,6 +83,7 @@ export default function Competitions() {
         required={false}
         width={"w-80"}
       />
+      <div className="mt-1 mb-1 text-lg">Järjestä nousevasti tai laskevasti</div>
       <div className="flex flex-col sm:flex-row gap-2 rounded-md my-1">
         <button
           onClick={() => handleSortTypeChange("display_name")}

@@ -71,7 +71,6 @@ export default function RegisterForm() {
   
               localStorage.setItem("token", token);
               localStorage.setItem("userInfo", JSON.stringify(userInfo));
-              //window.dispatchEvent(new Event("localStorageChange"));
               window.dispatchEvent(new Event("storage"));
               router.push("/seurat");
             }
