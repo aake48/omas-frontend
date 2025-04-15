@@ -127,7 +127,7 @@ export default function TeamCard({
         } else {
             const response = await leaveTeam(token, teamName, competitionId);
             if (response.status === 200) {
-                setIsMember(null);
+                setIsMember("");
                 setTeamMembers((prev) =>
                     prev?.filter((member) => member.userId !== userId) || []
                 );
@@ -135,7 +135,7 @@ export default function TeamCard({
         }
     }
 
-    let buttonDisabled = memberOf !== null || isFull || !isPartOfClub;
+    let buttonDisabled = memberOf !== "" || isFull || !isPartOfClub;
     buttonDisabled = isInTeam ? false : buttonDisabled;
 
     let buttonText = "Liity joukkueeseen";
@@ -164,7 +164,7 @@ export default function TeamCard({
                     {isLoggedIn && (
                         <Button
                             variant="outline"
-                            className="hover:bg-slate-100"
+                            className="hover:bg-slate-100 border-slate-500 border-2 bg-white"
                             onClick={() =>
                                 handleClick(team.teamName, team.competitionId, isInTeam)
                             }

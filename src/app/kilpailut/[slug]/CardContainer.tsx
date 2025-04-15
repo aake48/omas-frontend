@@ -95,7 +95,7 @@ export default function CardContainer({
   }
 
   useEffect(() => {
-      if (user.userInfo != null) {
+      if (user.userInfo != undefined) {
           setUserClubName(user.userInfo.club);
       }
   }, [user]);
@@ -122,7 +122,7 @@ export default function CardContainer({
           const usersTeam = competitions.find(
               (comp) => comp.competitionId === competition.competitionId
           );
-          usersTeam ? setIsMemberOf(usersTeam.teamName) : setIsMemberOf(null);
+          usersTeam ? setIsMemberOf(usersTeam.teamName) : setIsMemberOf("");
       }
   }, [competitions, competition]);
   
@@ -164,7 +164,7 @@ export default function CardContainer({
   <>
     <Button
       variant="outline"
-      className="hover:bg-slate-100 mx-2"
+      className="hover:bg-slate-100 mx-2 border-slate-500 border-2"
       onClick={() => setIsTeamCreatorHidden(false)}
       disabled={isMember !== ""}
     >
@@ -203,7 +203,7 @@ export default function CardContainer({
         />
     <Button
       variant="outline"
-      className="hover:bg-slate-100 mx-2"
+      className="hover:bg-slate-100 mx-2 border-slate-500 border-2"
       onClick={() => handleSubmit(newTeamName, teamDisplayShort, createTeamSeries) }
       disabled={isMember !== ""}
     >
@@ -288,6 +288,10 @@ export default function CardContainer({
           )}
       </div>
     </div>
+
+  if(isLoggedIn && memberOf === null){
+    return <p>Ladataan...</p>;
+  }
 
   return (
     (isLoggedIn && isPartOfClub) ? (
