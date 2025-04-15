@@ -9,6 +9,12 @@ export async function POST(request: NextRequest) {
     if (trimmedTeamName === "") {
       return NextResponse.json({ message: "Joukkueen nimi ei voi olla tyhjä" }, { status: 400 });
     }
+    if(requestBody.teamDisplayShort === ""){
+      return NextResponse.json({ message: "Joukkueen lyhenne ei voi olla tyhjä" }, { status: 400 });
+    }
+    if(requestBody.teamSeries === ""){
+      return NextResponse.json({ message: "Valitse joukkueelle sarja" }, { status: 400 });
+    }
 
     const authHeader = request.headers.get('Authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
