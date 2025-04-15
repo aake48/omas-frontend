@@ -23,7 +23,7 @@ export default function ScoreCard({
   const round = { bullseyes: 10, score: 10.9 };
   const total = { bullseyes: 60, score: 654 };
   const scoreValue = scoreType === "update" ? round : total;
-  const [message, setMessage] = React.useState<{ message: string;  type: "success" | "error"} | null>(null);
+  const [message, setMessage] = React.useState<{ message: string,  type: "success" | "error", id: number} | null>(null);
   const [teamName, setTeamName] = React.useState<string | null>(null);
   const [teamMembers, setTeamMembers] = useState<string[]>([]);
   const [teamMemberIds, setTeamMemberIds] = useState<number[]>([]);
@@ -54,6 +54,7 @@ export default function ScoreCard({
     <div>
       {message && (
         <Notification
+          key={message.id}
           message={message.message}
           type={message.type}
         />
@@ -107,11 +108,13 @@ export default function ScoreCard({
             response.status === 200
               ? setMessage({
                 message: "Ilmoitus lähetetty",
-                type: "success"
+                type: "success",
+                id: Date.now()
                 })
               : setMessage({
                 message: "Ilmoituksen lähetys epäonnistui: " + response.body.message,
                 type: "error",
+                id: Date.now()
                 });
           });
         }}
