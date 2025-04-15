@@ -160,8 +160,6 @@ export default function ScoreCard({
                     selected={field.value}
                     required
                     onChange={(e) => {
-                      console.log("Valittu joukkueen jäsen: " + e.target.value + " Joukkueen jäsenen id: " + teamMemberIds[teamMembers.indexOf(e.target.value)])
-                      console.log("e:n arvo, joukkueen jäsen: " + e.target.value)
                       form.setFieldValue(field.name, e.target.value);
                     }}
                   />
@@ -203,12 +201,6 @@ export default function ScoreCard({
               />
             )}
           </Field>
-        
-          {message && (
-        <div className="w-full px-4 md:px-10 pt-5">
-          <p className="w-full text-center text-green-700 p-2 rounded-md">{message.message}</p>
-          </div>
-      )}
           <button
             className={`my-2 h-14 hover:bg-opacity-10 md:h-20 w-40 border rounded-lg mx-auto disabled:brightness-75  p-2 text-xl text-light transition duration-300 hover:font-medium hover:text-secondary active:scale-95`}
             type="submit"
