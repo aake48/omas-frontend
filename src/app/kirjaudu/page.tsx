@@ -14,7 +14,7 @@ import { sendLogin } from "@/lib/utils";
 export default function Login() {
     const [message, setMessage] = useState("");
     const router = useRouter();
-    //const reCaptchaRef = createRef<ReCAPTCHA>();
+    const reCaptchaRef = createRef<ReCAPTCHA>();
     const [captchaToken, setCaptchaToken] = useState<string | null>(null);
 
     const handleSubmit = async (values: {
@@ -22,14 +22,14 @@ export default function Login() {
         password: string;
     }) => {
         try {
-            /* const captchaRes = await captchaValidation(captchaToken);
+            const captchaRes = await captchaValidation(captchaToken);
             const success = captchaRes.body.success;
 
             if (!success) {
                 setMessage("Muista reCAPTCHA.");
                 reCaptchaRef?.current?.reset();
                 return;
-            } */
+            }
             const response = await sendLogin(values.username, values.password);
             const body = await response.json();
             if (response.status === 200) {
@@ -56,7 +56,7 @@ export default function Login() {
             );
             console.log(error);
         } finally {
-            //reCaptchaRef?.current?.reset();
+            reCaptchaRef?.current?.reset();
         }
     };
 
@@ -93,13 +93,13 @@ export default function Login() {
                                 type="password"
                                 placeholder="Salasana"
                             />
-                            {/* <ReCAPTCHA
+                            <ReCAPTCHA
                                 ref={reCaptchaRef}
                                 sitekey={
                                     process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!
                                 }
                                 onChange={onReCAPTCHAChange}
-                            /> */}
+                            />
                             <Button
                                 variant={"outline"}
                                 size={"lg"}
