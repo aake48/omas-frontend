@@ -101,13 +101,13 @@ export default function TeamCard({
         const isUserInThisTeam = memberOf === team.teamName;
         setIsInTeam(isUserInThisTeam);
 
-        if (!isUserInThisTeam) {
+        /* if (!isUserInThisTeam) {
             setTeamMembers((prev) =>
                 prev?.filter((member) => member.userId !== userId) || []
             );
         } else {
             setIsMember(memberOf);
-        }
+        } */
     }, [memberOf, team.teamName, userId]);
 
     async function handleClick(teamName: string, competitionId: string, leave: boolean) {

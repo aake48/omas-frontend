@@ -46,7 +46,7 @@ export default function CardContainer({
   const [isTeamCreatorHidden, setIsTeamCreatorHidden] = useState(true);
 
   useEffect(() => {
-    if (user.userInfo != null) {
+    if (user.userInfo != undefined) {
         setIsPartOfClub(user.userInfo.club != null);
     }
   }, [user]);
@@ -123,6 +123,9 @@ export default function CardContainer({
               (comp) => comp.competitionId === competition.competitionId
           );
           usersTeam ? setIsMemberOf(usersTeam.teamName) : setIsMemberOf("");
+      }
+      else{
+        setIsMemberOf("");
       }
   }, [competitions, competition]);
   
