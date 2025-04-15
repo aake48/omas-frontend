@@ -7,6 +7,7 @@ import { ScoreType, TTeam, TTeamMember, UsersCompetition } from "@/types/commonT
 import UploadFile from "./UploadFile";
 import { sendScore } from "@/app/actions";
 import useUserInfo from "@/lib/hooks/get-user.info";
+import Notification from "@/components/component/Notification";
 
 interface PostReturn {
   message: string;
@@ -22,7 +23,7 @@ export default function ScoreCard({
   const round = { bullseyes: 10, score: 10.9 };
   const total = { bullseyes: 60, score: 654 };
   const scoreValue = scoreType === "update" ? round : total;
-  const [message, setMessage] = React.useState<PostReturn | null>(null);
+  const [message, setMessage] = React.useState<{ message: string;  type: "success" | "error"} | null>(null);
   const [teamName, setTeamName] = React.useState<string | null>(null);
   const [teamMembers, setTeamMembers] = useState<string[]>([]);
   const [teamMemberIds, setTeamMemberIds] = useState<number[]>([]);
@@ -51,6 +52,12 @@ export default function ScoreCard({
   }
   return (
     <div>
+      {message && (
+        <Notification
+          message={message.message}
+          type={message.type}
+        />
+      )}
       <Formik
         id="scoreCardForm"
         initialValues={{
@@ -99,10 +106,12 @@ export default function ScoreCard({
             console.log(response);
             response.status === 200
               ? setMessage({
-                  message: "Ilmoitus lähetetty",
+                message: "Ilmoitus lähetetty",
+                type: "success"
                 })
               : setMessage({
-                  message: "Ilmoituksen lähetys epäonnistui: " + response.body.message,
+                message: "Ilmoituksen lähetys epäonnistui: " + response.body.message,
+                type: "error",
                 });
           });
         }}
@@ -191,6 +200,7 @@ export default function ScoreCard({
               />
             )}
           </Field>
+        
           {message && (
         <div className="w-full px-4 md:px-10 pt-5">
           <p className="w-full text-center text-green-700 p-2 rounded-md">{message.message}</p>
