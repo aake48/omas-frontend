@@ -315,14 +315,6 @@ export default function CardContainer({
 
   return (
     <>
-      {/*message && (
-        <Notification
-          key={message.id}
-          message={message.message}
-          type={message.type}
-        />
-      )*/}
-      
       {(isLoggedIn && isPartOfClub) ? (
         <>
           {notification}
