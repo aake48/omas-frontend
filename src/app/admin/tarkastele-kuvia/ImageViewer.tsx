@@ -15,7 +15,7 @@ const ImageViewer = () => {
 	const [pageNumber, setPageNumber] = useState(0);
     const [searchQuery, setSearchQuery] = useState("");
 
-    const apiUrl = getCompetitionsQueryUrl(searchQuery, pageNumber, 5)
+    const apiUrl = getCompetitionsQueryUrl(searchQuery, pageNumber, "", "", "", 5)
 
     console.log(apiUrl);
     const fetchCompetitions = async () => {

@@ -35,8 +35,8 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({
 
 
     useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        const handleClickOutside = (event: { target: any; }) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
                 setIsOpen(false);
             }
         };
@@ -53,7 +53,7 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({
 
         if (value === '') {
             setFilteredOptions(options);
-            setSelectedOption(null);
+            setSelectedOption({key: "", value: ""});
             onSelect(null);
         } else {
             const filtered = options.filter(option =>
@@ -63,10 +63,10 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({
         }
     };
 
-    const handleOptionClick = (option: { key: string; value: string }) => {
+    const handleOptionClick = (option: React.SetStateAction<{ key: string; value: string; }>, value: string, key: string) => {
         setSelectedOption(option);
-        setInputValue(option.value);
-        onSelect(option.key);
+        setInputValue(value);
+        onSelect(key);
         setIsOpen(false);
     };
 
@@ -79,7 +79,7 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({
 
     const handleClear = () => {
         setInputValue('');
-        setSelectedOption(null);
+        setSelectedOption({key: "", value: ""});
         onSelect(null);
         setFilteredOptions(options);
     };
@@ -91,7 +91,7 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({
                     className="py-2 text-xl bg-white placeholder:bg-gray-500 border-slate-500 text-black px-3 min-w-0 border rounded-lg"
                     type="text"
                     value={inputValue}
-                    onChange={handleInputChange}
+                    onChange={(e) => handleInputChange(e)}
                     onClick={handleInputClick}
                     placeholder={placeholder}
                     disabled={disabled}
@@ -119,7 +119,7 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({
                                 className={`dropdown-option ${
                                     selectedOption?.key === option.key ? 'selected' : ''
                                 }`}
-                                onClick={() => handleOptionClick(option)}
+                                onClick={() => handleOptionClick(option, option.value, option.key)}
                             >
                                 {option.value}
                             </div>

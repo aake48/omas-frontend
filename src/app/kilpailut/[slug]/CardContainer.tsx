@@ -41,8 +41,9 @@ export default function CardContainer({
   const pathName = usePathname();
   const isLoggedIn = useIsLoggedIn();
   const [isPartOfClub, setIsPartOfClub] = useState(false);
-  const [seriesFilter, setSeriesFilter] = useState("")
-  const [createTeamSeries, setCreateTeamSeries] = useState("")
+  const [seriesFilter, setSeriesFilter] = useState("");
+  const [createTeamSeries, setCreateTeamSeries] = useState("");
+  const [isTeamCreatorHidden, setIsTeamCreatorHidden] = useState(true);
 
   useEffect(() => {
     if (user.userInfo != null) {
@@ -72,7 +73,7 @@ export default function CardContainer({
     setCurrentTeams(teamsData.content);
   }
 
-async function getUserCompetitions(token: any) {
+  async function getUserCompetitions(token: any) {
     try {
       const response = await fetch(Q.getUserCompetitions(), {
         headers: {
@@ -115,51 +116,62 @@ async function getUserCompetitions(token: any) {
   }, [token, slug, userClubName]); 
 
 
-    // Check if user is member of any team
-    useEffect(() => {
-        if (competitions != null) {
-            const usersTeam = competitions.find(
-                (comp) => comp.competitionId === competition.competitionId
-            );
-            usersTeam ? setIsMemberOf(usersTeam.teamName) : setIsMemberOf(null);
-        }
-    }, [competitions, competition]);
-    
-    //Search for teams
-    useEffect(() => {
-      const fetchTeams = async () => {
-        try {
-          const teams = await fetchData(
-            Q.getCompetitionInfoQueryURL(slug, 0, 0, seriesFilter, search)
+  // Check if user is member of any team
+  useEffect(() => {
+      if (competitions != null) {
+          const usersTeam = competitions.find(
+              (comp) => comp.competitionId === competition.competitionId
           );
-          if(teams){
-            setCurrentTeams(teams.content);
-          }
-        } catch (e: any) {
-          console.error(e);
+          usersTeam ? setIsMemberOf(usersTeam.teamName) : setIsMemberOf(null);
+      }
+  }, [competitions, competition]);
+  
+  //Search for teams
+  useEffect(() => {
+    const fetchTeams = async () => {
+      try {
+        const teams = await fetchData(
+          Q.getCompetitionInfoQueryURL(slug, 0, 0, seriesFilter, search)
+        );
+        if(teams){
+          setCurrentTeams(teams.content);
         }
-      }
-      fetchTeams();
-    }, [search, seriesFilter]);
-
-    const handleSeriesFilterChange = (series: string) => {
-      if(series !== "Kaikki sarjat"){
-        setSeriesFilter(series);
-      }
-      else{
-        setSeriesFilter("");
+      } catch (e: any) {
+        console.error(e);
       }
     }
+    fetchTeams();
+  }, [search, seriesFilter]);
 
-    const handleCreateTeamSeriesChange = (series: string) => {
-      if(series !== "Valitse joukkueen sarja"){
-        setCreateTeamSeries(series);
-      }
-      else{
-        setCreateTeamSeries("");
-      }
+  const handleSeriesFilterChange = (series: string) => {
+    if(series !== "Kaikki sarjat"){
+      setSeriesFilter(series);
     }
-  const teamCreator = 
+    else{
+      setSeriesFilter("");
+    }
+  }
+
+  const handleCreateTeamSeriesChange = (series: string) => {
+    if(series !== "Valitse joukkueen sarja"){
+      setCreateTeamSeries(series);
+    }
+    else{
+      setCreateTeamSeries("");
+    }
+  }
+  const teamCreator = isTeamCreatorHidden ? 
+  <>
+    <Button
+      variant="outline"
+      className="hover:bg-slate-100 mx-2"
+      onClick={() => setIsTeamCreatorHidden(false)}
+      disabled={isMember !== ""}
+    >
+      Luo joukkue
+    </Button>
+  </> 
+  :
   <>
     <Input
       id={"search"}
