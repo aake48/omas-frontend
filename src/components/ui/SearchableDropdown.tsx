@@ -63,7 +63,7 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({
         }
     };
 
-    const handleOptionClick = (option: React.SetStateAction<{ key: string; value: string; }>, value: string, key: string) => {
+    const handleOptionClick = (option: React.SetStateAction<{ key: string; value: string; } | null>, value: string, key: string) => {
         setSelectedOption(option);
         setInputValue(value);
         onSelect(key);
