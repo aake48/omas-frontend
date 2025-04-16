@@ -5,6 +5,7 @@ import React, { Suspense, useEffect, useState } from "react";
 import useIsLoggedIn from "@/lib/hooks/is-logged-in";
 import { TTeam, TTeamMember } from "@/types/commonTypes";
 import { addTeamMemberURL, removeTeamMemberURL } from "@/lib/APIConstants";
+import Notification from "@/components/component/Notification";
 
 export async function joinTeam(
     token: string,
@@ -92,6 +93,7 @@ export default function TeamCard({
     const [isFull, setIsFull] = useState<boolean>(false);
     const [isInTeam, setIsInTeam] = useState<boolean>(memberOf === team.teamName);
     const isPartOfClub = userClubName === team.clubName;
+    const [message, setMessage] = React.useState<{ message: string,  type: "success" | "error", id: number} | null>(null);
 
     useEffect(() => {
         setIsFull((teamMembers?.length ?? 0) >= 5);
@@ -123,6 +125,18 @@ export default function TeamCard({
             if (response.status === 200) {
                 setIsMember(teamName);
                 setTeamMembers((prev) => [...(prev || []), currentUser]);
+                setMessage({
+                    message: "Ilmoittautuminen onnistui",
+                    type: "success",
+                    id: Date.now()
+                    })
+            }
+            else{
+                setMessage({
+                    message: "Ilmoittautuminen epäonnistui",
+                    type: "success",
+                    id: Date.now()
+                    })
             }
         } else {
             const response = await leaveTeam(token, teamName, competitionId);
@@ -149,6 +163,13 @@ export default function TeamCard({
 
     return (
         <Suspense fallback={<div>Loading...</div>}>
+            {message && (
+                <Notification
+                key={message.id}
+                message={message.message}
+                type={message.type}
+                />
+            )}
             <div
                 className={`flex flex-col border-2 shadow-md p-5 gap-2 rounded-md ${
                     isInTeam ? "bg-slate-200" : ""
