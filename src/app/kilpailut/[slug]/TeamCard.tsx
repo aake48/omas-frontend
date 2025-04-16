@@ -138,7 +138,7 @@ export default function TeamCard({
     let buttonDisabled = memberOf !== "" || isFull || !isPartOfClub;
     buttonDisabled = isInTeam ? false : buttonDisabled;
 
-    let buttonText = "Liity joukkueeseen";
+    let buttonText = "Ilmoittaudu";
     if (isInTeam) {
         buttonText = "Poistu joukkueesta";
     } else if (!isPartOfClub) {
