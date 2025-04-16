@@ -119,8 +119,8 @@ export default function ScoreCard({
           });
         }}
       >
-        <Form className=" md:my-5 w-full justify-around gap-2 md:gap-5 grid p-5">
-          <div className="w-full px-10 pt-5 flex-auto">
+        <Form className=" md:my-5 w-full justify-around gap-2 md:gap-5 grid">
+          <div className="w-full px-10 flex-auto">
             <label className="md:text-xl font-light">Kilpailu</label>
             <Field name="competitionName">
               {({ field, form }: any) => (
@@ -202,7 +202,7 @@ export default function ScoreCard({
             )}
           </Field>
           <button
-            className={`my-2 h-14 hover:bg-opacity-10 md:h-20 w-40 border rounded-lg mx-auto disabled:brightness-75  p-2 text-xl text-light transition duration-300 hover:font-medium hover:text-secondary active:scale-95`}
+            className={`h-14 hover:bg-opacity-10 md:h-20 w-40 border rounded-lg mx-auto p-2 mt-2 mb-80 text-xl text-light transition duration-300 hover:font-medium hover:text-secondary active:scale-95`}
             type="submit"
           >
             Lähetä

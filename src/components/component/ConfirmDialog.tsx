@@ -38,7 +38,8 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
           <Button 
             variant="outline"
             className="bg-red-500 text-white hover:bg-red-700 border-black w-20"
-            onClick={onCancel}>
+            onClick={onCancel}
+          >
             {cancelText}
           </Button>
         </div>
