@@ -6,6 +6,7 @@ import useIsLoggedIn from "@/lib/hooks/is-logged-in";
 import { TTeam, TTeamMember } from "@/types/commonTypes";
 import { addTeamMemberURL, removeTeamMemberURL } from "@/lib/APIConstants";
 import Notification from "@/components/component/Notification";
+import ConfirmDialog from "@/components/component/ConfirmDialog";
 
 export async function joinTeam(
     token: string,
@@ -93,7 +94,8 @@ export default function TeamCard({
     const [isFull, setIsFull] = useState<boolean>(false);
     const [isInTeam, setIsInTeam] = useState<boolean>(memberOf === team.teamName);
     const isPartOfClub = userClubName === team.clubName;
-    const [message, setMessage] = React.useState<{ message: string,  type: "success" | "error", id: number} | null>(null);
+    const [message, setMessage] = useState<{ message: string,  type: "success" | "error", id: number} | null>(null);
+    const [showConfirmMessage, setShowConfirmMessage] = useState(false);
 
     useEffect(() => {
         setIsFull((teamMembers?.length ?? 0) >= 5);
@@ -170,6 +172,17 @@ export default function TeamCard({
                 type={message.type}
                 />
             )}
+            <ConfirmDialog
+                open={showConfirmMessage}
+                message="Haluatko varmasti poistua joukkueesta?"
+                onConfirm={async () => {
+                    await handleClick(team.teamName, team.competitionId, true);
+                    setShowConfirmMessage(false);
+                }}
+                onCancel={() => setShowConfirmMessage(false)}
+                confirmText="Kyllä"
+                cancelText="Ei"
+            />
             <div
                 className={`flex flex-col border-2 shadow-md p-5 gap-2 rounded-md ${
                     isInTeam ? "bg-slate-200" : ""
@@ -186,9 +199,14 @@ export default function TeamCard({
                         <Button
                             variant="outline"
                             className="hover:bg-slate-100 border-slate-500 border-2 bg-white"
-                            onClick={() =>
-                                handleClick(team.teamName, team.competitionId, isInTeam)
-                            }
+                            onClick={() => {
+                                if(isInTeam){
+                                    setShowConfirmMessage(true);
+                                }
+                                else{
+                                    handleClick(team.teamName, team.competitionId, isInTeam)
+                                }
+                            }}
                             disabled={buttonDisabled}
                         >
                             {buttonText}
