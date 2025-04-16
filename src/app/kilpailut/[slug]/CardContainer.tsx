@@ -174,8 +174,8 @@ export default function CardContainer({
   const notification = <div>
     {message && (
       <Notification
-        key={message!.id}
-        message={message!.message}
+        key={message.id}
+        message={message.message}
         type={"success"}
       />
     )}
