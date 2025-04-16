@@ -68,15 +68,15 @@ export default function CardContainer({
       }),
     });
     console.log(response);
-    if (response.status === 200) {
-      
-    }
+
     const data = await response.json();
     setInfo(data.message);
     const teamsData = await fetchData(
       Q.getCompetitionInfoQueryURL(slug, 0, 100)
     )
-    setMessage({ message: "Joukkueen " + teamName + " luonti onnistui", type: "success", id: Date.now() });
+    if (response.status === 200) {
+      setMessage({ message: "Joukkueen " + teamName + " luonti onnistui", type: "success", id: Date.now() });
+    }
     setCurrentTeams(teamsData.content);
   }
 
