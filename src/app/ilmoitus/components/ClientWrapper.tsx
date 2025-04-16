@@ -52,6 +52,7 @@ export default function NotificationClientWrapper() {
 
     return (
         <>
+            <h2 className="text-center text-2xl">Valitse tuloksen tyyppi:</h2>
             <ScoreTypeSelectorContainer
                 onScoreTypeChange={handleScoreTypeChange}
             />
