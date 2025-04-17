@@ -7,6 +7,7 @@ import { ScoreType, TTeam, TTeamMember, UsersCompetition } from "@/types/commonT
 import UploadFile from "./UploadFile";
 import { sendScore } from "@/app/actions";
 import useUserInfo from "@/lib/hooks/get-user.info";
+import Notification from "@/components/component/Notification";
 
 interface PostReturn {
   message: string;
@@ -22,7 +23,7 @@ export default function ScoreCard({
   const round = { bullseyes: 10, score: 10.9 };
   const total = { bullseyes: 60, score: 654 };
   const scoreValue = scoreType === "update" ? round : total;
-  const [message, setMessage] = React.useState<PostReturn | null>(null);
+  const [message, setMessage] = React.useState<{ message: string,  type: "success" | "error", id: number} | null>(null);
   const [teamName, setTeamName] = React.useState<string | null>(null);
   const [teamMembers, setTeamMembers] = useState<string[]>([]);
   const [teamMemberIds, setTeamMemberIds] = useState<number[]>([]);
@@ -51,6 +52,13 @@ export default function ScoreCard({
   }
   return (
     <div>
+      {message && (
+        <Notification
+          key={message.id}
+          message={message.message}
+          type={message.type}
+        />
+      )}
       <Formik
         id="scoreCardForm"
         initialValues={{
@@ -99,16 +107,20 @@ export default function ScoreCard({
             console.log(response);
             response.status === 200
               ? setMessage({
-                  message: "Ilmoitus lähetetty",
+                message: "Ilmoitus lähetetty",
+                type: "success",
+                id: Date.now()
                 })
               : setMessage({
-                  message: "Ilmoituksen lähetys epäonnistui: " + response.body.message,
+                message: "Ilmoituksen lähetys epäonnistui: " + response.body.message,
+                type: "error",
+                id: Date.now()
                 });
           });
         }}
       >
-        <Form className=" md:my-5 w-full justify-around gap-2 md:gap-5 grid p-5">
-          <div className="w-full px-10 pt-5 flex-auto">
+        <Form className=" md:my-5 w-full justify-around gap-2 md:gap-5 grid">
+          <div className="w-full px-10 flex-auto">
             <label className="md:text-xl font-light">Kilpailu</label>
             <Field name="competitionName">
               {({ field, form }: any) => (
@@ -148,8 +160,6 @@ export default function ScoreCard({
                     selected={field.value}
                     required
                     onChange={(e) => {
-                      console.log("Valittu joukkueen jäsen: " + e.target.value + " Joukkueen jäsenen id: " + teamMemberIds[teamMembers.indexOf(e.target.value)])
-                      console.log("e:n arvo, joukkueen jäsen: " + e.target.value)
                       form.setFieldValue(field.name, e.target.value);
                     }}
                   />
@@ -191,13 +201,8 @@ export default function ScoreCard({
               />
             )}
           </Field>
-          {message && (
-        <div className="w-full px-4 md:px-10 pt-5">
-          <p className="w-full text-center text-green-700 p-2 rounded-md">{message.message}</p>
-          </div>
-      )}
           <button
-            className={`my-2 h-14 hover:bg-opacity-10 md:h-20 w-40 border rounded-lg mx-auto disabled:brightness-75  p-2 text-xl text-light transition duration-300 hover:font-medium hover:text-secondary active:scale-95`}
+            className={`h-14 hover:bg-opacity-10 md:h-20 w-40 border rounded-lg mx-auto p-2 mt-2 mb-80 text-xl text-light transition duration-300 hover:font-medium hover:text-secondary active:scale-95`}
             type="submit"
           >
             Lähetä

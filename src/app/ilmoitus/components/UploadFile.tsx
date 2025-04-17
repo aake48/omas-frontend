@@ -29,7 +29,7 @@ const UploadFile: FunctionComponent<IUploadFile> = ({
     return (
         <div className="grid gap-2 mt-4">
             <label className="text-2xl text-center font-light">Lataa Kuva</label>
-            <div className="border border-slate-500 p-8 rounded-lg shadow-lg hover:bg-slate-100 hover:cursor-pointer">
+            <div className="border border-slate-500 p-2 max-w-[300px] rounded-lg shadow-lg hover:bg-slate-100 hover:cursor-pointer">
                 <input
                     ref={fileref}
                     type="file"
