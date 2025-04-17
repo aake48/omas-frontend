@@ -13,7 +13,6 @@ interface JoinClubProps {
 const JoinClub = ({ id, joinedClub, setJoinedClub }: JoinClubProps) => {
     const [message, setMessage] = useState("");
     const [messageStyle, setMessageStyle] = useState("text-black");
-    const [user, setUser] = useState<User>();
     const [showConfirmLeave, setShowConfirmLeave] = useState(false);
 
     const token = localStorage.getItem("token");
@@ -75,6 +74,7 @@ const JoinClub = ({ id, joinedClub, setJoinedClub }: JoinClubProps) => {
     }
 
     const handleLeaveClub = () => {
+        setMessage("");
         setShowConfirmLeave(true);
     };
 
