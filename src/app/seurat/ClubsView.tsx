@@ -18,7 +18,7 @@ const ClubsView = () => {
   const [search, setSearch] = useState('');
   const [clubAdminRoles, setClubAdminRoles] = useState<string[]>([]);
   const [joinedClub, setJoinedClub] = useState<string | null>(null);
-  const [joinedClubName, setJoinedClubName] = useState<string | null>(null);
+  const [joinedClubName] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
@@ -68,6 +68,12 @@ const ClubsView = () => {
     setPageNumber(0);
   }, [search]);
 
+  const handlePageNumberChange = (page: number) => {
+    if (!data) return;
+    if (page < 0 || page >= data.totalPages) return;
+    setPageNumber(page);
+  };
+
   if (!isLoggedIn) {
     return (
       <main className="flex min-h-screen flex-col sm:items-center p-4 gap-2">
@@ -89,11 +95,7 @@ const ClubsView = () => {
         <Paginator
           pageNumber={pageNumber}
           totalPages={data.totalPages}
-          handlePageNumberChange={(page) => {
-            if (!data) return;
-            if (page < 0 || page >= data.totalPages) return;
-            setPageNumber(page);
-          }}
+          handlePageNumberChange={handlePageNumberChange}
         />
         <div className="flex flex-col gap-2 w-full">
           {data.content?.map((club: ClubResponse) => (
@@ -102,7 +104,6 @@ const ClubsView = () => {
               club={club}
               joinedClub={joinedClub}
               setJoinedClub={setJoinedClub}
-              setJoinedClubName={setJoinedClubName}
               clubAdminRoles={clubAdminRoles}
             />
           ))}
