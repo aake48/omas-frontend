@@ -16,8 +16,6 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import Header from "./Header";
-import Footer from "./Footer";
 import Notification from "@/components/component/Notification";
 
 export default function ClientGuard({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -27,10 +25,10 @@ export default function ClientGuard({ children }: Readonly<{ children: React.Rea
     const [hydrated, setHydrated] = useState(false);
     const [notification, setNotification] = useState<null | { id: number; message: string; type: 'success' | 'error' }>(null);
 
-    // Define routes that are always accessible
-    const isPublicRoute = ["/seurat", "/kirjaudu", "/rekisteröidy"].some(path =>
-        pathname.startsWith(path)
-    );
+    const PUBLIC_ROUTES = ["/seurat", "/kirjaudu", "/rekisteröidy"];
+    const CLUBLESS_ALLOWED_ROUTES = ["/seurat", "/asetukset"];
+
+    const isPublicRoute = PUBLIC_ROUTES.some(path => pathname.startsWith(path));
 
     // Read user info from localStorage
     const getUser = () => {
@@ -66,11 +64,11 @@ export default function ClientGuard({ children }: Readonly<{ children: React.Rea
         // Admins or users with club can access anything
         if (isAdmin || hasClub) return;
 
-        // Clubless users can access `/seurat` and `/asetukset`
-        if (!hasClub && ["/seurat", "/asetukset"].includes(pathname)) return;
+        // Clubless users can access pages in CLUBLESS_ALLOWED_ROUTES
+        if (!hasClub && CLUBLESS_ALLOWED_ROUTES.includes(pathname)) return;
 
         // Redirect and notify if trying to access anything else
-        if (!hasClub && !["/seurat", "/asetukset"].includes(pathname)) {
+        if (!hasClub && !CLUBLESS_ALLOWED_ROUTES.includes(pathname)) {
             setNotification({
                 id: Date.now(),
                 type: "error",
@@ -99,13 +97,13 @@ export default function ClientGuard({ children }: Readonly<{ children: React.Rea
             window.removeEventListener("focus", checkAccess);
             window.removeEventListener("storage", checkAccess);
         };
-    }, [hydrated, pathname, router]);
+    }, [hydrated, pathname]);
+
+    if (!hydrated) return null;
 
     return (
         <>
-            <Header />
             {children}
-            <Footer />
             {notification && (
                 <Notification
                     key={notification.id}
