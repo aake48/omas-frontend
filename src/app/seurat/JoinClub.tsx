@@ -25,6 +25,16 @@ const JoinClub = ({ id, joinedClub, setJoinedClub }: JoinClubProps) => {
         }
     }, []);
 
+    useEffect(() => {
+      if (!message || messageStyle.includes("text-red")) return;
+
+      const timer = setTimeout(() => {
+        setMessage("");
+      }, 4000);
+
+      return () => clearTimeout(timer);
+    }, [message, messageStyle]);
+
     const handleProfileUpdate = (club: string | null) => {
         const storedUser = JSON.parse(localStorage.getItem("userInfo") ?? "{}");
             const newUser: User = {
