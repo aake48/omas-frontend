@@ -93,13 +93,13 @@ export default function Login() {
                                 type="password"
                                 placeholder="Salasana"
                             />
-                            <ReCAPTCHA
+                            <div className="flex justify-center">
+                              <ReCAPTCHA
                                 ref={reCaptchaRef}
-                                sitekey={
-                                    process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!
-                                }
+                                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
                                 onChange={onReCAPTCHAChange}
-                            />
+                              />
+                            </div>
                             <Button
                                 variant={"outline"}
                                 size={"lg"}
