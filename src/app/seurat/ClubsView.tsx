@@ -68,7 +68,6 @@ const ClubsView = () => {
     setPageNumber(0);
   }, [search]);
 
-  // ✅ Conditional rendering happens *after* all hooks
   if (!isLoggedIn) {
     return (
       <main className="flex min-h-screen flex-col sm:items-center p-4 gap-2">
@@ -78,21 +77,37 @@ const ClubsView = () => {
     );
   }
 
-  if (loading) {
-    return (
-      <main className="flex min-h-screen flex-col sm:items-center p-4 gap-2">
-        <h1 className="text-4xl">Seurat</h1>
-        <p className="text-md">Ladataan seuroja...</p>
-      </main>
-    );
-  }
+  let content: React.ReactNode;
 
-  if (error || !data) {
-    return (
-      <main className="flex min-h-screen flex-col sm:items-center p-4 gap-2">
-        <h1 className="text-4xl">Seurat</h1>
-        <p className="text-md">Virhe seurojen haussa.</p>
-      </main>
+  if (loading) {
+    content = <p className="text-md">Ladataan seuroja...</p>;
+  } else if (error || !data) {
+    content = <p className="text-md">Virhe seurojen haussa.</p>;
+  } else {
+    content = (
+      <>
+        <Paginator
+          pageNumber={pageNumber}
+          totalPages={data.totalPages}
+          handlePageNumberChange={(page) => {
+            if (!data) return;
+            if (page < 0 || page >= data.totalPages) return;
+            setPageNumber(page);
+          }}
+        />
+        <div className="flex flex-col gap-2 w-full">
+          {data.content?.map((club: ClubResponse) => (
+            <Club
+              key={club.name}
+              club={club}
+              joinedClub={joinedClub}
+              setJoinedClub={setJoinedClub}
+              setJoinedClubName={setJoinedClubName}
+              clubAdminRoles={clubAdminRoles}
+            />
+          ))}
+        </div>
+      </>
     );
   }
 
@@ -106,32 +121,12 @@ const ClubsView = () => {
         id="search"
         placeholder="Hae seuraa"
         type="text"
+        value={search}
         onChange={(e) => setSearch(e.target.value)}
         required={false}
       />
 
-      <Paginator
-        pageNumber={pageNumber}
-        totalPages={data.totalPages}
-        handlePageNumberChange={(page) => {
-          if (!data) return;
-          if (page < 0 || page >= data.totalPages) return;
-          setPageNumber(page);
-        }}
-      />
-
-      <div className="flex flex-col gap-2 w-full">
-        {data.content?.map((club: ClubResponse) => (
-          <Club
-            key={club.name}
-            club={club}
-            joinedClub={joinedClub}
-            setJoinedClub={setJoinedClub}
-            setJoinedClubName={setJoinedClubName}
-            clubAdminRoles={clubAdminRoles}
-          />
-        ))}
-      </div>
+      {content}
     </main>
   );
 };
