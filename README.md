@@ -50,7 +50,7 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 When importing the project or in the project's settings, add the environment variables found in the .env file.
 ```
-NEXT_PUBLIC_API_URL = URL of the web-service deployment for the back-end
+NEXT_PUBLIC_API_URL = #URL of the back-end deployment
 NEXT_PUBLIC_RECAPTCHA_SITE_KEY = 
 RECAPTCHA_SECRET_KEY = 
 ```
