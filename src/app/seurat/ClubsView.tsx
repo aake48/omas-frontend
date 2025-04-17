@@ -76,9 +76,9 @@ const ClubsView = () => {
 
   if (!isLoggedIn) {
     return (
-      <main className="flex min-h-screen flex-col sm:items-center p-4 gap-2">
+      <main className="flex min-h-screen flex-col items-center p-4 gap-2">
         <h1 className="text-4xl">Seurat</h1>
-        <p className="text-md">Kirjaudu sisään tarkastellaksesi ja liittyäksesi seuraan.</p>
+        <p className="text-md text-center">Kirjaudu sisään tarkastellaksesi ja liittyäksesi seuraan.</p>
       </main>
     );
   }
