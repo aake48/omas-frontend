@@ -48,6 +48,15 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
+When importing the project or in the project's settings, add the environment variables found in the .env file.
+```
+NEXT_PUBLIC_API_URL = URL of the web-service deployment for the back-end
+NEXT_PUBLIC_RECAPTCHA_SITE_KEY = 
+RECAPTCHA_SECRET_KEY = 
+```
+To enable RECAPTCHA in Vercel, create a new RECAPTCHA project or edit settings of the current one. In the settings, add the URL of the Vercel project deployment as a domain.
+Then copy the site key and secret key and place them in the Vercel project's environment variables.
+
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
 ## Deploy with Docker
