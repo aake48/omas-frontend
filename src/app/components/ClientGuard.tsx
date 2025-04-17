@@ -6,26 +6,26 @@
  * Purpose:
  * - Prevents unauthorized access to routes based on login status, role, and club membership.
  * - Admins can access everything.
- * - Logged-in users without a club are only allowed on `/seurat`.
+ * - Logged-in users without a club are only allowed on `/seurat` and `/asetukset`.
  * - Public routes are always accessible.
  *
  * Behavior:
- * - Reads login data directly from localStorage (userInfo).
- * - Automatically re-checks when the user returns to the tab or localStorage changes.
- * - Redirects users who do not meet access requirements.
+ * - Runs checks in the background without blocking UI.
+ * - If access is denied, a notification is shown and user is redirected.
  */
 
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Header from "./Header";
 import Footer from "./Footer";
+import Notification from "@/components/component/Notification";
 
 export default function ClientGuard({ children }: Readonly<{ children: React.ReactNode }>) {
     const router = useRouter();
     const pathname = usePathname();
 
     const [hydrated, setHydrated] = useState(false);
-    const [allowAccess, setAllowAccess] = useState(false);
+    const [notification, setNotification] = useState<null | { id: number; message: string; type: 'success' | 'error' }>(null);
 
     // Define routes that are always accessible
     const isPublicRoute = ["/seurat", "/kirjaudu", "/rekisteröidy"].some(path =>
@@ -42,7 +42,7 @@ export default function ClientGuard({ children }: Readonly<{ children: React.Rea
         }
     };
 
-    // Check if user is an admin (refactored from nested ternary)
+    // Check if user is an admin
     const isAdminRole = (roles: string[] | string | undefined): boolean => {
         if (Array.isArray(roles)) {
             return roles.some(r => r.endsWith("/admin") || r === "ROLE_ADMIN");
@@ -60,52 +60,38 @@ export default function ClientGuard({ children }: Readonly<{ children: React.Rea
         const isAdmin = isAdminRole(user?.roles);
         const hasClub = !!user?.club;
 
-        // Allow if not logged in (public access)
-        if (!isLoggedIn || isPublicRoute) {
-            setAllowAccess(true);
-            return;
-        }
+        // Public routes or not logged in
+        if (!isLoggedIn || isPublicRoute) return;
 
-        // Allow for admin
-        if (isAdmin) {
-            setAllowAccess(true);
-            return;
-        }
+        // Admins or users with club can access anything
+        if (isAdmin || hasClub) return;
 
-        // Allow for users with club
-        if (hasClub) {
-            setAllowAccess(true);
-            return;
-        }
+        // Clubless users can access `/seurat` and `/asetukset`
+        if (!hasClub && ["/seurat", "/asetukset"].includes(pathname)) return;
 
-        // Allow clubless users to access `/seurat` or `/asetukset`
-        if (!hasClub && ["/seurat", "/asetukset"].includes(pathname)) {
-            setAllowAccess(true);
-            return;
-        }
-
-        // Restrict clubless users on other pages
+        // Redirect and notify if trying to access anything else
         if (!hasClub && !["/seurat", "/asetukset"].includes(pathname)) {
-            router.replace("/seurat");
-            return;
+            setNotification({
+                id: Date.now(),
+                type: "error",
+                message: "Pääsy estetty. Sinun täytyy liittyä seuraan.",
+            });
+            if (pathname !== "/seurat") {
+                router.replace("/seurat");
+            }
         }
-
-        // Fallback
-        setAllowAccess(false);
     };
 
-    // Ensure we're running in the browser
     useEffect(() => {
         setHydrated(true);
     }, []);
 
-    // Check access on hydration, route change, or tab focus
     useEffect(() => {
         if (!hydrated) return;
 
         checkAccess();
 
-        // Listen for updates when switching tabs or localStorage changes
+        // Re-check when user switches tabs or localStorage changes
         window.addEventListener("focus", checkAccess);
         window.addEventListener("storage", checkAccess);
 
@@ -115,14 +101,18 @@ export default function ClientGuard({ children }: Readonly<{ children: React.Rea
         };
     }, [hydrated, pathname, router]);
 
-    // Don't render anything until access is confirmed
-    if (!hydrated || !allowAccess) return null;
-
     return (
         <>
             <Header />
             {children}
             <Footer />
+            {notification && (
+                <Notification
+                    key={notification.id}
+                    message={notification.message}
+                    type={notification.type}
+                />
+            )}
         </>
     );
 }
