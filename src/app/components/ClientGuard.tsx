@@ -4,14 +4,18 @@
  * ClientGuard
  *
  * Purpose:
- * - Prevents unauthorized access to routes based on login status, role, and club membership.
- * - Admins can access everything.
- * - Logged-in users without a club are only allowed on `/seurat` and `/asetukset`.
- * - Public routes are always accessible.
+ * - Prevents unauthorized access to specific routes based on:
+ *   - Login status
+ *   - Admin role
+ *   - Club membership
+ * - Admin users can access all routes.
+ * - Regular users without a club can only access `/seurat` and `/asetukset`.
+ * - Public routes (`/seurat`, `/kirjaudu`, `/rekisteröidy`) are always accessible, even when not logged in.
  *
  * Behavior:
- * - Runs checks in the background without blocking UI.
- * - If access is denied, a notification is shown and user is redirected.
+ * - Runs access checks in the background without blocking the UI.
+ * - Redirects unauthorized users to `/seurat` with a notification.
+ * - Notifications are shown when a user is denied access.
  */
 
 import { useEffect, useState } from "react";
