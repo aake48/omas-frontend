@@ -26,6 +26,24 @@ const ClubsView = () => {
   const apiUrl = getClubQueryUrl(search, pageNumber, 10);
 
   useEffect(() => {
+    try {
+      const storedUser = JSON.parse(localStorage.getItem('userInfo') ?? '{}');
+      if (storedUser?.club) setJoinedClub(storedUser.club);
+
+      if (storedUser?.roles) {
+        const roles: string[] = storedUser.roles.replace(/[[\]]/g, '').split(',');
+        const adminRoles = roles
+          .filter((role) => role.endsWith('/admin'))
+          .map((role) => role.replace('/admin', '').trim());
+
+        setClubAdminRoles(adminRoles);
+      }
+    } catch (error) {
+      console.error('Error parsing user info:', error);
+    }
+  }, []);
+
+  useEffect(() => {
     if (!isLoggedIn) return;
 
     const fetchClubs = async () => {
@@ -45,25 +63,7 @@ const ClubsView = () => {
     };
 
     fetchClubs();
-  }, [pageNumber, search, apiUrl, isLoggedIn]);
-
-  useEffect(() => {
-    try {
-      const storedUser = JSON.parse(localStorage.getItem('userInfo') ?? '{}');
-      if (storedUser?.club) setJoinedClub(storedUser.club);
-
-      if (storedUser?.roles) {
-        const roles: string[] = storedUser.roles.replace(/[[\]]/g, '').split(',');
-        const adminRoles = roles
-          .filter((role) => role.endsWith('/admin'))
-          .map((role) => role.replace('/admin', '').trim());
-
-        setClubAdminRoles(adminRoles);
-      }
-    } catch (error) {
-      console.error('Error parsing user info:', error);
-    }
-  }, []);
+  }, [pageNumber, apiUrl, isLoggedIn]);
 
   useEffect(() => {
     setPageNumber(0);
@@ -84,27 +84,9 @@ const ClubsView = () => {
     );
   }
 
-  if (loading) {
-    return (
-      <main className="flex min-h-screen flex-col items-center p-4 gap-2">
-        <h1 className="text-4xl">Seurat</h1>
-        <p className="text-md">Ladataan seuroja...</p>
-      </main>
-    );
-  }
-
-  if (error || !data) {
-    return (
-      <main className="flex min-h-screen flex-col items-center p-4 gap-2">
-        <h1 className="text-4xl">Seurat</h1>
-        <p className="text-md">Virhe seurojen haussa.</p>
-      </main>
-    );
-  }
-
   const visibleClubs = joinedClub && !showAllClubs
-    ? data.content?.filter(club => club.name === joinedClub) ?? []
-    : data.content ?? [];
+    ? data?.content?.filter(club => club.name === joinedClub) ?? []
+    : data?.content ?? [];
 
   return (
     <main className="flex min-h-screen flex-col items-center p-4 gap-10">
@@ -123,7 +105,7 @@ const ClubsView = () => {
 
       <Paginator
         pageNumber={pageNumber}
-        totalPages={data.totalPages}
+        totalPages={data?.totalPages ?? 0}
         handlePageNumberChange={handlePageNumberChange}
       />
 
