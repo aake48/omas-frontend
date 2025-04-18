@@ -9,6 +9,7 @@ import Paginator from '../components/Paginator';
 import JoinClubTip from '../components/JoinClubTip';
 import Input from '@/components/ui/Input';
 import Club from './Club';
+import { Button } from '@/components/ui/Button';
 
 const ClubsView = () => {
   const isLoggedIn = useIsLoggedIn();
@@ -18,9 +19,9 @@ const ClubsView = () => {
   const [search, setSearch] = useState('');
   const [clubAdminRoles, setClubAdminRoles] = useState<string[]>([]);
   const [joinedClub, setJoinedClub] = useState<string | null>(null);
-  const [joinedClubName] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [showAllClubs, setShowAllClubs] = useState(false);
 
   const apiUrl = getClubQueryUrl(search, pageNumber, 10);
 
@@ -78,45 +79,38 @@ const ClubsView = () => {
     return (
       <main className="flex min-h-screen flex-col items-center p-4 gap-2">
         <h1 className="text-4xl">Seurat</h1>
-        <p className="text-md text-center">Kirjaudu sisään tarkastellaksesi ja liittyäksesi seuraan.</p>
+        <p className="text-md">Kirjaudu sisään tarkastellaksesi ja liittyäksesi seuraan.</p>
       </main>
     );
   }
 
-  let content: React.ReactNode;
-
   if (loading) {
-    content = <p className="text-md">Ladataan seuroja...</p>;
-  } else if (error || !data) {
-    content = <p className="text-md">Virhe seurojen haussa.</p>;
-  } else {
-    content = (
-      <>
-        <Paginator
-          pageNumber={pageNumber}
-          totalPages={data.totalPages}
-          handlePageNumberChange={handlePageNumberChange}
-        />
-        <div className="flex flex-col gap-2 w-full">
-          {data.content?.map((club: ClubResponse) => (
-            <Club
-              key={club.name}
-              club={club}
-              joinedClub={joinedClub}
-              setJoinedClub={setJoinedClub}
-              clubAdminRoles={clubAdminRoles}
-            />
-          ))}
-        </div>
-      </>
+    return (
+      <main className="flex min-h-screen flex-col items-center p-4 gap-2">
+        <h1 className="text-4xl">Seurat</h1>
+        <p className="text-md">Ladataan seuroja...</p>
+      </main>
     );
   }
+
+  if (error || !data) {
+    return (
+      <main className="flex min-h-screen flex-col items-center p-4 gap-2">
+        <h1 className="text-4xl">Seurat</h1>
+        <p className="text-md">Virhe seurojen haussa.</p>
+      </main>
+    );
+  }
+
+  const visibleClubs = joinedClub && !showAllClubs
+    ? data.content.filter(club => club.name === joinedClub)
+    : data.content;
 
   return (
     <main className="flex min-h-screen flex-col items-center p-4 gap-10">
       <h1 className="text-4xl">Seurat</h1>
 
-      <JoinClubTip joinedClub={joinedClubName ?? joinedClub} />
+      <JoinClubTip joinedClub={joinedClub} />
 
       <Input
         id="search"
@@ -127,7 +121,34 @@ const ClubsView = () => {
         required={false}
       />
 
-      {content}
+      <Paginator
+        pageNumber={pageNumber}
+        totalPages={data.totalPages}
+        handlePageNumberChange={handlePageNumberChange}
+      />
+
+      <div className="flex flex-col gap-2 w-full items-center">
+        {visibleClubs.map((club: ClubResponse) => (
+          <Club
+            key={club.name}
+            club={club}
+            joinedClub={joinedClub}
+            setJoinedClub={setJoinedClub}
+            clubAdminRoles={clubAdminRoles}
+          />
+        ))}
+
+        {joinedClub && (
+          <Button
+            variant="outline"
+            size="sm"
+            className="mt-4"
+            onClick={() => setShowAllClubs(prev => !prev)}
+          >
+            {showAllClubs ? "Piilota muut seurat" : "Näytä muut seurat"}
+          </Button>
+        )}
+      </div>
     </main>
   );
 };

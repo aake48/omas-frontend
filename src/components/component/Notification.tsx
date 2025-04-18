@@ -10,7 +10,7 @@ interface NotificationProps {
 const Notification: React.FC<NotificationProps> = ({ message, type }) => {
     const [visible, setVisible] = useState(true);
     const style = type === 'success' ? 'bg-green-500' : 'bg-red-500';
-    
+
     useEffect(() => {
         setVisible(true);
 
