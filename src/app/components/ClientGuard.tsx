@@ -30,7 +30,7 @@ export default function ClientGuard({ children }: Readonly<{ children: React.Rea
     const [notification, setNotification] = useState<null | { id: number; message: string; type: 'success' | 'error' }>(null);
 
     const PUBLIC_ROUTES = ["/seurat", "/kirjaudu", "/rekisteröidy"];
-    const CLUBLESS_ALLOWED_ROUTES = ["/seurat", "/asetukset"];
+    const CLUBLESS_ALLOWED_ROUTES = ["/seurat", "/asetukset", "/yhteystiedot"];
 
     const isPublicRoute = PUBLIC_ROUTES.some(path => pathname.startsWith(path));
 
