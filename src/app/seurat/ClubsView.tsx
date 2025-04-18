@@ -103,8 +103,8 @@ const ClubsView = () => {
   }
 
   const visibleClubs = joinedClub && !showAllClubs
-    ? data.content.filter(club => club.name === joinedClub)
-    : data.content;
+    ? data.content?.filter(club => club.name === joinedClub) ?? []
+    : data.content ?? [];
 
   return (
     <main className="flex min-h-screen flex-col items-center p-4 gap-10">
