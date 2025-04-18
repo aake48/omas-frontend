@@ -9,7 +9,7 @@
  *   - Admin role
  *   - Club membership
  * - Admin users can access all routes.
- * - Regular users without a club can only access `/seurat` and `/asetukset`.
+ * - Regular users without a club can only access `/seurat`, `/asetukset` and `/yhteystiedot`.
  * - Public routes (`/seurat`, `/kirjaudu`, `/rekisteröidy`) are always accessible, even when not logged in.
  *
  * Behavior:
