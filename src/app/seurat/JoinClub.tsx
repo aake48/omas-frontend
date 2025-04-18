@@ -133,10 +133,10 @@ const JoinClub = ({ id, joinedClub, setJoinedClub }: JoinClubProps) => {
                 <div className="mt-2 p-2 border rounded">
                   <p>Oletko varma, että haluat poistua seurasta?</p>
                   <div className="flex gap-2 mt-2 justify-center">
-                    <Button variant="outline" size="sm" onClick={() => confirmLeaveClub(true)}>
+                    <Button variant="outline" size="sm" className="hover:bg-red-200" onClick={() => confirmLeaveClub(true)}>
                       Kyllä
                     </Button>
-                    <Button variant="outline" size="sm" onClick={() => confirmLeaveClub(false)}>
+                    <Button variant="outline" size="sm" className="hover:bg-red-200" onClick={() => confirmLeaveClub(false)}>
                       Ei
                     </Button>
                   </div>
