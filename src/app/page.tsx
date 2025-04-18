@@ -9,7 +9,6 @@ import {
   getUserCompetitions,
 } from "@/lib/APIConstants";
 import get from "@/api/get";
-import JoinClubTip from "./components/JoinClubTip";
 import UpcomingCompetitions from "./components/UpcomingCompetitions";
 import CurrentCompetitions from "./components/CurrentCompetitions";
 import getWithAuth from "@/api/getWithAuth";
@@ -20,7 +19,7 @@ export type competitionListProps = {
 
 export default function Home() {
   const { token } = useUserInfo();
-  const tokenString = token || "";
+  const tokenString = token ?? "";
 
   const [futureCompetitions, setFutureCompetitions] = useState<
     CompetitionResponse[]
@@ -94,7 +93,6 @@ export default function Home() {
 
   return (
     <main className="min-h-screen p-8">
-      <JoinClubTip />
       <UpcomingCompetitions competitions={futureCompetitions} />
       <CurrentCompetitions competitions={currentOwnCompetitions} />
     </main>

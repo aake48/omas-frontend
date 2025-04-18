@@ -1,27 +1,25 @@
 "use client";
 
-import useHasJoinedClub from "@/lib/hooks/has-joined-club";
-import useIsLoggedIn from "@/lib/hooks/is-logged-in";
+interface JoinClubTipProps {
+  joinedClub: string | null;
+}
 
-export default function JoinClubTip() {
-  const isLoggedIn = useIsLoggedIn();
-  const hasJoinedClub = useHasJoinedClub();
-
+export default function JoinClubTip({ joinedClub }: Readonly<JoinClubTipProps>) {
   return (
-    isLoggedIn &&
-    !hasJoinedClub && (
-      <div className="w-full rounded-md shadow-md border mb-8 py-2">
-        <div className="flex items-baseline p-4 mx-4">
-          <h2 className="text-2xl">Et kuulu vielä mihinkään seuraan!</h2>
-        </div>
-        <div className="mx-4 border-b-2 last:border-b-0 cursor-pointer hover:bg-slate-100">
-          <p className="p-2 cursor-auto">
-            Liittymällä seuraan voit osallistua joukkueisiin ja ilmoittaa
-            tuloksiasi järjestelmään. Liittyä voit yläpalkin
-            Seurat-välilehdeltä.
+    <div className="w-full rounded-md shadow-md border mb-8 py-6 flex flex-col items-center text-center min-h-[130px]">
+      {joinedClub ? (
+        <>
+          <h2 className="mt-2 text-md max-w-md">Seurasi on </h2>
+          <p className="mt-1 text-xl font-semibold min-h-[32px]">{joinedClub}</p>
+        </>
+      ) : (
+        <>
+          <h2 className="text-2xl font-semibold">Et ole liittynyt mihinkään seuraan!</h2>
+          <p className="mt-2 text-md max-w-md">
+            Hae oma seurasi hakupalkista tai etsi se listauksesta.
           </p>
-        </div>
-      </div>
-    )
+        </>
+      )}
+    </div>
   );
 }
