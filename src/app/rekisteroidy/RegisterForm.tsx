@@ -62,6 +62,7 @@ export default function RegisterForm() {
 
       if (response.status === 200) {
         setMessage("Rekisteröityminen onnistui.")
+        localStorage.setItem("justRegistered", "true");
 
             const response = await sendLogin(values.username, values.password);
             const body = await response.json();

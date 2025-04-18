@@ -61,6 +61,7 @@ export default function ClientGuard({ children }: Readonly<{ children: React.Rea
         const isLoggedIn = !!user?.username;
         const isAdmin = isAdminRole(user?.roles);
         const hasClub = !!user?.club;
+        const justRegistered = localStorage.getItem("justRegistered") === "true";
 
         // Public routes or not logged in
         if (!isLoggedIn || isPublicRoute) return;
@@ -73,14 +74,21 @@ export default function ClientGuard({ children }: Readonly<{ children: React.Rea
 
         // Redirect and notify if trying to access anything else
         if (!hasClub && !CLUBLESS_ALLOWED_ROUTES.includes(pathname)) {
-            setNotification({
-                id: Date.now(),
-                type: "error",
-                message: "Pääsy estetty. Sinun täytyy liittyä seuraan.",
-            });
+            if (!justRegistered) {
+                setNotification({
+                    id: Date.now(),
+                    type: "error",
+                    message: "Pääsy estetty. Sinun täytyy liittyä seuraan.",
+                });
+            }
             if (pathname !== "/seurat") {
                 router.replace("/seurat");
             }
+        }
+
+        // Clear the flag so it's only skipped once
+        if (justRegistered) {
+            localStorage.removeItem("justRegistered");
         }
     };
 
