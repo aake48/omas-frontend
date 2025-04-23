@@ -101,8 +101,7 @@ export async function uploadImage(
     const response = await axios.post(getFileUploadUrl(), formData, {
       method: 'POST',
       headers: {
-        'Authorization': 'Bearer ' + token,
-        'Content-Type': 'multipart/form-data'
+        'Authorization': 'Bearer ' + token
       },
       httpsAgent: new https.Agent({
         rejectUnauthorized: false
