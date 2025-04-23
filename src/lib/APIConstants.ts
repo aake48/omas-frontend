@@ -76,7 +76,7 @@ export const getCompetitionTeamsQueryUrl = (
   page: number,
   size: number = 10
 ): string => {
-  return `${baseURL}api/competition/teams?search=${search}&page=${page}&size=${size}`;
+  return `${baseURL}api/competition/teams?search=${search}&page=${page}&size=${size}&series=&name=`;
 };
 
 export const addTeamToCompetitionURL: string =

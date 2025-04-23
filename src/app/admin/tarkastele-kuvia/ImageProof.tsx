@@ -6,7 +6,16 @@ interface ImageProps {
 
 const ImageProof = ({ src }: ImageProps) => {
     return (
-        <Image alt="" className="max-w-1/5" src={getImageSource(src)} />
+        //<Image alt="" className="max-w-1/5" src={getImageSource(src)} />
+        <div className="relative w-[200px] h-[200px]">
+            <Image
+                alt=""
+                src={getImageSource(src)}
+                fill
+                style={{ objectFit: "cover" }}
+                className="rounded-md shadow-md"
+            />
+        </div>
     )
 }
 
