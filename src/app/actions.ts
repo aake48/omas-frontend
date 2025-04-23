@@ -56,7 +56,7 @@ export async function sendScore(token: string, formData: FormData) {
           rejectUnauthorized: false
       }),
     })
-    console.log("images: "+images)
+    console.log("images: "+images);
     //const body = await response.json();
 
     images.forEach((image) => {
@@ -107,8 +107,8 @@ export async function uploadImage(
         rejectUnauthorized: false
       }),
     });
-    console.log(response)
-    console.log(response.status)
+    console.log(response);
+    console.log(response.status);
     if (response.status >= 400) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
