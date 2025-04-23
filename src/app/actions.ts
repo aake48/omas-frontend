@@ -56,7 +56,7 @@ export async function sendScore(token: string, formData: FormData) {
           rejectUnauthorized: false
       }),
     })
-
+    console.log("images: "+images)
     //const body = await response.json();
 
     images.forEach((image) => {
