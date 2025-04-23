@@ -107,7 +107,8 @@ export async function uploadImage(
         rejectUnauthorized: false
       }),
     });
-
+    console.log(response)
+    console.log(response.status)
     if (response.status >= 400) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
