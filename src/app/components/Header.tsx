@@ -1,20 +1,20 @@
 "use client";
 
 import { LoginButton } from "./ui/LoginButton";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { headerLinks } from "@/lib/links";
 import UserMenu from "./UserMenu";
 import useUserInfo from "@/lib/hooks/get-user.info";
-import useIsLoggedIn from "@/lib/hooks/is-logged-in";
 
 const Header: React.FC = () => {
     const [menuHidden, setMenuHidden] = useState("hidden");
     const [userMenuHidden, setUserMenuHidden] = useState(true);
     const [adminLoggedIn, setAdminLoggedIn] = useState(false);
-    const loggedStatus = useIsLoggedIn();
     const { userInfo } = useUserInfo();
     const [user, setUser] = useState(null);
+    const ref = useRef<HTMLDivElement>(null);
+    
     
     const handleMenuOnClick = (state: boolean) => {
         !state ? setMenuHidden("block") : setMenuHidden("hidden");
@@ -34,6 +34,19 @@ const Header: React.FC = () => {
         window.addEventListener("storage", checkLogin);
         checkLogin();
     }, [userInfo]);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (ref.current && !ref.current.contains(event.target as Node)) {
+                setUserMenuHidden(true);
+            }
+        };
+            
+            document.addEventListener("mousedown", handleClickOutside);
+            return () => {
+                document.removeEventListener("mousedown", handleClickOutside);
+            };
+        }, [ref]);
 
     return (
         <header>
@@ -108,13 +121,15 @@ const Header: React.FC = () => {
                     ))}
                 </nav>
             </div>
-            <div
-                hidden={userMenuHidden}
-                onClick={handleUserMenuOnClick}
-                className={`fixed right-4 top-20 shadow p-4 bg-white overflow-hidden`}
-            >
-                <UserMenu adminLoggedIn={adminLoggedIn} />
-            </div>
+            {!userMenuHidden && (
+                <div
+                    ref={ref}
+                    onClick={handleUserMenuOnClick}
+                    className={`fixed right-4 top-20 shadow p-4 bg-white overflow-hidden`}
+                >
+                    <UserMenu adminLoggedIn={adminLoggedIn} />
+                </div>
+            )}
         </header>
     );
 };
