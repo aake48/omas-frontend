@@ -14,22 +14,28 @@ interface ClubProps {
 
 const Club = ({ club, clubAdminRoles, joinedClub, setJoinedClub }: ClubProps) => {
     const { token } = useUserInfo();
+    const isUserInThisClub = joinedClub === club.name;
 
     return (
-        <div className="shadow p-2">
-            <div>
-                <p className="text-xl">{club.nameNonId}</p>
+        <div className={`shadow p-4 w-full rounded-md border ${isUserInThisClub ? "bg-slate-200" : ""}`}>
+            <div className="text-center">
+                <p className="text-xl font-semibold">{club.nameNonId}</p>
                 <p className="text-slate-700">Seura luotu: {formatDate(club.creationDate)}</p>
             </div>
-            <div>
-                {/* Pass `joinedClub` state to JoinClub */}
-                <JoinClub id={club.name} joinedClub={joinedClub} setJoinedClub={setJoinedClub} />
-
-                {/* Display ChangeClubKey only for club admins */}
-                {clubAdminRoles.includes(club.name) && <ChangeClubKey token={token} clubName={club.name} />}
+            <div className="mt-4 flex flex-col items-center">
+                {(joinedClub === null || isUserInThisClub) && (
+                    <div className={`mt-2 w-full ${isUserInThisClub ? "bg-white p-4 rounded-md" : ""}`}>
+                        <JoinClub id={club.name} joinedClub={joinedClub} setJoinedClub={setJoinedClub} />
+                    </div>
+                )}
+                {clubAdminRoles.includes(club.name) && (
+                    <div className={`mt-2 w-full ${isUserInThisClub ? "bg-white p-4 rounded-md" : ""}`}>
+                        <ChangeClubKey token={token} clubName={club.name} />
+                    </div>
+                )}
             </div>
         </div>
     );
 };
-  
+
 export default Club;

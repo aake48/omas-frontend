@@ -62,6 +62,7 @@ export default function RegisterForm() {
 
       if (response.status === 200) {
         setMessage("Rekisteröityminen onnistui.")
+        localStorage.setItem("justRegistered", "true");
 
             const response = await sendLogin(values.username, values.password);
             const body = await response.json();
@@ -143,11 +144,13 @@ export default function RegisterForm() {
               type="password"
               placeholder="Salasana uudelleen"
             />
-            <ReCAPTCHA
-              ref={reCaptchaRef}
-              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
-              onChange={onReCAPTCHAChange}
-            />
+            <div className="flex justify-center">
+              <ReCAPTCHA
+               ref={reCaptchaRef}
+               sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
+               onChange={onReCAPTCHAChange}
+              />
+            </div>
             <Button
               variant={"outline"}
               size={"lg"}

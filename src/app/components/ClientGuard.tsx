@@ -4,33 +4,35 @@
  * ClientGuard
  *
  * Purpose:
- * - Prevents unauthorized access to routes based on login status, role, and club membership.
- * - Admins can access everything.
- * - Logged-in users without a club are only allowed on `/seurat`.
- * - Public routes are always accessible.
+ * - Prevents unauthorized access to specific routes based on:
+ *   - Login status
+ *   - Admin role
+ *   - Club membership
+ * - Admin users can access all routes.
+ * - Regular users without a club can only access `/seurat`, `/asetukset` and `/yhteystiedot`.
+ * - Public routes (`/seurat`, `/kirjaudu`, `/rekisteröidy`) are always accessible, even when not logged in.
  *
  * Behavior:
- * - Reads login data directly from localStorage (userInfo).
- * - Automatically re-checks when the user returns to the tab or localStorage changes.
- * - Redirects users who do not meet access requirements.
+ * - Runs access checks in the background without blocking the UI.
+ * - Redirects unauthorized users to `/seurat` with a notification.
+ * - Notifications are shown when a user is denied access.
  */
 
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import Header from "./Header";
-import Footer from "./Footer";
+import Notification from "@/components/component/Notification";
 
 export default function ClientGuard({ children }: Readonly<{ children: React.ReactNode }>) {
     const router = useRouter();
     const pathname = usePathname();
 
     const [hydrated, setHydrated] = useState(false);
-    const [allowAccess, setAllowAccess] = useState(false);
+    const [notification, setNotification] = useState<null | { id: number; message: string; type: 'success' | 'error' }>(null);
 
-    // Define routes that are always accessible
-    const isPublicRoute = ["/seurat", "/kirjaudu", "/rekisteröidy"].some(path =>
-        pathname.startsWith(path)
-    );
+    const PUBLIC_ROUTES = ["/seurat", "/kirjaudu", "/rekisteröidy"];
+    const CLUBLESS_ALLOWED_ROUTES = ["/seurat", "/asetukset", "/yhteystiedot"];
+
+    const isPublicRoute = PUBLIC_ROUTES.some(path => pathname.startsWith(path));
 
     // Read user info from localStorage
     const getUser = () => {
@@ -42,7 +44,7 @@ export default function ClientGuard({ children }: Readonly<{ children: React.Rea
         }
     };
 
-    // Check if user is an admin (refactored from nested ternary)
+    // Check if user is an admin
     const isAdminRole = (roles: string[] | string | undefined): boolean => {
         if (Array.isArray(roles)) {
             return roles.some(r => r.endsWith("/admin") || r === "ROLE_ADMIN");
@@ -59,53 +61,47 @@ export default function ClientGuard({ children }: Readonly<{ children: React.Rea
         const isLoggedIn = !!user?.username;
         const isAdmin = isAdminRole(user?.roles);
         const hasClub = !!user?.club;
+        const justRegistered = localStorage.getItem("justRegistered") === "true";
 
-        // Allow if not logged in (public access)
-        if (!isLoggedIn || isPublicRoute) {
-            setAllowAccess(true);
-            return;
+        // Public routes or not logged in
+        if (!isLoggedIn || isPublicRoute) return;
+
+        // Admins or users with club can access anything
+        if (isAdmin || hasClub) return;
+
+        // Clubless users can access pages in CLUBLESS_ALLOWED_ROUTES
+        if (!hasClub && CLUBLESS_ALLOWED_ROUTES.includes(pathname)) return;
+
+        // Redirect and notify if trying to access anything else
+        if (!hasClub && !CLUBLESS_ALLOWED_ROUTES.includes(pathname)) {
+            if (!justRegistered) {
+                setNotification({
+                    id: Date.now(),
+                    type: "error",
+                    message: "Pääsy estetty. Sinun täytyy liittyä seuraan.",
+                });
+            }
+            if (pathname !== "/seurat") {
+                router.replace("/seurat");
+            }
         }
 
-        // Allow for admin
-        if (isAdmin) {
-            setAllowAccess(true);
-            return;
+        // Clear the flag so it's only skipped once
+        if (justRegistered) {
+            localStorage.removeItem("justRegistered");
         }
-
-        // Allow for users with club
-        if (hasClub) {
-            setAllowAccess(true);
-            return;
-        }
-
-        // Allow clubless users to access `/seurat` or `/asetukset`
-        if (!hasClub && ["/seurat", "/asetukset"].includes(pathname)) {
-            setAllowAccess(true);
-            return;
-        }
-
-        // Restrict clubless users on other pages
-        if (!hasClub && !["/seurat", "/asetukset"].includes(pathname)) {
-            router.replace("/seurat");
-            return;
-        }
-
-        // Fallback
-        setAllowAccess(false);
     };
 
-    // Ensure we're running in the browser
     useEffect(() => {
         setHydrated(true);
     }, []);
 
-    // Check access on hydration, route change, or tab focus
     useEffect(() => {
         if (!hydrated) return;
 
         checkAccess();
 
-        // Listen for updates when switching tabs or localStorage changes
+        // Re-check when user switches tabs or localStorage changes
         window.addEventListener("focus", checkAccess);
         window.addEventListener("storage", checkAccess);
 
@@ -113,16 +109,20 @@ export default function ClientGuard({ children }: Readonly<{ children: React.Rea
             window.removeEventListener("focus", checkAccess);
             window.removeEventListener("storage", checkAccess);
         };
-    }, [hydrated, pathname, router]);
+    }, [hydrated, pathname]);
 
-    // Don't render anything until access is confirmed
-    if (!hydrated || !allowAccess) return null;
+    if (!hydrated) return null;
 
     return (
         <>
-            <Header />
             {children}
-            <Footer />
+            {notification && (
+                <Notification
+                    key={notification.id}
+                    message={notification.message}
+                    type={notification.type}
+                />
+            )}
         </>
     );
 }
