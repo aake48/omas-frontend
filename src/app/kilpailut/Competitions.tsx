@@ -118,6 +118,7 @@ export default function Competitions() {
       </div>
       {competitions &&
         competitions.map((competition, index) => (
+          (new Date(competition.endDate).getTime() > Date.now()) &&
           <Link
             key={index}
             className={`flex rounded-md cursor-pointer sm:flex-row transition-all flex-col items-baseline border my-1 p-2 sm:pl-10 hover:bg-slate-100 

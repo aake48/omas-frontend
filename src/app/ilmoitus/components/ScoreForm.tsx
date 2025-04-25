@@ -77,15 +77,12 @@ export default function ScoreCard({
           const formData = new FormData();
 
           Object.entries(values).forEach(([key, value]) => {
-            if (key !== "images") {
               try {
-                // Skip the image field for now
                 key === "teamMember" ? formData.append(key, teamMemberIds[teamMembers.indexOf(value.toString())].toString())
                 : formData.append(key, value.toString()); // Ensure value is a string
               } catch (error) {
                 console.error(error);
               }
-            }
           });
           formData.append("teamName", teamName!);
           formData.append("requestType", scoreType);

@@ -56,12 +56,12 @@ export async function sendScore(token: string, formData: FormData) {
           rejectUnauthorized: false
       }),
     })
-
+    console.log("images: "+images);
     //const body = await response.json();
 
-    /*images.forEach((image) => {
-      uploadImage(token, image, formData.get("competitionName")?.toString()!);
-    });*/
+    images.forEach((image) => {
+      uploadImage(token, image, formData.get("competitionName")?.toString()!, formData.get("teamMember")?.toString()!);
+    });
 
     return { body: response.data, status: response.status };
   } catch (error: any) {
@@ -85,7 +85,8 @@ export async function sendScore(token: string, formData: FormData) {
 export async function uploadImage(
   token: string,
   file: FormDataEntryValue,
-  competitionId: string
+  competitionId: string,
+  userid: string
 ) {
   if (token == null) {
     console.error("No auth header found in request.");
@@ -94,17 +95,21 @@ export async function uploadImage(
   const formData = new FormData();
   formData.append("competitionId", competitionId);
   formData.append("file", file);
+  formData.append("userid", userid);
 
   try {
-    const response = await fetch(getFileUploadUrl(), {
+    const response = await axios.post(getFileUploadUrl(), formData, {
       method: 'POST',
       headers: {
-        'Authorization': 'Bearer ' + token,
+        'Authorization': 'Bearer ' + token
       },
-      body: formData
+      httpsAgent: new https.Agent({
+        rejectUnauthorized: false
+      }),
     });
-
-    if (!response.ok) {
+    console.log(response);
+    console.log(response.status);
+    if (response.status >= 400) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
